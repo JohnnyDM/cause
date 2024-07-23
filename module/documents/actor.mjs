@@ -39,7 +39,7 @@ export class CauseActor extends Actor {
         this._prepareNpcData(actorData);
     }
     /**
-     * Prepare Character type specific data...
+     * Prepare Character type specific data
      */
     _prepareCharacterData(actorData) {
         if (actorData.type !== 'character') return;
