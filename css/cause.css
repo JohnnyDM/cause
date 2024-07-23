@@ -1,0 +1,139 @@
+@font-face {
+    font-family: "Aquifer";
+    src: url("../css/fonts/Aquifer.otf");
+  }
+  @font-face {
+    font-family: "Darktown";
+    src: url("../css/fonts/Darktown Vintage.otf");
+  }
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    margin: 0;
+    height: 100vh;
+  }
+  .sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    position: absolute;
+    margin-top: 30px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+  .sidebar a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .sidebar a:hover {
+    background-color: #ddd;
+  }
+  .content {
+    flex: 1;
+    padding: 20px;
+    margin-right: 220px; /* Width of sidebar + padding */
+    overflow-y: auto;
+  }
+  .content > div {
+    display: none;
+  }
+  .content > div.active {
+    display: block;
+  }
+  .number-field {
+    margin-bottom: 15px;
+  }
+  .number-field input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  .column {
+    float: left;
+    width: 50%;
+    padding: 0px;
+    text-align: center;
+  }
+  .columnp {
+    float: left;
+    width: 50%;
+    padding-top: 5px;
+    text-align: center;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .headline1 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Darktown';
+    padding-bottom: 5px;
+  }
+  .headline2 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Aquifer';
+  }
+  .headline3 {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Aquifer';
+  }
+  .textdescrip {
+      text-align: center;
+  }
+  .textdescrip input{
+      font-family:'Aquifer';
+      font-size: 13px;
+      background-color: #FF000000;
+      border-bottom:1.5px dotted;
+      border-top:0px;
+      border-left:0px;
+      border-right:0px;
+      text-align:center;
+  }
+  .textdescrip select{
+      font-family:'Aquifer';
+      font-size: 13px;
+      background-color: #FF000000;
+      border-bottom:1.5px dotted;
+      border-top:0px;
+      border-left:0px;
+      border-right:0px;
+      text-align:left;
+  }
+  .charname {
+      text-align: center;
+  }
+  .charname input{
+      font-family:'Aquifer';
+      font-size: 25px;
+      background-color: #FF000000;
+      border-bottom:1.5px dotted;
+      border-top:0px;
+      border-left:0px;
+      border-right:0px;
+      text-align:center;
+  }
+  .charname select{
+      font-family:'Aquifer';
+      font-size: 25px;
+      background-color: #FF000000;
+      border-bottom:1.5px dotted;
+      border-top:0px;
+      border-left:0px;
+      border-right:0px;
+      text-align:left;
+  }

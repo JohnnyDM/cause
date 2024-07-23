@@ -1,0 +1,54 @@
+{
+    "id": "cause",
+    "title": "Cause",
+    "description": "The Cause TTFS system for FoundryVTT!",
+    "authors": [
+      {
+        "name": "Johnny",
+        "discord": "lastcringe"
+      },
+      {
+        "name": "Zombie",
+        "discord": ""
+      },
+      {
+        "name": "Cyari",
+        "discord": ""
+      }
+    ],
+    "url": "",
+    "license": "LICENSE.txt",
+    "readme": "README.md",
+    "bugs": "",
+    "changelog": "CHANGELOG.md",
+    "media": [
+      {
+        "type": "setup",
+        "url": "systems/cause-ttfs/assets/anvil-impact.png",
+        "thumbnail": "systems/cause-ttfs/assets/anvil-impact.png"
+      }
+    ],
+    "version": "0.0.1",
+    "compatibility": {
+      "minimum": 11,
+      "verified": "11.315"
+    },
+    "esmodules": ["module/cause.mjs"],
+    "styles": ["css/cause.css"],
+    "languages": [
+      {
+        "lang": "en",
+        "name": "English",
+        "path": "lang/en.json"
+      }
+    ],
+    "packs": [],
+    "packFolders": [],
+    "socket": false,
+    "manifest": "",
+    "download": "",
+    "background": "systems/cause-ttfs/assets/anvil-impact.png",
+    "gridDistance": 1,
+    "gridUnits": "m"
+  }
+  

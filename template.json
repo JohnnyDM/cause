@@ -1,0 +1,88 @@
+{
+    "Actor": {
+      "types": ["character", "npc"],
+      "templates": {
+        "base": {
+          "health": {
+            "value": 0,
+            "min": 0,
+            "max": "@str + @agi"
+          },
+          "mentality": {
+            "value": 0,
+            "min": 0,
+            "max": "@wit + @bra"
+          },
+          "biography": ""
+        }
+      },
+      "character": {
+        "templates": ["base"],
+        "attributes": {
+          "level": {
+            "value": 1
+          },
+          "str": {
+            "value": 0
+          },
+          "agi": {
+            "value": 0
+          },
+          "wit": {
+            "value": 0
+          },
+          "bra": {
+            "value": 0
+          }
+        }
+      },
+      "npc": {
+        "templates": ["base"],
+        "dif": 0
+      }
+    },
+    "Item": {
+      "types": ["weapon", "armor", "consumable", "skill", "feature", "disorder"],
+      "templates": {
+        "base": {
+          "description": ""
+        }
+      },
+      "weapon": {
+        "templates": ["base"],
+        "weaponType": "pistole",
+        "attackWith": "agi",
+        "weaponLevel": "1",
+        "concealment": "0",
+        "formula": "d6"
+      },
+      "armor": {
+        "templates": ["base"],
+        "statMalus1": "agi",
+        "statMalus2": "str",
+        "armorLevel": "1",
+        "concealment": ""
+      },
+      "consumable": {
+        "templates": ["base"],
+        "type": "",
+        "tags": "",
+        "quantity": 1,
+        "formula": "d6"
+      },
+      "skill": {
+        "templates": ["base"],
+        "firearmsSkill": false,
+        "forFirearm": "",
+        "skillLevel": 1
+      },
+      "feature": {
+        "templates": ["base"],
+        "featLevel": 1
+      },
+      "disorder": {
+        "templates": ["base"],
+        "disorderLevel": 1
+      }
+    }
+  }

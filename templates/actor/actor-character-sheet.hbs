@@ -1,0 +1,51 @@
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+    <div class="content">
+        <div id="tab1" class="tab-content active">
+          
+        </div>
+        
+        <div id="tab2" class="tab-content">
+            <!-- Inhalt für Tab 2 -->
+        </div>
+        
+        <div id="tab3" class="tab-content">
+            <!-- Inhalt für Tab 3 -->
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/></h1>
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
+        <div class="headline1">Attributes</div>
+        <div class="row">
+          <div class="column headline3">Strength</div>
+          <div class="column headline3">Agility</div>
+        </div>
+        <div class="row">
+          <div class="textdescrip column"><input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.abilities.agi.value" value="{{system.abilities.agi.value}}" data-dtype="Number"/></div>
+        </div>
+        <div class="row">
+          <div class="columnp headline3">Wits</div>
+          <div class="columnp headline3">Brains</div>
+        </div>
+        <div class="row">
+          <div class="textdescrip column"><input type="number" name="system.abilities.wit.value" value="{{system.abilities.wit.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.abilities.bra.value" value="{{system.abilities.bra.value}}" data-dtype="Number"/></div>
+        </div>
+        <a onclick="showTab(event, 'tab1')">Statistics</a>
+        <a onclick="showTab(event, 'tab2')">Inventory</a>
+        <a onclick="showTab(event, 'tab3')">Bonds</a>
+    </div>
+    <script>
+        function showTab(event, tabId) {
+            event.preventDefault();
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</form>
+
