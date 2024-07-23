@@ -1,24 +1,24 @@
-import CauseActor from './documents/actor.mjs'; //Import the main Actor ES module
+//import CauseActor from './documents/actor.mjs'; //Import the main Actor ES module
 import CauseActorSheet from './sheets/actor-sheet.mjs'; //Import the main Actor-Sheet ES module
-import CauseItem from './documents/item.mjs'; //Import the main Item ES module
-import CauseItemSheet from "./sheets/item-sheet.mjs"; //Import the main Item-Sheet ES module
-import preloadHandlebarsTemplates from "./helpers/templates.mjs"; //Import helper document for handlebars
-import CAUSE from "./helpers/config.mjs";
+//import CauseItem from './documents/item.mjs'; //Import the main Item ES module
+//import CauseItemSheet from "./sheets/item-sheet.mjs"; //Import the main Item-Sheet ES module
+//import preloadHandlebarsTemplates from "./helpers/templates.mjs"; //Import helper document for handlebars
+//import CAUSE from "./helpers/config.mjs";
 
 
 Hooks.once("init", function () {
     console.log("Cause TTFS | Initialising Cause Tabletop Framework System"); //Initialisation message in console
 
     game.cause = { //register our main handling classes into the global game object to make it accessible for console debugging etc.
-      CauseActor,
-      CauseItem,
+      //CauseActor,
+      //CauseItem,
     };
 
-    CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
+    //CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
 
     //override the base documents classes with our own
-    CONFIG.Actor.documentClass = CauseActor;
-    CONFIG.Item.documentClass = CauseItem;
+    //CONFIG.Actor.documentClass = CauseActor;
+    //CONFIG.Item.documentClass = CauseItem;
 
     Actors.unregisterSheet("core", ActorSheet); //unregister the standard actor-sheet to make it unaccessible for users
     Actors.registerSheet("cause", CauseActorSheet, {  //register our Character sheets for:
@@ -26,10 +26,10 @@ Hooks.once("init", function () {
         makeDefault: true                                 //set default for new actors
       });
 
-    Items.unregisterSheet("core", ItemSheet); //unregister the standard item-sheet to make it unaccessible for users
-    Items. registerSheet("cause", CauseItemSheet, { makeDefault: true }); //registering the custom item-sheet
-    
-    return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
+    //Items.unregisterSheet("core", ItemSheet); //unregister the standard item-sheet to make it unaccessible for users
+    //Items. registerSheet("cause", CauseItemSheet, { makeDefault: true }); //registering the custom item-sheet
+    //
+    //return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
 
     Hooks.once("ready", function() {
       // Include steps that need to happen after Foundry has fully loaded here.

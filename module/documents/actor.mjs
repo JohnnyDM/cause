@@ -2,7 +2,7 @@
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class CauseActor extends Actor {
+export default class CauseActor extends Actor {
 
     /** @override */
     prepareData() {
@@ -47,10 +47,36 @@ export class CauseActor extends Actor {
         // Make modifications to data here. For example:
         const systemData = actorData.system;
 
-        // Loop through ability scores, and add their modifiers to our sheet output.
-        for (let [key, ability] of Object.entries(systemData.abilities)) {
-        // Calculate the modifier using d20 rules.
-        ability.mod = Math.floor((ability.value - 10) / 2);
+
+  }
+
+  getRollData() {
+    const data = super.getRollData();
+  
+    // Prepare character roll data.
+    this._getCharacterRollData(data);
+    this._getNpcRollData(data);
+  
+    return data;
+  }
+  
+  /**
+   * Prepare character roll data.
+   */
+  _getCharacterRollData(data) {
+    if (this.type !== 'character') return;
+  
+    // Copy the ability scores to the top level, so that rolls can use
+    // formulas like `@str.mod + 4`.
+    //if (data.attributes) {
+    //  for (let [k, v] of Object.entries(data.attributes)) {
+    //    data[k] = foundry.utils.deepClone(v);
+    //  }
+    //}
+  
+    // Add level for easier access, or fall back to 0.
+    if (data.core.level) {
+      data.lvl = data.core.level.value ?? 0;
     }
   }
 }
