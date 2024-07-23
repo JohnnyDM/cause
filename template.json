@@ -18,10 +18,12 @@
       },
       "character": {
         "templates": ["base"],
-        "attributes": {
+        "core": {
           "level": {
             "value": 1
-          },
+          }
+        },
+        "attributes": {
           "str": {
             "value": 0
           },
@@ -53,8 +55,7 @@
         "weaponType": "pistole",
         "attackWith": "agi",
         "weaponLevel": "1",
-        "concealment": "0",
-        "formula": "d6"
+        "concealment": "0"
       },
       "armor": {
         "templates": ["base"],
@@ -67,8 +68,7 @@
         "templates": ["base"],
         "type": "",
         "tags": "",
-        "quantity": 1,
-        "formula": "d6"
+        "quantity": 1
       },
       "skill": {
         "templates": ["base"],
