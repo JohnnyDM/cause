@@ -143,25 +143,78 @@
       border-right:0px;
       text-align:left;
   }
-  .items-grid {
+  .skills-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* Ändert die Anzahl der Spalten auf 2 */
+    gap: 5px;
   }
   
-  .item {
+  .skill {
     display: flex;
     flex-direction: column;
   }
-  .delete-item {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
+  
+  .skill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Symbole rechts orientieren */
+    margin-bottom: 5px;
   }
   
-  .delete-item .fas.fa-trash {
-    font-size: 1.2em;
+  .skill-name {
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .skill-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .skill-details select {
+    flex: 1;
+    margin-right: 0px;
+    padding: 3px;
+  }
+  
+  .skill-header .edit-skill,
+  .skill-details .delete-skill {
+    flex: 0 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Symbole rechts orientieren */
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit-skill .fas.fa-edit,
+  .delete-skill .fas.fa-trash {
+    font-size: 1em; /* Gleiche Größe für beide Symbole */
+    color: black; /* Farbe auf Schwarz setzen */
+  }
+  
+  .skill-details select.untrained {
+    background-color: grey;
+    color: white;
+  }
+  
+  .skill-details select.trained {
+    background-color: green;
+    color: white;
+  }
+  
+  .skill-details select.expert {
+    background-color: blue;
+    color: white;
+  }
+  
+  .skill-details select.master {
+    background-color: purple;
+    color: white;
+  }
+  
+  .skill-details select.legendary {
+    background-color: red;
+    color: white;
   }
