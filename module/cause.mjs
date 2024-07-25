@@ -2,7 +2,7 @@
 import CauseActorSheet from './sheets/actor-sheet.mjs'; //Import the main Actor-Sheet ES module
 //import CauseItem from './documents/item.mjs'; //Import the main Item ES module
 //import CauseItemSheet from "./sheets/item-sheet.mjs"; //Import the main Item-Sheet ES module
-//import preloadHandlebarsTemplates from "./helpers/templates.mjs"; //Import helper document for handlebars
+import { preloadHandlebarsTemplates } from "./helpers/templates.mjs"; //Import helper document for handlebars
 //import CAUSE from "./helpers/config.mjs";
 
 
@@ -29,7 +29,7 @@ Hooks.once("init", function () {
     //Items.unregisterSheet("core", ItemSheet); //unregister the standard item-sheet to make it unaccessible for users
     //Items. registerSheet("cause", CauseItemSheet, { makeDefault: true }); //registering the custom item-sheet
     //
-    //return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
+    return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
 
     Hooks.once("ready", function() {
       // Include steps that need to happen after Foundry has fully loaded here.
