@@ -1,26 +1,26 @@
 <div class="skills-grid">
   {{#each items as |item index|}}
-  <div class="skill" data-skill-index="{{index}}">
+  <div class="skill" data-item-id="{{_id}}">
     <div class="skill-header">
       <div class="skill-name">{{name}}</div>
-      <button type="button" class="edit-skill" data-skill-index="{{index}}">
+      <button type="button" class="edit-skill" data-item-id="{{_id}}">
         <i class="fas fa-edit"></i>
       </button>
     </div>
     <div class="skill-details textdescrip">
-      <select name="data.items.{{id}}.data.skillLevel" class="skill-level" data-skill-index="{{index}}">
-        <option value="1" {{#if (eq data.skillLevel 1)}}selected{{/if}}>Untrained</option>
-        <option value="2" {{#if (eq data.skillLevel 2)}}selected{{/if}}>Trained</option>
-        <option value="3" {{#if (eq data.skillLevel 3)}}selected{{/if}}>Expert</option>
-        <option value="4" {{#if (eq data.skillLevel 4)}}selected{{/if}}>Master</option>
-        <option value="5" {{#if (eq data.skillLevel 5)}}selected{{/if}}>Legendary</option>
+      <select name="data.items.{{_id}}.system.skillLevel" class="skill-level" data-item-id="{{_id}}">
+        <option value="1" {{#if (eq system.skillLevel 1)}}selected{{/if}}>Untrained</option>
+        <option value="2" {{#if (eq system.skillLevel 2)}}selected{{/if}}>Trained</option>
+        <option value="3" {{#if (eq system.skillLevel 3)}}selected{{/if}}>Expert</option>
+        <option value="4" {{#if (eq system.skillLevel 4)}}selected{{/if}}>Master</option>
+        <option value="5" {{#if (eq system.skillLevel 5)}}selected{{/if}}>Legendary</option>
       </select>
-      <button type="button" class="delete-skill" data-skill-index="{{index}}">
+      <button type="button" class="delete-skill" data-item-id="{{_id}}">
         <i class="fas fa-trash"></i>
       </button>
     </div>
   </div>
   {{else}}
-  <div>No skills found.</div>
+  <div>Keine Skills gefunden.</div>
   {{/each}}
 </div>
