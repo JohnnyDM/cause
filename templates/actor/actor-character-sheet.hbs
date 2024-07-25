@@ -1,7 +1,7 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     <div class="content">
         <div id="tab1" class="tab-content active">
-          
+          {{> "systems/cause/templates/actor/parts/actor-skill-partial.hbs"}}
         </div>
         
         <div id="tab2" class="tab-content">
@@ -18,20 +18,20 @@
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
         <div class="headline1">Attributes</div>
         <div class="row">
-          <div class="column headline3">Strength</div>
-          <div class="column headline3">Agility</div>
+          <div class="column headline3" data-action="rollStrength">Strength</div>
+          <div class="column headline3" data-action="rollAgility">Agility</div>
         </div>
         <div class="row">
-          <div class="textdescrip column"><input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" data-dtype="Number"/></div>
-          <div class="textdescrip column"><input type="number" name="system.abilities.agi.value" value="{{system.abilities.agi.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.attributes.str.value" value="{{system.attributes.str.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.attributes.agi.value" value="{{system.attributes.agi.value}}" data-dtype="Number"/></div>
         </div>
         <div class="row">
-          <div class="columnp headline3">Wits</div>
-          <div class="columnp headline3">Brains</div>
+          <div class="columnp headline3" data-action="rollWits">Wits</div>
+          <div class="columnp headline3" data-action="rollBrains">Brains</div>
         </div>
         <div class="row">
-          <div class="textdescrip column"><input type="number" name="system.abilities.wit.value" value="{{system.abilities.wit.value}}" data-dtype="Number"/></div>
-          <div class="textdescrip column"><input type="number" name="system.abilities.bra.value" value="{{system.abilities.bra.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.attributes.wit.value" value="{{system.attributes.wit.value}}" data-dtype="Number"/></div>
+          <div class="textdescrip column"><input type="number" name="system.attributes.bra.value" value="{{system.attributes.bra.value}}" data-dtype="Number"/></div>
         </div>
         <a onclick="showTab(event, 'tab1')">Statistics</a>
         <a onclick="showTab(event, 'tab2')">Inventory</a>

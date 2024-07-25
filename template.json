@@ -25,6 +25,7 @@
         },
         "attributes": {
           "str": {
+            "type": "number",
             "value": 0
           },
           "agi": {

@@ -61,6 +61,12 @@
     padding: 0px;
     text-align: center;
   }
+  .columns {
+    float: left;
+    width: 33%;
+    padding: 0px;
+    text-align: center;
+  }
   .columnp {
     float: left;
     width: 50%;

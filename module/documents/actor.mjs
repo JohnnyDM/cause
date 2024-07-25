@@ -78,5 +78,6 @@ export default class CauseActor extends Actor {
     if (data.core.level) {
       data.lvl = data.core.level.value ?? 0;
     }
+
   }
 }
