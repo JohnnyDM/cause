@@ -19,22 +19,22 @@ export default class CauseItemSheet extends ItemSheet {
     }
 
     getData() {
-        // Retrieve base data structure.
-        const context = super.getData();
-      
-        // Use a safe clone of the item data for further operations.
-        const itemData = context.data;
-      
-        // Retrieve the roll data for TinyMCE editors.
-        context.rollData = this.item.getRollData();
-      
-        // Add the item's data to context.data for easier access, as well as flags.
-        context.system = itemData.system;
-        context.flags = itemData.flags;
-      
-        // Prepare active effects for easier access
-        //context.effects = prepareActiveEffectCategories(this.item.effects);
-      
-        return context;
-      }
+      // Retrieve base data structure.
+      const context = super.getData();
+    
+      // Use a safe clone of the item data for further operations.
+      const itemData = context.data;
+    
+      // Retrieve the roll data for TinyMCE editors.
+      context.rollData = this.item.getRollData();
+    
+      // Add the item's data to context.data for easier access, as well as flags.
+      context.system = itemData.system;
+      context.flags = itemData.flags;
+
+      // Add the skill data to context
+      context.skill = itemData.system.skill;
+
+      return context;
+    }
 }

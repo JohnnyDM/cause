@@ -145,11 +145,12 @@
   }
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Ändert die Anzahl der Spalten auf 2 */
-    gap: 5px;
+    grid-template-columns: repeat(2, 1fr); /* Ändere auf 2 Spalten */
+    gap: 10px;
   }
   
   .skill {
+    
     display: flex;
     flex-direction: column;
   }
@@ -173,7 +174,7 @@
   
   .skill-details select {
     flex: 1;
-    margin-right: 0px;
+    margin-right: 10px;
     padding: 3px;
   }
   
@@ -195,26 +196,26 @@
   }
   
   .skill-details select.untrained {
-    background-color: grey;
-    color: white;
+    background-color: rgba(128, 128, 128, 0.3); /* Grau, 50% durchsichtig */
+    color: black;
   }
   
   .skill-details select.trained {
-    background-color: green;
-    color: white;
+    background-color: rgba(0, 128, 0, 0.3); /* Grün, 50% durchsichtig */
+    color: black;
   }
   
   .skill-details select.expert {
-    background-color: blue;
-    color: white;
+    background-color: rgba(0, 0, 255, 0.3); /* Blau, 50% durchsichtig */
+    color: black;
   }
   
   .skill-details select.master {
-    background-color: purple;
-    color: white;
+    background-color: rgba(128, 0, 128, 0.3); /* Lila, 50% durchsichtig */
+    color: black;
   }
   
   .skill-details select.legendary {
-    background-color: red;
-    color: white;
+    background-color: rgba(255, 0, 0, 0.3); /* Rot, 50% durchsichtig */
+    color: black;
   }
