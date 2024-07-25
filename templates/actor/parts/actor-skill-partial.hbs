@@ -1,5 +1,11 @@
-<div class="row">
-  <div class="columns headline3">Strength  <input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" data-dtype="Number"/></div>
-  <div class="columns headline3">Agility  <input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" data-dtype="Number"/></div>
-  <div class="columns headline3">Wits  <input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" data-dtype="Number"/></div>
+<div class="items-grid">
+  {{#each items as |item index|}}
+  <div class="item" data-item-index="{{index}}">
+    <label>{{item.name}}</label>
+    <input type="text" name="data.items.{{item.id}}.data.skillLevel" value="{{item.data.skillLevel}}" data-dtype="Number">
+    <button type="button" class="delete-item" data-item-index="{{index}}">
+      <i class="fas fa-trash"></i>
+    </button>
+  </div>
+  {{/each}}
 </div>

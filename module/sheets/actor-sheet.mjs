@@ -18,8 +18,18 @@ export default class CauseActorSheet extends ActorSheet {
       data.system = data.actor.system;
       data.system.attributes = data.actor.system.attributes || {};
       data.system.abilities = data.actor.system.abilities || {};
-  
+      console.log("Items:", data.items);
+      data.items = this._prepareItems(data.items);
       return data;
+    }
+
+    _prepareItems(items) {
+      const skillItems = items.filter(item => item.type === "skill");
+      const columns = [[], [], []];
+      skillItems.forEach((item, index) => {
+        columns[index % 3].push(item);
+      });
+      return columns.flat();
     }
 
     activateListeners(html) {
@@ -28,6 +38,7 @@ export default class CauseActorSheet extends ActorSheet {
       html.find('[data-action="rollAgility"]').click(this._onRollAgility.bind(this));
       html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
       html.find('[data-action="rollBrains"]').click(this._onRollBrains.bind(this));
+      html.find('.delete-item').click(this._onDeleteItem.bind(this));
     }
   
     _onRollStrength(event) {
@@ -77,5 +88,25 @@ export default class CauseActorSheet extends ActorSheet {
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: `Rolling for ${brains} Brains`
       });
+    }
+    async _onDeleteItem(event) {
+      event.preventDefault();
+      const button = event.currentTarget;
+      const itemIndex = button.dataset.itemIndex;
+      console.log("Button clicked. Data-item-index:", itemIndex);  // Debugging-Ausgabe
+      if (itemIndex === undefined) {
+        ui.notifications.error("Item index is missing.");
+        return;
+      }
+  
+      const items = this.actor.items.filter(item => item.type === "skill");
+      const item = items[itemIndex];
+      if (!item) {
+        ui.notifications.error("Item not found.");
+        return;
+      }
+  
+      await item.delete();
+      console.log(`Item ${item.id} deleted successfully.`);
     }
   }
