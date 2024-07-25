@@ -74,7 +74,13 @@
       "skill": {
         "templates": ["base"],
         "firearmsSkill": false,
-        "forFirearm": "",
+        "forFirearm": {
+          "pistol": "Pistol",
+          "lmg": "Light Machine Gun",
+          "shotgun": "Shotgun",
+          "assault": "Aussault Rifle",
+          "sniper": "Sniper Rifle"          
+        },
         "skillLevel": 1
       },
       "feature": {
