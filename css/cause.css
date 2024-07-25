@@ -143,3 +143,25 @@
       border-right:0px;
       text-align:left;
   }
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .item {
+    display: flex;
+    flex-direction: column;
+  }
+  .delete-item {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+  }
+  
+  .delete-item .fas.fa-trash {
+    font-size: 1.2em;
+  }
