@@ -44,13 +44,17 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('[data-action="rollAgility"]').click(this._onRollAgility.bind(this));
     html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
     html.find('[data-action="rollBrains"]').click(this._onRollBrains.bind(this));
-    html.on('click', '.delete-skill', this._onDeleteSkill.bind(this));
-    html.on('change', '.skill-level', this._onSkillLevelChange.bind(this));
-    html.find('.skill-level').each((_, select) => {
-      this._initializeSkillLevel(select);
-      this._updateSkillLevelColor(select);
+
+    html.find('.add-skill').click(this._onAddSkill.bind(this));
+    html.find('.edit-skill').click(this._onEditSkill.bind(this));
+    html.find('.delete-skill').click(this._onDeleteSkill.bind(this));
+    html.find('.skill-level').change(this._onSkillLevelChange.bind(this));
+    html.find('.skill-stat').change(this._onSkillStatChange.bind(this));
+    html.find('#save-skill').click(this._onSaveSkill.bind(this));
+    // Initialize skill level colors
+    html.find('.skill-level').each((index, element) => {
+      this._updateSkillLevelColor(element);
     });
-    html.on('click', '.edit-skill', this._onEditSkill.bind(this));
   }
 
   /**
@@ -120,98 +124,79 @@ export default class CauseActorSheet extends ActorSheet {
       flavor: `Rolling for ${brains} Brains`
     });
   }
-
-  /**
-   * Löscht ein Skill-Item.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
-  async _onDeleteSkill(event) {
+ 
+  _onAddSkill(event) {
     event.preventDefault();
-    const button = event.currentTarget;
-    const itemId = button.dataset.itemId;
-    if (!itemId) {
-      ui.notifications.error("Item ID fehlt.");
-      return;
-    }
+    const skills = this.actor.system.skills || [];
+    skills.push({ skillname: 'Unnamed Skill', skilllevel: 'untrained', stat: 'strength', description: '', isFirearm: false, forFirearm: 'pistol' });
+    this.actor.update({ 'system.skills': skills });
+}
 
-    const skill = this.actor.items.get(itemId);
-    if (!skill) {
-      ui.notifications.error("Skill nicht gefunden.");
-      return;
-    }
-
-    await skill.delete();
-  }
-
-  /**
-   * Ändert das Skill-Level eines Skill-Items.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
-  async _onSkillLevelChange(event) {
-    const select = event.currentTarget;
-    const itemId = select.dataset.itemId;
-    if (!itemId) {
-      ui.notifications.error("Item ID fehlt.");
-      return;
-    }
-
-    const skill = this.actor.items.get(itemId);
-    if (!skill) {
-      ui.notifications.error("Skill nicht gefunden.");
-      return;
-    }
-
-    const newLevel = parseInt(select.value);
-    await skill.update({ 'system.skillLevel': newLevel });
-
-    this._updateSkillLevelColor(select);
-  }
-
-  /**
-   * Aktualisiert die Farbe des Skill-Levels basierend auf dessen Wert.
-   * @param {HTMLSelectElement} select - Das Dropdown-Element.
-   */
-  _updateSkillLevelColor(select) {
-    const level = parseInt(select.value);
-    const classes = ['untrained', 'trained', 'expert', 'master', 'legendary'];
-    select.classList.remove(...classes);
-    if (level >= 1 && level <= 5) {
-      select.classList.add(classes[level - 1]);
-    }
-  }
-
-  /**
-   * Initialisiert das Skill-Level eines Dropdowns.
-   * @param {HTMLSelectElement} select - Das Dropdown-Element.
-   */
-  _initializeSkillLevel(select) {
-    const itemId = select.dataset.itemId;
-    const skill = this.actor.items.get(itemId);
-    if (skill) {
-      select.value = skill.system.skillLevel;
-      this._updateSkillLevelColor(select);
-    }
-  }
-
-  /**
-   * Öffnet das Skill-Item zur Bearbeitung.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
-  async _onEditSkill(event) {
+_onEditSkill(event) {
     event.preventDefault();
-    const button = event.currentTarget;
-    const itemId = button.dataset.itemId;
-    if (!itemId) {
-      ui.notifications.error("Item ID fehlt.");
-      return;
-    }
+    const index = event.currentTarget.closest('.skill').dataset.index;
+    const skill = this.actor.system.skills[index];
 
-    const skill = this.actor.items.get(itemId);
-    if (!skill) {
-      ui.notifications.error("Skill nicht gefunden.");
-      return;
-    }
+    // Show edit dialog and populate fields
+    const dialog = document.getElementById('edit-skill-dialog');
+    dialog.style.display = 'block';
+    document.getElementById('edit-skill-name').value = skill.skillname;
+    document.getElementById('edit-skill-description').value = skill.description;
+    document.getElementById('edit-skill-level').value = skill.skilllevel;
+    document.getElementById('edit-skill-stat').value = skill.stat;
+    document.getElementById('edit-skill-is-firearm').checked = skill.isFirearm;
+    document.getElementById('edit-skill-for-firearm').value = skill.forFirearm;
 
-    skill.sheet.render(true);
-  }
+    // Save index to the save button for reference
+    document.getElementById('save-skill').dataset.index = index;
+}
+
+_onDeleteSkill(event) {
+    event.preventDefault();
+    const index = event.currentTarget.closest('.skill').dataset.index;
+    const skills = this.actor.system.skills;
+    skills.splice(index, 1);
+    this.actor.update({ 'system.skills': skills });
+}
+
+_onSaveSkill(event) {
+    event.preventDefault();
+    const index = event.currentTarget.dataset.index;
+    const skills = this.actor.system.skills;
+    skills[index] = {
+        skillname: document.getElementById('edit-skill-name').value,
+        description: document.getElementById('edit-skill-description').value,
+        skilllevel: document.getElementById('edit-skill-level').value,
+        stat: document.getElementById('edit-skill-stat').value,
+        isFirearm: document.getElementById('edit-skill-is-firearm').checked,
+        forFirearm: document.getElementById('edit-skill-for-firearm').value,
+    };
+    this.actor.update({ 'system.skills': skills });
+
+    // Hide edit dialog
+    document.getElementById('edit-skill-dialog').style.display = 'none';
+}
+
+_onSkillLevelChange(event) {
+    const index = event.currentTarget.dataset.index;
+    const skills = this.actor.system.skills;
+    skills[index].skilllevel = event.currentTarget.value;
+    this.actor.update({ 'system.skills': skills });
+
+    // Update dropdown color
+    this._updateSkillLevelColor(event.currentTarget);
+}
+
+_onSkillStatChange(event) {
+    const index = event.currentTarget.dataset.index;
+    const skills = this.actor.system.skills;
+    skills[index].stat = event.currentTarget.value;
+    this.actor.update({ 'system.skills': skills });
+}
+
+_updateSkillLevelColor(element) {
+    const level = element.value;
+    element.classList.remove('untrained', 'trained', 'expert', 'master', 'legendary');
+    element.classList.add(level);
+}
 }

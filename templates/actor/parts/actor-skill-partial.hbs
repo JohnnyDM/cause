@@ -1,26 +1,80 @@
-<div class="skills-grid">
-  {{#each items as |item index|}}
-  <div class="skill" data-item-id="{{_id}}">
-    <div class="skill-header">
-      <div class="skill-name">{{name}}</div>
-      <button type="button" class="edit-skill" data-item-id="{{_id}}">
-        <i class="fas fa-edit"></i>
-      </button>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<form class="skills-form">
+  <div class="skills-container">
+    <div class="skills">
+      {{#each system.skills}}
+      {{#if (even @index)}}
+      <div class="skill-row">
+      {{/if}}
+        <div class="skill" data-index="{{@index}}">
+          <div class="skill-name-row">
+            <span class="skill-name">{{this.skillname}}</span>
+            <button type="button" class="edit-skill"><i class="fas fa-edit"></i></button>
+          </div>
+          <div class="skill-level-row">
+            <select class="skill-level {{this.skilllevel}}" name="skill-level" data-index="{{@index}}">
+              <option value="untrained" {{#if (eq this.skilllevel "untrained")}}selected{{/if}}>Untrained</option>
+              <option value="trained" {{#if (eq this.skilllevel "trained")}}selected{{/if}}>Trained</option>
+              <option value="expert" {{#if (eq this.skilllevel "expert")}}selected{{/if}}>Expert</option>
+              <option value="master" {{#if (eq this.skilllevel "master")}}selected{{/if}}>Master</option>
+              <option value="legendary" {{#if (eq this.skilllevel "legendary")}}selected{{/if}}>Legendary</option>
+            </select>
+            <button type="button" class="delete-skill"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      {{#if (odd @index)}}
+      </div>
+      {{/if}}
+      {{/each}}
+      {{#if (odd system.skills.length)}}
+      </div>
+      {{/if}}
     </div>
-    <div class="skill-details textdescrip">
-      <select name="data.items.{{_id}}.system.skillLevel" class="skill-level" data-item-id="{{_id}}">
-        <option value="1" {{#if (eq system.skillLevel 1)}}selected{{/if}}>Untrained</option>
-        <option value="2" {{#if (eq system.skillLevel 2)}}selected{{/if}}>Trained</option>
-        <option value="3" {{#if (eq system.skillLevel 3)}}selected{{/if}}>Expert</option>
-        <option value="4" {{#if (eq system.skillLevel 4)}}selected{{/if}}>Master</option>
-        <option value="5" {{#if (eq system.skillLevel 5)}}selected{{/if}}>Legendary</option>
+    <!-- Hidden Edit Dialog -->
+    <div id="edit-skill-dialog" style="display:none;">
+      <div>
+      <label>Skill Name</label>
+      <input type="text" id="edit-skill-name">
+      </div>
+      <div>
+      <label>Description</label>
+      <textarea id="edit-skill-description"></textarea>
+      </div>
+      <div>
+      <label>Skill Level</label>
+      <select id="edit-skill-level">
+        <option value="untrained">Untrained</option>
+        <option value="trained">Trained</option>
+        <option value="expert">Expert</option>
+        <option value="master">Master</option>
+        <option value="legendary">Legendary</option>
       </select>
-      <button type="button" class="delete-skill" data-item-id="{{_id}}">
-        <i class="fas fa-trash"></i>
-      </button>
+      </div>
+      <div>
+      <label>Stat</label>
+      <select id="edit-skill-stat">
+        <option value="strength">Strength</option>
+        <option value="agility">Agility</option>
+        <option value="wits">Wits</option>
+        <option value="brains">Brains</option>
+      </select>
+      </div>
+      <div>
+      <label>Is Firearm</label>
+      <input type="checkbox" id="edit-skill-is-firearm">
+      </div>
+      <div>
+      <label>For Firearm</label>
+      <select id="edit-skill-for-firearm">
+        <option value="pistol">Pistol</option>
+        <option value="assault-rifle">Assault Rifle</option>
+        <option value="machine-gun">Machine Gun</option>
+        <option value="sniper">Sniper</option>
+        <option value="hunting-rifle">Hunting Rifle</option>
+      </select>
+      </div>
+      <button type="button" id="save-skill">Save</button>
     </div>
   </div>
-  {{else}}
-  <div>Keine Skills gefunden.</div>
-  {{/each}}
-</div>
+  <button type="button" class="add-skill">Add Skill</button>
+</form>

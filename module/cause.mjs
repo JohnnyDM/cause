@@ -14,6 +14,14 @@ Hooks.once("init", function () {
       //CauseItem,
     };
 
+    Handlebars.registerHelper('even', function (index) {
+      return index % 2 === 0;
+    });
+  
+    Handlebars.registerHelper('odd', function (index) {
+      return index % 2 !== 0;
+    });
+
     //CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
 
     //override the base documents classes with our own
