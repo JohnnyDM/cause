@@ -37,7 +37,8 @@
           "bra": {
             "value": 0
           }
-        }
+        },
+          "skills": []
       },
       "npc": {
         "templates": ["base"],
