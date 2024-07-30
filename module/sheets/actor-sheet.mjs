@@ -37,9 +37,16 @@ export default class CauseActorSheet extends ActorSheet {
     return columns.flat();
   }
 
+  async _updateObject(event, formData) {
+    return this.object.update(formData);
+}
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
+
+    html.find('input, select').change(event => this._onChangeInput(event));
+
     html.find('[data-action="rollStrength"]').click(this._onRollStrength.bind(this));
     html.find('[data-action="rollAgility"]').click(this._onRollAgility.bind(this));
     html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
@@ -98,6 +105,15 @@ _onHoverOut(event) {
     if (!element.hasClass('selected')) {
         element.removeClass('highlight');
     }
+}
+
+_onChangeInput(event) {
+  const element = event.currentTarget;
+  const value = element.type === "checkbox" ? element.checked : element.value;
+  const name = element.name;
+
+  console.log(`Updating actor data: ${name} = ${value}`);
+  this.actor.update({ [name]: value });
 }
 
   /**
@@ -408,7 +424,7 @@ _onRollCoreSkill(event) {
   console.log("Stat for the skill:", skill.stat);
   // Add the actor's attribute value actorData.attributes.str.value;
   const attributeValue = this.actor.system.attributes[skill.stat]?.value || 0;
-  const totalDice = numDice + attributeValue;
+  const totalDice = numDice + Number(attributeValue);
   
   const rollFormula = `${totalDice}d6`;
   const roll = new Roll(rollFormula);
