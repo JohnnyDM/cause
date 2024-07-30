@@ -46,7 +46,14 @@
                 content.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
+            localStorage.setItem('activeTab', tabId); // Save active tab to localStorage
         }
+
+        // Set the active tab on load based on localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeTab = localStorage.getItem('activeTab') || 'tab1';
+            showTab(null, activeTab);
+        });
     </script>
     <script id="weaponskill-dialog-template" type="text/x-handlebars-template">
       <h2>Choose a Weaponskill</h2>
@@ -54,15 +61,15 @@
         <!-- Der Inhalt wird direkt ins HTML eingefügt -->
       </div>
     </script>
-<script id="coreskill-dialog-template" type="text/x-handlebars-template">
-  <h2>Choose a Coreskill</h2>
-  <div class="coreskill-options">
-    {{#each coreskills}}
-      <div class="coreskill-option" style="background-image: url('{{image}}');">
-        <span>{{type}}</span>
+    <script id="coreskill-dialog-template" type="text/x-handlebars-template">
+      <h2>Choose a Coreskill</h2>
+      <div class="coreskill-options">
+        {{#each coreskills}}
+          <div class="coreskill-option" style="background-image: url('{{image}}');">
+            <span>{{type}}</span>
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
-  </div>
-</script>
+    </script>
 </form>
 
