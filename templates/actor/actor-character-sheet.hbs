@@ -1,11 +1,12 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     <div class="content">
         <div id="tab1" class="tab-content active">
-          {{> "systems/cause/templates/actor/parts/actor-skill-partial.hbs"}}
+          {{> "systems/cause/templates/actor/parts/actor-core-partial.hbs"}}
+          
         </div>
         
         <div id="tab2" class="tab-content">
-            <!-- Inhalt für Tab 2 -->
+          {{> "systems/cause/templates/actor/parts/actor-skill-partial.hbs"}}
         </div>
         
         <div id="tab3" class="tab-content">
@@ -33,8 +34,8 @@
           <div class="textdescrip column"><input type="number" name="system.attributes.wit.value" value="{{system.attributes.wit.value}}" data-dtype="Number"/></div>
           <div class="textdescrip column"><input type="number" name="system.attributes.bra.value" value="{{system.attributes.bra.value}}" data-dtype="Number"/></div>
         </div>
-        <a onclick="showTab(event, 'tab1')">Skills</a>
-        <a onclick="showTab(event, 'tab2')">Inventory</a>
+        <a onclick="showTab(event, 'tab1')">Core</a>
+        <a onclick="showTab(event, 'tab2')">Skills</a>
         <a onclick="showTab(event, 'tab3')">Bonds</a>
     </div>
     <script>
@@ -47,5 +48,21 @@
             document.getElementById(tabId).classList.add('active');
         }
     </script>
+    <script id="weaponskill-dialog-template" type="text/x-handlebars-template">
+      <h2>Choose a Weaponskill</h2>
+      <div class="weaponskill-options">
+        <!-- Der Inhalt wird direkt ins HTML eingefügt -->
+      </div>
+    </script>
+<script id="coreskill-dialog-template" type="text/x-handlebars-template">
+  <h2>Choose a Coreskill</h2>
+  <div class="coreskill-options">
+    {{#each coreskills}}
+      <div class="coreskill-option" style="background-image: url('{{image}}');">
+        <span>{{type}}</span>
+      </div>
+    {{/each}}
+  </div>
+</script>
 </form>
 
