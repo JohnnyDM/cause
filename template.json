@@ -25,7 +25,6 @@
         },
         "attributes": {
           "str": {
-            "type": "number",
             "value": 0
           },
           "agi": {
@@ -38,7 +37,55 @@
             "value": 0
           }
         },
-          "skills": []
+          "skills": [],
+          "weaponskills1": {
+            "type": "",
+            "level": 0
+          },
+          "weaponskills2": {
+            "type": "",
+            "level": 0
+          },
+          "coreskill1": {
+          "type": "",
+          "level": 0,
+          "stat": ""
+          },
+          "coreskill2": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill3": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill4": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill5": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill6": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill7": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          },
+          "coreskill8": {
+              "type": "",
+              "level": 0,
+              "stat": ""
+          }
       },
       "npc": {
         "templates": ["base"],

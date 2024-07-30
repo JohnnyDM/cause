@@ -3,7 +3,7 @@
   src: url("../css/fonts/Aquifer.otf");
 }
 @font-face {
-  font-family: "Darktown";
+  font-family: "Darktown Vintage";
   src: url("../css/fonts/Darktown Vintage.otf");
 }
 body {
@@ -82,7 +82,7 @@ body {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-  font-family: 'Darktown';
+  font-family: 'Darktown Vintage';
   padding-bottom: 5px;
 }
 .headline2 {
@@ -98,57 +98,56 @@ body {
   font-family: 'Aquifer';
 }
 .textdescrip {
-    text-align: center;
+  text-align: center;
 }
 .textdescrip input {
-    font-family:'Aquifer';
-    font-size: 13px;
-    background-color: #FF000000;
-    border-bottom:1.5px dotted;
-    border-top:0px;
-    border-left:0px;
-    border-right:0px;
-    text-align:center;
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
 }
 .textdescrip select {
-    font-family:'Aquifer';
-    font-size: 13px;
-    background-color: #FF000000;
-    border-bottom:1.5px dotted;
-    border-top:0px;
-    border-left:0px;
-    border-right:0px;
-    text-align:left;
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
 }
 .charname {
-    text-align: center;
+  text-align: center;
 }
 .charname input {
-    font-family:'Aquifer';
-    font-size: 25px;
-    background-color: #FF000000;
-    border-bottom:1.5px dotted;
-    border-top:0px;
-    border-left:0px;
-    border-right:0px;
-    text-align:center;
+  font-family: 'Aquifer';
+  font-size: 25px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
 }
 .charname select {
-    font-family:'Aquifer';
-    font-size: 25px;
-    background-color: #FF000000;
-    border-bottom:1.5px dotted;
-    border-top:0px;
-    border-left:0px;
-    border-right:0px;
-    text-align:left;
+  font-family: 'Aquifer';
+  font-size: 25px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
 }
 .skills-form {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-
 .skills-container {
   height: 47vh; /* Nimmt den verfügbaren Platz ein */
   overflow-y: auto;
@@ -158,18 +157,15 @@ body {
   box-sizing: border-box;
   position: relative;
 }
-
 .skills {
   display: flex;
   flex-direction: column;
 }
-
 .skill-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; /* Damit die Skills in zwei Spalten angeordnet werden */
 }
-
 .skill {
   width: 48%; /* Zwei Skills pro Reihe mit etwas Abstand dazwischen */
   display: flex;
@@ -178,7 +174,6 @@ body {
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
-
 .skill-name-row,
 .skill-level-row {
   display: flex;
@@ -186,54 +181,45 @@ body {
   align-items: center;
   margin-bottom: 5px;
 }
-
 .skill-name {
   width: 80%;
 }
-
 .skill button {
   background: none;
   border: none;
   cursor: pointer;
   width: 10%;
 }
-
 .skill button i {
   font-size: 1.2em;
   color: #333;
 }
-
-.skill-level, .skill-stat, .firearm-type {
+.skill-level,
+.skill-stat,
+.firearm-type {
   width: 80%;
   padding: 5px;
 }
-
 .skill-level.untrained {
   background-color: rgba(240, 240, 240, 0.5);
 }
-
 .skill-level.trained {
   background-color: rgba(21, 241, 58, 0.5);
 }
-
 .skill-level.expert {
   background-color: rgba(30, 61, 235, 0.5);
 }
-
 .skill-level.master {
   background-color: rgba(168, 0, 98, 0.5);
 }
-
 .skill-level.legendary {
   background-color: rgba(252, 6, 6, 0.5);
 }
-
 .add-skill {
   display: block;
   width: 100%;
   text-align: center;
 }
-
 .description {
   width: 100%;
   padding: 5px;
@@ -241,35 +227,30 @@ body {
   border: 1px solid #ddd;
   resize: vertical;
 }
-
 .firearm-checkbox {
   width: 10%;
 }
-
 .hidden {
   display: none;
 }
-
-.edit-skill, .delete-skill {
+.edit-skill,
+.delete-skill {
   background: none;
   border: none;
   cursor: pointer;
   width: 10%;
 }
-
-.edit-skill i, .delete-skill i {
+.edit-skill i,
+.delete-skill i {
   font-size: 1.2em;
   color: #333;
 }
-
 .edit-skill:hover i {
   color: #007bff; /* Farbe für Hover-Effekt */
 }
-
 .delete-skill:hover i {
   color: #dc3545; /* Farbe für Hover-Effekt */
 }
-
 #edit-skill-dialog {
   position: absolute;
   top: 0;
@@ -278,8 +259,140 @@ body {
   bottom: 0;
   background: white;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+/* Baseskills Tab */
+.baseskills-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.baseskills-column {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center; /* Zentriert die Überschrift */
+}
+.baseskills-box {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.baseskills-box h2 {
+  margin-top: 0;
+  text-align: center; /* Zentriert die Überschrift */
+}
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  flex-grow: 1; /* Nimmt den restlichen verfügbaren Platz ein */
+}
+.skill-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  flex: 1 1 calc(50% - 10px); /* Zwei Boxen pro Reihe mit Abstand dazwischen */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.skill-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.skill-name {
+  flex: 0 0 80%;
+}
+.skill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex: 0 0 10%;
+}
+.skill button i {
+  font-size: 1.2em;
+  color: #333;
+}
+.skill-level {
+  flex: 0 0 80%;
+  padding: 5px;
+}
+.skill-level.untrained {
+  background-color: rgba(240, 240, 240, 0.5);
+}
+.skill-level.trained {
+  background-color: rgba(21, 241, 58, 0.5);
+}
+.skill-level.expert {
+  background-color: rgba(30, 61, 235, 0.5);
+}
+.skill-level.master {
+  background-color: rgba(168, 0, 98, 0.5);
+}
+.skill-level.legendary {
+  background-color: rgba(252, 6, 6, 0.5);
+}
+@media (max-width: 768px) {
+  .skill-box {
+    flex: 1 1 100%; /* Eine Box pro Reihe auf kleineren Bildschirmen */
+  }
+}
+.skill-box:not(.selected):hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.skill-box.selected {
+  border: 2px solid #007bff; /* Visuelle Hervorhebung */
+  cursor: default; /* Cursor anzeigen, um anzuzeigen, dass die Box nicht klickbar ist */
+}
+.weaponskill-option {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end; /* Text nach unten verschieben */
+  justify-content: flex-end; /* Text nach links verschieben */
+  background-size: cover;
+  background-position: center;
+  height: 100px; /* Beispielhöhe */
+  cursor: pointer;
+  position: relative; /* Sicherstellen, dass der Text innerhalb der Box bleibt */
+}
+.weaponskill-option span {
+  font-size: 18px; /* Textgröße anpassen */
+  color: white; /* Textfarbe weiß */
+  margin: 0 0 10px 10px; /* Abstand vom Rand */
+}
+
+.coreskill-option {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end; /* Text nach unten verschieben */
+  justify-content: flex-end; /* Text nach rechts verschieben */
+  background-size: cover;
+  background-position: center;
+  height: 100px; /* Beispielhöhe */
+  cursor: pointer;
+  position: relative; /* Sicherstellen, dass der Text innerhalb der Box bleibt */
+}
+
+.coreskill-option span {
+  font-size: 18px; /* Textgröße anpassen */
+  color: white; /* Textfarbe weiß */
+  margin: 0 0 10px 10px; /* Abstand vom Rand */
 }

@@ -4,7 +4,8 @@ import CauseActorSheet from './sheets/actor-sheet.mjs'; //Import the main Actor-
 import CauseItemSheet from "./sheets/item-sheet.mjs"; //Import the main Item-Sheet ES module
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs"; //Import helper document for handlebars
 //import CAUSE from "./helpers/config.mjs";
-
+import { WEAPONSKILLS } from './helpers/weaponskills.mjs';
+import { CORESKILLS } from './helpers/coreskills.mjs';
 
 Hooks.once("init", function () {
     console.log("Cause TTFS | Initialising Cause Tabletop Framework System"); //Initialisation message in console
@@ -22,8 +23,27 @@ Hooks.once("init", function () {
       return index % 2 !== 0;
     });
 
-    //CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
+    Handlebars.registerHelper('range', function(from, to) {
+      let result = [];
+      for (let i = from; i <= to; i++) {
+          result.push(i);
+      }
+      return result;
+  });
 
+    Handlebars.registerHelper('concat', function () {
+      var outStr = '';
+      for (var arg in arguments) {
+          if (typeof arguments[arg] !== 'object') {
+              outStr += arguments[arg];
+          }
+      }
+      return outStr;
+  });
+
+    //CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
+    CONFIG.WEAPONSKILLS = WEAPONSKILLS;
+    CONFIG.CORESKILLS = CORESKILLS;
     //override the base documents classes with our own
     //CONFIG.Actor.documentClass = CauseActor;
     //CONFIG.Item.documentClass = CauseItem;
@@ -38,8 +58,8 @@ Hooks.once("init", function () {
     Items. registerSheet("cause", CauseItemSheet, { makeDefault: true }); //registering the custom item-sheet
     //
     return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
-
-    Hooks.once("ready", function() {
-      // Include steps that need to happen after Foundry has fully loaded here.
-    });
 })
+
+Hooks.once("ready", function() {
+  //testHandlebarsRendering();
+});

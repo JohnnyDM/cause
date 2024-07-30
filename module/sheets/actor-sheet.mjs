@@ -4,7 +4,7 @@ export default class CauseActorSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["cause", "sheet", "actor"],
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
-      width: 600,
+      width: 650,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
@@ -55,7 +55,50 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('.skill-level').each((index, element) => {
       this._updateSkillLevelColor(element);
     });
+    html.find('.coreskill-box').hover(this._onHoverBox.bind(this));
+    html.find('.weaponskill-box').click(event => {
+      if (!$(event.currentTarget).hasClass('selected')) {
+          this._onClickWeaponSkillBox(event);
+      }
+    });
+    html.find('.weaponskill-box').hover(
+      this._onHoverIn.bind(this),
+      this._onHoverOut.bind(this)
+  );
+    html.find('.delete-weaponskill').click(this._onDeleteWeaponSkill.bind(this));
+    html.find('.weaponskill-level').change(this._onWeaponSkillLevelChange.bind(this));
+
+    // Add listeners for coreskills
+    html.find('.delete-coreskill').click(this._onDeleteCoreSkill.bind(this));
+    html.find('.coreskill-level').change(this._onCoreSkillLevelChange.bind(this));
+    html.find('.coreskill-box').click(event => {
+        if (!$(event.currentTarget).hasClass('selected')) {
+            this._onClickCoreSkillBox(event);
+        }
+    });
+
+    // Add hover effect only if the coreskill is not selected
+    html.find('.coreskill-box').hover(
+        this._onHoverIn.bind(this),
+        this._onHoverOut.bind(this)
+    )
+
+    html.find('.coreskill-name').click(this._onRollCoreSkill.bind(this));
   }
+
+  _onHoverIn(event) {
+    const element = $(event.currentTarget);
+    if (!element.hasClass('selected')) {
+        element.addClass('highlight');
+    }
+}
+
+_onHoverOut(event) {
+    const element = $(event.currentTarget);
+    if (!element.hasClass('selected')) {
+        element.removeClass('highlight');
+    }
+}
 
   /**
    * Führt einen Stärkewurf aus.
@@ -199,4 +242,181 @@ _updateSkillLevelColor(element) {
     element.classList.remove('untrained', 'trained', 'expert', 'master', 'legendary');
     element.classList.add(level);
 }
+_onHoverBox(event) {
+  $(event.currentTarget).toggleClass('highlight');
+}
+
+_onClickWeaponSkillBox(event) {
+  const skillSlot = event.currentTarget.dataset.skill;
+  console.log("Skill Slot:", skillSlot);
+  const weaponskillsData = CONFIG.WEAPONSKILLS;
+  const container = document.createElement('div');
+  container.className = 'weaponskill-options';
+
+  weaponskillsData.forEach((skill) => {
+      const skillDiv = document.createElement('div');
+      skillDiv.className = 'weaponskill-option';
+      if (skill.image) {
+          skillDiv.style.backgroundImage = `url('${skill.image}')`;
+      }
+      const skillSpan = document.createElement('span');
+      skillSpan.textContent = skill.type;
+      skillDiv.appendChild(skillSpan);
+      skillDiv.dataset.skill = skill.type;
+      container.appendChild(skillDiv);
+  });
+
+  const content = container.outerHTML;
+  console.log("Generated Dialog Content:", content);
+
+  new Dialog({
+      title: "Choose a Weaponskill",
+      content: content,
+      buttons: {
+          ok: {
+              label: "OK",
+              callback: () => console.log("Dialog closed with OK")
+          }
+      },
+      default: "ok",
+      render: (html) => {
+          html.find('.weaponskill-option').click((event) => {
+              const selectedSkillType = event.currentTarget.dataset.skill;
+              const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
+              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
+              this._selectWeaponSkill(selectedSkill, skillSlot);
+          });
+      }
+  }).render(true);
+}
+
+_selectWeaponSkill(skill, skillSlot) {
+  console.log(`_selectWeaponSkill called with skill: ${skill.type}, slot: ${skillSlot}`);
+  const updateData = {};
+  updateData[`system.${skillSlot}`] = { type: skill.type, level: "untrained" };
+  this.actor.update(updateData).then(() => {
+      console.log(`Updated ${skillSlot} with`, skill);
+      this.render();
+  });
+
+  // Entfernen der Highlight-Klasse und Hinzufügen der Selected-Klasse
+  const box = $(`[data-skill="${skillSlot}"]`);
+  box.removeClass('highlight');
+  box.addClass('selected');
+}
+
+_onDeleteWeaponSkill(event) {
+  event.preventDefault();
+  const skillSlot = event.currentTarget.dataset.skill;
+  const updateData = {};
+  updateData[`system.${skillSlot}`] = { type: "", level: "" };
+  this.actor.update(updateData);
+  this.render();
+}
+
+_onWeaponSkillLevelChange(event) {
+  const skillSlot = event.currentTarget.closest('.weaponskill-box').dataset.skill;
+  const newValue = event.currentTarget.value;
+  let updateData = {};
+  updateData[`system.${skillSlot}.level`] = newValue;
+  this.actor.update(updateData);
+}
+
+_onDeleteCoreSkill(event) {
+  event.preventDefault();
+  const skillSlot = event.currentTarget.dataset.skill;
+  const updateData = {};
+  updateData[`system.${skillSlot}`] = { type: "", level: 0 };
+  this.actor.update(updateData);
+}
+
+_onCoreSkillLevelChange(event) {
+  const skillSlot = event.currentTarget.name.replace('coreskill-level', 'coreskills');
+  const level = event.currentTarget.value;
+  const updateData = {};
+  updateData[`system.${skillSlot}.level`] = level;
+  this.actor.update(updateData);
+}
+
+_onClickCoreSkillBox(event) {
+  const skillSlot = event.currentTarget.dataset.skill;
+  const coreskillsData = CONFIG.CORESKILLS;
+  const container = document.createElement('div');
+  container.className = 'coreskill-options';
+
+  coreskillsData.forEach((skill) => {
+      const skillDiv = document.createElement('div');
+      skillDiv.className = 'coreskill-option';
+      if (skill.image) {
+          skillDiv.style.backgroundImage = `url('${skill.image}')`;
+      }
+      const skillSpan = document.createElement('span');
+      skillSpan.textContent = skill.type;
+      skillDiv.appendChild(skillSpan);
+      skillDiv.dataset.skill = skill.type;
+      container.appendChild(skillDiv);
+  });
+
+  const content = container.outerHTML;
+  console.log("Generated Dialog Content:", content);
+
+  new Dialog({
+      title: "Choose a Coreskill",
+      content: content,
+      buttons: {
+          ok: {
+              label: "OK",
+              callback: () => console.log("Dialog closed with OK")
+          }
+      },
+      default: "ok",
+      render: (html) => {
+          html.find('.coreskill-option').click((event) => {
+              const selectedSkillType = event.currentTarget.dataset.skill;
+              const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
+              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
+              this._selectCoreSkill(selectedSkill, skillSlot);
+          });
+      }
+  }).render(true);
+}
+
+_selectCoreSkill(selectedSkill, skillSlot) {
+  let updateData = {};
+  updateData[`system.${skillSlot}.type`] = selectedSkill.type;
+  updateData[`system.${skillSlot}.level`] = "untrained"; // Default level
+  updateData[`system.${skillSlot}.stat`] = selectedSkill.stat; // Setting the stat from the config
+  this.actor.update(updateData);
+}
+
+_onRollCoreSkill(event) {
+  event.preventDefault();
+  const skillSlot = event.currentTarget.closest('.coreskill-box').dataset.skill;
+  const skill = this.actor.system[skillSlot];
+
+  // Determine the number of dice based on skill level
+  let numDice;
+  switch (skill.level) {
+      case 'trained': numDice = 4; break;
+      case 'expert': numDice = 6; break;
+      case 'master': numDice = 8; break;
+      case 'legendary': numDice = 10; break;
+      case 'untrained':
+      default:
+          numDice = 2; break;
+  }
+  console.log("Stat for the skill:", skill.stat);
+  // Add the actor's attribute value actorData.attributes.str.value;
+  const attributeValue = this.actor.system.attributes[skill.stat]?.value || 0;
+  const totalDice = numDice + attributeValue;
+  
+  const rollFormula = `${totalDice}d6`;
+  const roll = new Roll(rollFormula);
+
+  roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `Rolling for ${skill.type} (${skill.level})`
+  });
+}
+
 }
