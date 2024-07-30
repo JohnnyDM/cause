@@ -68,6 +68,7 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
     html.find('[data-action="rollBrains"]').click(this._onRollBrains.bind(this));
 
+    html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
     html.find('.add-skill').click(this._onAddSkill.bind(this));
     html.find('.edit-skill').click(this._onEditSkill.bind(this));
     html.find('.delete-skill').click(this._onDeleteSkill.bind(this));
@@ -227,6 +228,52 @@ _onChangeInput(event) {
     this.actor.update({ 'system.skills': skills });
 }
 
+_onRollSkill(event) {
+  event.preventDefault();
+  const index = event.currentTarget.closest('.skill').dataset.index;
+  const skill = this.actor.system.skills[index];
+
+  // Determine the number of dice based on skill level
+  let numDice;
+  switch (skill.skilllevel) {
+    case 'trained':
+      numDice = 4;
+      break;
+    case 'expert':
+      numDice = 6;
+      break;
+    case 'master':
+      numDice = 8;
+      break;
+    case 'legendary':
+      numDice = 10;
+      break;
+    case 'untrained':
+    default:
+      numDice = 2;
+      break;
+  }
+
+  // Map stat to attribute
+  const statMapping = {
+    strength: 'str',
+    agility: 'agi',
+    wits: 'wit',
+    brains: 'bra'
+  };
+
+  const attributeValue = this.actor.system.attributes[statMapping[skill.stat]]?.value || 0;
+  const totalDice = numDice + Number(attributeValue);
+
+  const rollFormula = `${totalDice}d6`;
+  const roll = new Roll(rollFormula);
+
+  roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+    flavor: `Rolling for ${skill.skillname} (${skill.skilllevel})`
+  });
+}
+
 _onEditSkill(event) {
     event.preventDefault();
     const index = event.currentTarget.closest('.skill').dataset.index;
@@ -239,8 +286,8 @@ _onEditSkill(event) {
     document.getElementById('edit-skill-description').value = skill.description;
     document.getElementById('edit-skill-level').value = skill.skilllevel;
     document.getElementById('edit-skill-stat').value = skill.stat;
-    document.getElementById('edit-skill-is-firearm').checked = skill.isFirearm;
-    document.getElementById('edit-skill-for-firearm').value = skill.forFirearm;
+    //document.getElementById('edit-skill-is-firearm').checked = skill.isFirearm;
+    //document.getElementById('edit-skill-for-firearm').value = skill.forFirearm;
 
     // Save index to the save button for reference
     document.getElementById('save-skill').dataset.index = index;
@@ -263,8 +310,8 @@ _onSaveSkill(event) {
         description: document.getElementById('edit-skill-description').value,
         skilllevel: document.getElementById('edit-skill-level').value,
         stat: document.getElementById('edit-skill-stat').value,
-        isFirearm: document.getElementById('edit-skill-is-firearm').checked,
-        forFirearm: document.getElementById('edit-skill-for-firearm').value,
+        //isFirearm: document.getElementById('edit-skill-is-firearm').checked,
+        //forFirearm: document.getElementById('edit-skill-for-firearm').value,
     };
     this.actor.update({ 'system.skills': skills });
 
@@ -306,39 +353,35 @@ _onClickWeaponSkillBox(event) {
   container.className = 'weaponskill-options';
 
   weaponskillsData.forEach((skill) => {
-      const skillDiv = document.createElement('div');
-      skillDiv.className = 'weaponskill-option';
-      if (skill.image) {
-          skillDiv.style.backgroundImage = `url('${skill.image}')`;
-      }
-      const skillSpan = document.createElement('span');
-      skillSpan.textContent = skill.type;
-      skillDiv.appendChild(skillSpan);
-      skillDiv.dataset.skill = skill.type;
-      container.appendChild(skillDiv);
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'weaponskill-option';
+    if (skill.image) {
+      skillDiv.style.backgroundImage = `url('${skill.image}')`;
+    }
+    const skillSpan = document.createElement('span');
+    skillSpan.textContent = skill.type;
+    skillDiv.appendChild(skillSpan);
+    skillDiv.dataset.skill = skill.type;
+    container.appendChild(skillDiv);
   });
 
   const content = container.outerHTML;
   console.log("Generated Dialog Content:", content);
 
-  new Dialog({
-      title: "Choose a Weaponskill",
-      content: content,
-      buttons: {
-          ok: {
-              label: "OK",
-              callback: () => console.log("Dialog closed with OK")
-          }
-      },
-      default: "ok",
-      render: (html) => {
-          html.find('.weaponskill-option').click((event) => {
-              const selectedSkillType = event.currentTarget.dataset.skill;
-              const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
-              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
-              this._selectWeaponSkill(selectedSkill, skillSlot);
-          });
-      }
+  const dialog = new Dialog({
+    title: "Choose a Weaponskill",
+    content: content,
+    buttons: {},
+    default: "ok",
+    render: (html) => {
+      html.find('.weaponskill-option').click((event) => {
+        const selectedSkillType = event.currentTarget.dataset.skill;
+        const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
+        console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
+        this._selectWeaponSkill(selectedSkill, skillSlot);
+        dialog.close();
+      });
+    }
   }).render(true);
 }
 
@@ -392,44 +435,41 @@ _onCoreSkillLevelChange(event) {
 
 _onClickCoreSkillBox(event) {
   const skillSlot = event.currentTarget.dataset.skill;
+  console.log("Skill Slot:", skillSlot);
   const coreskillsData = CONFIG.CORESKILLS;
   const container = document.createElement('div');
   container.className = 'coreskill-options';
 
   coreskillsData.forEach((skill) => {
-      const skillDiv = document.createElement('div');
-      skillDiv.className = 'coreskill-option';
-      if (skill.image) {
-          skillDiv.style.backgroundImage = `url('${skill.image}')`;
-      }
-      const skillSpan = document.createElement('span');
-      skillSpan.textContent = skill.type;
-      skillDiv.appendChild(skillSpan);
-      skillDiv.dataset.skill = skill.type;
-      container.appendChild(skillDiv);
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'coreskill-option';
+    if (skill.image) {
+      skillDiv.style.backgroundImage = `url('${skill.image}')`;
+    }
+    const skillSpan = document.createElement('span');
+    skillSpan.textContent = skill.type;
+    skillDiv.appendChild(skillSpan);
+    skillDiv.dataset.skill = skill.type;
+    container.appendChild(skillDiv);
   });
 
   const content = container.outerHTML;
   console.log("Generated Dialog Content:", content);
 
-  new Dialog({
-      title: "Choose a Coreskill",
-      content: content,
-      buttons: {
-          ok: {
-              label: "OK",
-              callback: () => console.log("Dialog closed with OK")
-          }
-      },
-      default: "ok",
-      render: (html) => {
-          html.find('.coreskill-option').click((event) => {
-              const selectedSkillType = event.currentTarget.dataset.skill;
-              const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
-              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
-              this._selectCoreSkill(selectedSkill, skillSlot);
-          });
-      }
+  const dialog = new Dialog({
+    title: "Choose a Coreskill",
+    content: content,
+    buttons: {},
+    default: "ok",
+    render: (html) => {
+      html.find('.coreskill-option').click((event) => {
+        const selectedSkillType = event.currentTarget.dataset.skill;
+        const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
+        console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
+        this._selectCoreSkill(selectedSkill, skillSlot);
+        dialog.close();
+      });
+    }
   }).render(true);
 }
 
