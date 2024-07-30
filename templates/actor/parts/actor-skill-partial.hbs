@@ -8,7 +8,7 @@
       {{/if}}
         <div class="skill" data-index="{{@index}}">
           <div class="skill-name-row">
-            <span class="skill-name">{{this.skillname}}</span>
+            <span class="skill-name" data-action="rollSkill">{{this.skillname}}</span>
             <button type="button" class="edit-skill"><i class="fas fa-edit"></i></button>
           </div>
           <div class="skill-level-row">
@@ -33,45 +33,31 @@
     <!-- Hidden Edit Dialog -->
     <div id="edit-skill-dialog" style="display:none;">
       <div>
-      <label>Skill Name</label>
-      <input type="text" id="edit-skill-name">
+        <label>Skill Name</label>
+        <input type="text" id="edit-skill-name">
       </div>
       <div>
-      <label>Description</label>
-      <textarea id="edit-skill-description"></textarea>
+        <label>Description</label>
+        <textarea id="edit-skill-description"></textarea>
       </div>
       <div>
-      <label>Skill Level</label>
-      <select id="edit-skill-level">
-        <option value="untrained">Untrained</option>
-        <option value="trained">Trained</option>
-        <option value="expert">Expert</option>
-        <option value="master">Master</option>
-        <option value="legendary">Legendary</option>
-      </select>
+        <label>Skill Level</label>
+        <select id="edit-skill-level">
+          <option value="untrained">Untrained</option>
+          <option value="trained">Trained</option>
+          <option value="expert">Expert</option>
+          <option value="master">Master</option>
+          <option value="legendary">Legendary</option>
+        </select>
       </div>
       <div>
-      <label>Stat</label>
-      <select id="edit-skill-stat">
-        <option value="strength">Strength</option>
-        <option value="agility">Agility</option>
-        <option value="wits">Wits</option>
-        <option value="brains">Brains</option>
-      </select>
-      </div>
-      <div>
-      <label>Is Firearm</label>
-      <input type="checkbox" id="edit-skill-is-firearm">
-      </div>
-      <div>
-      <label>For Firearm</label>
-      <select id="edit-skill-for-firearm">
-        <option value="pistol">Pistol</option>
-        <option value="assault-rifle">Assault Rifle</option>
-        <option value="machine-gun">Machine Gun</option>
-        <option value="sniper">Sniper</option>
-        <option value="hunting-rifle">Hunting Rifle</option>
-      </select>
+        <label>Stat</label>
+        <select id="edit-skill-stat">
+          <option value="strength">Strength</option>
+          <option value="agility">Agility</option>
+          <option value="wits">Wits</option>
+          <option value="brains">Brains</option>
+        </select>
       </div>
       <button type="button" id="save-skill">Save</button>
     </div>
