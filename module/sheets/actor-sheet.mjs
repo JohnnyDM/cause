@@ -5,7 +5,7 @@ export default class CauseActorSheet extends ActorSheet {
       classes: ["cause", "sheet", "actor"],
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
-      height: 600,
+      height: 630,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
@@ -19,7 +19,7 @@ export default class CauseActorSheet extends ActorSheet {
 
     // Bereite die Skill-Items vor
     data.items = this._prepareSkills(data.items);
-
+    console.log("Formpoints:", data.system.core.formpoints);
     return data;
   }
 
@@ -67,6 +67,14 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('[data-action="rollAgility"]').click(this._onRollAgility.bind(this));
     html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
     html.find('[data-action="rollBrains"]').click(this._onRollBrains.bind(this));
+
+    // Right-click to show bonus dice dialog
+    html.find('[data-action="rollStrength"]').contextmenu(this._onShowBonusDialog.bind(this, 'str'));
+    html.find('[data-action="rollAgility"]').contextmenu(this._onShowBonusDialog.bind(this, 'agi'));
+    html.find('[data-action="rollWits"]').contextmenu(this._onShowBonusDialog.bind(this, 'wit'));
+    html.find('[data-action="rollBrains"]').contextmenu(this._onShowBonusDialog.bind(this, 'bra'));
+
+    html.find('[data-action="rollFormpoints"]').click(this._onRollFormpoints.bind(this));
 
     html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
     html.find('.add-skill').click(this._onAddSkill.bind(this));
@@ -154,54 +162,31 @@ _onChangeInput(event) {
 }
 
   /**
-   * Führt einen Stärkewurf aus.
+   * Führt einen Attributswurf aus.
    * @param {Event} event - Das auslösende Ereignis.
    */
   _onRollStrength(event) {
     event.preventDefault();
     const actorData = this.actor.system;
-    const strength = actorData.attributes.str.value;
-    const rollFormula = `${strength}d6cs>=4df=1x=6cs>=4`;
-    const roll = new Roll(rollFormula);
-
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${strength} Strength`
-    });
+    this._rollAttribute('str', actorData.attributes.str.value);
   }
 
-  /**
-   * Führt einen Agilitätswurf aus.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
   _onRollAgility(event) {
     event.preventDefault();
     const actorData = this.actor.system;
-    const agility = actorData.attributes.agi.value;
-    const rollFormula = `${agility}d6cs>=4df=1x=6cs>=4`;
-    const roll = new Roll(rollFormula);
-
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${agility} Agility`
-    });
+    this._rollAttribute('agi', actorData.attributes.agi.value);
   }
 
-  /**
-   * Führt einen Witzwurf aus.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
   _onRollWits(event) {
     event.preventDefault();
     const actorData = this.actor.system;
-    const wits = actorData.attributes.wit.value;
-    const rollFormula = `${wits}d6cs>=4df=1x=6cs>=4`;
-    const roll = new Roll(rollFormula);
+    this._rollAttribute('wit', actorData.attributes.wit.value);
+  }
 
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${wits} Wits`
-    });
+  _onRollBrains(event) {
+    event.preventDefault();
+    const actorData = this.actor.system;
+    this._rollAttribute('bra', actorData.attributes.bra.value);
   }
 
   /**
@@ -221,6 +206,107 @@ _onChangeInput(event) {
     });
   }
  
+  _rollAttribute(attr, baseValue, bonusDice = 0, formPoints = 0) {
+    const totalDice = Number(baseValue) + Number(bonusDice) + Number(formPoints);
+    const rollFormula = `${totalDice}d6`;
+    const roll = new Roll(rollFormula);
+
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `Rolling for ${attr.toUpperCase()} (${baseValue} base + ${bonusDice} bonus dice + ${formPoints} form points)`
+    });
+  }
+
+  _onShowBonusDialog(attr, event) {
+    event.preventDefault();
+    const actorData = this.actor.system;
+  
+    // Zugriff auf die Formpunkte innerhalb des core-Objekts
+    const formPointsMax = actorData.core.formpoints.value;
+  
+    new Dialog({
+      title: `Add Bonus Dice and Form Points to ${attr.toUpperCase()}`,
+      content: `
+        <form>
+          <div class="form-group">
+            <label>Form Points (max ${formPointsMax}):</label>
+            <div class="form-points-input">
+              <button type="button" class="decrease-form-points">-</button>
+              <input type="number" name="form-points" min="0" value="0" max="${formPointsMax}">
+              <button type="button" class="increase-form-points">+</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Bonus Dice:</label>
+            <div class="bonus-dice-input">
+              <button type="button" class="decrease-bonus-dice">-</button>
+              <input type="number" name="bonus-dice" min="0" value="0">
+              <button type="button" class="increase-bonus-dice">+</button>
+            </div>
+          </div>
+        </form>
+      `,
+      buttons: {
+        roll: {
+          label: "Roll",
+          callback: (html) => {
+            const bonusDice = parseInt(html.find('[name="bonus-dice"]').val(), 10);
+            const formPoints = parseInt(html.find('[name="form-points"]').val(), 10);
+            this._rollAttribute(attr, actorData.attributes[attr].value, bonusDice, formPoints);
+            if (formPoints > 0) {
+              const newFormPointsValue = formPointsMax - formPoints;
+              this.actor.update({ 'system.core.formpoints.value': newFormPointsValue });
+            }
+          }
+        }
+      },
+      default: "roll",
+      render: (html) => {
+        const formPointsInput = html.find('[name="form-points"]');
+        const bonusDiceInput = html.find('[name="bonus-dice"]');
+  
+        html.find('.decrease-form-points').click((event) => {
+          let value = parseInt(formPointsInput.val(), 10);
+          if (value > 0) formPointsInput.val(--value);
+        });
+        html.find('.increase-form-points').click((event) => {
+          let value = parseInt(formPointsInput.val(), 10);
+          if (value < formPointsMax) formPointsInput.val(++value);
+        });
+        html.find('.decrease-bonus-dice').click((event) => {
+          let value = parseInt(bonusDiceInput.val(), 10);
+          if (value > 0) bonusDiceInput.val(--value);
+        });
+        html.find('.increase-bonus-dice').click((event) => {
+          let value = parseInt(bonusDiceInput.val(), 10);
+          bonusDiceInput.val(++value);
+        });
+      }
+    }).render(true);
+  }
+
+  _onRollFormpoints(event) {
+    event.preventDefault();
+    
+    // Würfeln eines d8
+    const roll = new Roll('1d8');
+    roll.roll().then(result => {
+      const rolledValue = result.total;
+      
+      // Formpunkte aktualisieren
+      const currentFormpoints = this.actor.system.core.formpoints.value;
+      const newFormpoints = rolledValue;
+      
+      this.actor.update({ 'system.core.formpoints.value': newFormpoints });
+
+      // Ausgabe der Nachricht im Chat
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `Rolling for Formpoints and adding the result to current formpoints.`,
+      });
+    });
+  }
+
   _onAddSkill(event) {
     event.preventDefault();
     const skills = this.actor.system.skills || [];
