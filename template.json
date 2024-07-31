@@ -21,6 +21,9 @@
         "core": {
           "level": {
             "value": 1
+          },
+          "formpoints": {
+            "value": 0
           }
         },
         "attributes": {

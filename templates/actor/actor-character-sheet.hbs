@@ -1,8 +1,12 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+    <div class="navtabs">
+        <a onclick="showTab(event, 'tab1')" id="tab-link-tab1" class="active">Core</a>
+        <a onclick="showTab(event, 'tab2')" id="tab-link-tab2">Skills</a>
+        <a onclick="showTab(event, 'tab3')" id="tab-link-tab3">Bonds</a>
+    </div>
     <div class="content">
         <div id="tab1" class="tab-content active">
           {{> "systems/cause/templates/actor/parts/actor-core-partial.hbs"}}
-          
         </div>
         
         <div id="tab2" class="tab-content">
@@ -34,18 +38,33 @@
           <div class="textdescrip column"><input type="number" name="system.attributes.wit.value" value="{{system.attributes.wit.value}}" data-dtype="Number"/></div>
           <div class="textdescrip column"><input type="number" name="system.attributes.bra.value" value="{{system.attributes.bra.value}}" data-dtype="Number"/></div>
         </div>
-        <a onclick="showTab(event, 'tab1')">Core</a>
-        <a onclick="showTab(event, 'tab2')">Skills</a>
-        <a onclick="showTab(event, 'tab3')">Bonds</a>
+        <div class="row">
+          <div class="columnp headline3" data-action="rollFormpoints">Formpoints</div>
+          <div class="columnp headline3" data-action="rollBrains">Brains</div>
+        </div>
+        <div class="row">
+          <div class="textdescrip column"><input type="number" name="system.core.formpoints.value" value="{{system.core.formpoints.value}}" data-dtype="Number" readonly/></div>
+          <div class="textdescrip column"><input type="number" name="system.attributes.bra.value" value="{{system.attributes.bra.value}}" data-dtype="Number"/></div>
+        </div>
     </div>
+
     <script>
         function showTab(event, tabId) {
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
                 content.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
+            
+            const tabs = document.querySelectorAll('.tabs a');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById('tab-link-' + tabId).classList.add('active');
+
             localStorage.setItem('activeTab', tabId); // Save active tab to localStorage
         }
 
@@ -72,4 +91,3 @@
       </div>
     </script>
 </form>
-
