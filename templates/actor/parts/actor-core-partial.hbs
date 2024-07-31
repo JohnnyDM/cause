@@ -3,50 +3,50 @@
     <div class="baseskills-box">
       <h2>Weaponskills</h2>
     </div>
-    <div class="skills-grid">
-      <div class="weaponskill-box {{#if system.weaponskills1.type}}selected{{/if}}" data-skill="weaponskills1">
-        <div class="skill-line">
-          {{#if system.weaponskills1.type}}
-            <span class="weaponskill-name">{{system.weaponskills1.type}}</span>
-            <button type="button" class="delete-weaponskill" data-skill="weaponskills1"><i class="fas fa-trash"></i></button>
-          {{else}}
-            Choose a Weaponskill
-          {{/if}}
+      <div class="skills-grid">
+        <div class="weaponskill-box {{#if system.weaponskills1.type}}selected{{/if}}" data-skill="weaponskills1">
+          <div class="skill-line coreskill-name-row">
+            {{#if system.weaponskills1.type}}
+             <span class="coreskill-name">{{system.weaponskills1.type}}</span>
+              <label class="delete-weaponskill" data-skill="weaponskills1"><i class="fas fa-trash"></i></label>
+            {{else}}
+              Choose a Weaponskill
+            {{/if}}
+          </div>
+          <div class="skill-line coreskill-level-row">
+            {{#if system.weaponskills1.type}}
+              <select class="coreskill-level {{system.weaponskills1.level}}" name="weaponskill-level1">
+                <option value="untrained" {{#if (eq system.weaponskills1.level "untrained")}}selected{{/if}}>Untrained</option>
+                <option value="trained" {{#if (eq system.weaponskills1.level "trained")}}selected{{/if}}>Trained</option>
+                <option value="expert" {{#if (eq system.weaponskills1.level "expert")}}selected{{/if}}>Expert</option>
+                <option value="master" {{#if (eq system.weaponskills1.level "master")}}selected{{/if}}>Master</option>
+                <option value="legendary" {{#if (eq system.weaponskills1.level "legendary")}}selected{{/if}}>Legendary</option>
+              </select>
+            {{/if}}
+          </div>
         </div>
-        <div class="skill-line">
-          {{#if system.weaponskills1.type}}
-            <select class="weaponskill-level {{system.weaponskills1.level}}" name="weaponskill-level1">
-              <option value="untrained" {{#if (eq system.weaponskills1.level "untrained")}}selected{{/if}}>Untrained</option>
-              <option value="trained" {{#if (eq system.weaponskills1.level "trained")}}selected{{/if}}>Trained</option>
-              <option value="expert" {{#if (eq system.weaponskills1.level "expert")}}selected{{/if}}>Expert</option>
-              <option value="master" {{#if (eq system.weaponskills1.level "master")}}selected{{/if}}>Master</option>
-              <option value="legendary" {{#if (eq system.weaponskills1.level "legendary")}}selected{{/if}}>Legendary</option>
-            </select>
-          {{/if}}
+        <div class="weaponskill-box {{#if system.weaponskills2.type}}selected{{/if}}" data-skill="weaponskills2">
+          <div class="skill-line coreskill-name-row">
+            {{#if system.weaponskills2.type}}
+              <span class="coreskill-name">{{system.weaponskills2.type}}</span>
+              <label class="delete-weaponskill" data-skill="weaponskills2"><i class="fas fa-trash"></i></label>
+            {{else}}
+              Choose a Weaponskill
+            {{/if}}
+          </div>
+          <div class="skill-line coreskill-level-row">
+            {{#if system.weaponskills2.type}}
+              <select class="coreskill-level {{system.weaponskills2.level}}" name="weaponskill-level2">
+                <option value="untrained" {{#if (eq system.weaponskills2.level "untrained")}}selected{{/if}}>Untrained</option>
+                <option value="trained" {{#if (eq system.weaponskills2.level "trained")}}selected{{/if}}>Trained</option>
+                <option value="expert" {{#if (eq system.weaponskills2.level "expert")}}selected{{/if}}>Expert</option>
+                <option value="master" {{#if (eq system.weaponskills2.level "master")}}selected{{/if}}>Master</option>
+                <option value="legendary" {{#if (eq system.weaponskills2.level "legendary")}}selected{{/if}}>Legendary</option>
+              </select>
+            {{/if}}
+          </div>
         </div>
       </div>
-      <div class="weaponskill-box {{#if system.weaponskills2.type}}selected{{/if}}" data-skill="weaponskills2">
-        <div class="skill-line">
-          {{#if system.weaponskills2.type}}
-            <span class="weaponskill-name">{{system.weaponskills2.type}}</span>
-            <button type="button" class="delete-weaponskill" data-skill="weaponskills2"><i class="fas fa-trash"></i></button>
-          {{else}}
-            Choose a Weaponskill
-          {{/if}}
-        </div>
-        <div class="skill-line">
-          {{#if system.weaponskills2.type}}
-            <select class="weaponskill-level {{system.weaponskills2.level}}" name="weaponskill-level2">
-              <option value="untrained" {{#if (eq system.weaponskills2.level "untrained")}}selected{{/if}}>Untrained</option>
-              <option value="trained" {{#if (eq system.weaponskills2.level "trained")}}selected{{/if}}>Trained</option>
-              <option value="expert" {{#if (eq system.weaponskills2.level "expert")}}selected{{/if}}>Expert</option>
-              <option value="master" {{#if (eq system.weaponskills2.level "master")}}selected{{/if}}>Master</option>
-              <option value="legendary" {{#if (eq system.weaponskills2.level "legendary")}}selected{{/if}}>Legendary</option>
-            </select>
-          {{/if}}
-        </div>
-      </div>
-    </div>
   </div>
   <div class="baseskills-column">
     <div class="baseskills-box">

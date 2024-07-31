@@ -57,9 +57,43 @@ Hooks.once("init", function () {
     Items.unregisterSheet("core", ItemSheet); //unregister the standard item-sheet to make it unaccessible for users
     Items. registerSheet("cause", CauseItemSheet, { makeDefault: true }); //registering the custom item-sheet
     //
+    game.settings.register("your-system", "defaultDiceSystem", {
+      name: "Default Dice System",
+      scope: "client",
+      config: false,
+      type: String,
+      default: "custom-d6"
+  });
+
+  // Hook to Dice So Nice ready event
+  Hooks.once('diceSoNiceReady', (dice3d) => {
+      dice3d.addSystem({ id: "cause", name: "Cause" }, "default");
+      dice3d.addDicePreset({
+          type: "d6",
+          labels: [
+              "systems/cause/assets/failure.png", // 1
+              "systems/cause/assets/blank.png",   // 2
+              "systems/cause/assets/blank.png",   // 3
+              "systems/cause/assets/success.png", // 4
+              "systems/cause/assets/success.png", // 5
+              "systems/cause/assets/crit_success.png" // 6
+          ],
+          system: "cause",
+          shape: "d6",
+          colorset: {
+              foreground: "#000000",  // Schwarz für die Vorderseite
+              background: "#000000"   // Schwarz für den Hintergrund
+          }
+      }, "d6");  // Specify the system here as well
+  });
+
     return preloadHandlebarsTemplates(); //preload our handlebars helper to be more easily accessible
 })
 
 Hooks.once("ready", function() {
   //testHandlebarsRendering();
+});
+
+Hooks.on('renderChatMessage', (app, html, data) => {
+  html.find('.push-your-luck').click(CauseActorSheet._onPushYourLuck);
 });

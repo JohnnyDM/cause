@@ -76,6 +76,10 @@ export default class CauseActorSheet extends ActorSheet {
 
     html.find('[data-action="rollFormpoints"]').click(this._onRollFormpoints.bind(this));
 
+    Hooks.on('renderChatMessage', (app, html, data) => {
+      html.find('.push-your-luck-button').click(event => this._onPushYourLuck(event));
+  });
+
     html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
     html.find('.add-skill').click(this._onAddSkill.bind(this));
     html.find('.edit-skill').click(this._onEditSkill.bind(this));
@@ -104,9 +108,9 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('.delete-coreskill').click(this._onDeleteCoreSkill.bind(this));
     html.find('.coreskill-level').change(this._onCoreSkillLevelChange.bind(this));
     html.find('.coreskill-box').click(event => {
-        if (!$(event.currentTarget).hasClass('selected')) {
-            this._onClickCoreSkillBox(event);
-        }
+      if (!$(event.currentTarget).hasClass('selected')) {
+          this._onClickCoreSkillBox(event);
+      }
     });
 
     // Add hover effect only if the coreskill is not selected
@@ -115,7 +119,7 @@ export default class CauseActorSheet extends ActorSheet {
         this._onHoverOut.bind(this)
     )
 
-    html.find('.coreskill-name').click(this._onRollCoreSkill.bind(this));
+    html.find('.coreskill-name').click(this._rollCoreSkill.bind(this));
   }
 
   /** @override */
@@ -188,34 +192,185 @@ _onChangeInput(event) {
     const actorData = this.actor.system;
     this._rollAttribute('bra', actorData.attributes.bra.value);
   }
-
-  /**
-   * Führt einen Intelligenzwurf aus.
-   * @param {Event} event - Das auslösende Ereignis.
-   */
-  _onRollBrains(event) {
-    event.preventDefault();
-    const actorData = this.actor.system;
-    const brains = actorData.attributes.bra.value;
-    const rollFormula = `${brains}d6cs>=4df=1x=6cs>=4`;
-    const roll = new Roll(rollFormula);
-
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${brains} Brains`
-    });
-  }
  
   _rollAttribute(attr, baseValue, bonusDice = 0, formPoints = 0) {
+    const attributeMap = {
+        str: "Strength",
+        agi: "Agility",
+        wit: "Wits",
+        bra: "Brains"
+    };
+
+    const fullAttrName = attributeMap[attr] || attr;
+
     const totalDice = Number(baseValue) + Number(bonusDice) + Number(formPoints);
-    const rollFormula = `${totalDice}d6`;
+    const rollFormula = `${totalDice}d6cs>=4df1x6cs>=4df1`;
     const roll = new Roll(rollFormula);
 
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${attr.toUpperCase()} (${baseValue} base + ${bonusDice} bonus dice + ${formPoints} form points)`
+    roll.roll({async: true}).then(result => {
+        console.log("Roll formula:", roll.formula);
+        console.log("Roll results:", roll);
+        
+        // Generating a unique ID for the roll
+        const rollId = randomID();
+
+        const critSuccessImg = 'systems/cause/assets/crit_success.png';
+        const successImg = 'systems/cause/assets/success.png';
+        const failureImg = 'systems/cause/assets/failure.png';
+
+        let critSuccesses = 0;
+        let successes = 0;
+        let failures = 0;
+
+        if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+            roll.dice[0].results.forEach(result => {
+                if (result.result === 6) {
+                    critSuccesses++;
+                } else if (result.result >= 4) {
+                    successes++;
+                } else if (result.result === 1) {
+                    failures++;
+                }
+            });
+        } else {
+            console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+        }
+
+        const critSuccessImages = critSuccesses > 0 ? 
+            Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+            `<div class="none-text">None</div>`;
+
+        const successImages = successes > 0 ? 
+            Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+            `<div class="none-text">None</div>`;
+
+        const failureImages = failures > 0 ? 
+            Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+            `<div class="none-text">None</div>`;
+
+        const messageContent = `
+            <div class="chat-message">
+                <div class="message-content">
+                    <div class="attribute-name">${fullAttrName}</div>
+                    <div class="footer-line"></div>
+                    <div class="results-line">${critSuccessImages}</div>
+                    <div class="separator-line"></div>
+                    <div class="results-line">${successImages}</div>
+                    <div class="separator-line"></div>
+                    <div class="results-line">${failureImages}</div>
+                    <div class="footer-line"></div>
+                    <div class="result-total">Total Result: ${roll.total}</div>
+                    <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${roll.total}">Push your Luck?</button>
+                </div>
+            </div>
+        `;
+        console.log("Chat message created with rollId:", rollId);
+        // Integration with Dice So Nice
+        game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                content: messageContent,
+                roll: roll,
+                flags: { rollId: rollId }
+            });
+        });
+    }).catch(error => {
+        console.error("Fehler beim Würfeln:", error);
     });
+}
+_onPushYourLuck(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const rollId = button.dataset.rollId;
+  const originalResult = parseInt(button.dataset.originalResult, 10);
+  console.log("Push your Luck button clicked. Roll ID:", rollId, "Original Result:", originalResult);
+
+  // Find the original message using the rollId
+  const originalMessage = game.messages.find(msg => msg.flags.rollId === rollId);
+
+  if (!originalMessage) {
+      console.error("Original message not found");
+      return;
   }
+
+  const roll = new Roll('10d6cs>=4df<=3');
+  roll.roll({async: true}).then(result => {
+      console.log("Push your Luck roll:", roll);
+
+      let successes = 0;
+      let failures = 0;
+
+      if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+          roll.dice[0].results.forEach(result => {
+              if (result.result >= 4) {
+                  successes++;
+              } else {
+                  failures++;
+              }
+          });
+      } else {
+          console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+      }
+
+      const successImg = 'systems/cause/assets/success.png';
+      const failureImg = 'systems/cause/assets/failure.png';
+
+      const successImages = successes > 0 ? 
+          Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const failureImages = failures > 0 ? 
+          Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      // Determine the luck message
+      const luckResult = successes - failures;
+      let luckMessage;
+      if (luckResult === 0) {
+          luckMessage = "You are neither lucky nor unlucky";
+      } else if (luckResult > 0) {
+          luckMessage = "You are rather lucky";
+      } else {
+          luckMessage = "You are rather unlucky";
+      }
+
+      const newTotalResult = originalResult + roll.total;
+      console.log(`original: ${originalResult}.. roll: ${roll.total}`, roll);
+      const luckRollContent = `
+          <div class="attribute-name">Pushing your Luck</div>
+          <div class="separator-line"></div>
+          <div class="results-line">${successImages}</div>
+          <div class="separator-line"></div>
+          <div class="results-line">${failureImages}</div>
+          <div class="separator-line"></div>
+          <div class="luck-message">${luckMessage}</div>
+          <div class="result-total">Total Result: ${newTotalResult}</div>
+      `;
+
+      // Integration with Dice So Nice
+      game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+          const originalContent = originalMessage.content;
+
+          // Remove the previous total result line
+          const updatedContent = originalContent.replace(
+              /<div class="result-total">Total Result: .*?<\/div>/,
+              ''
+          ).replace(
+              /<button class="push-your-luck-button"[^>]*>.*?<\/button>/,
+              luckRollContent
+          );
+
+          originalMessage.update({ content: updatedContent }).then(() => {
+              console.log("Original message updated");
+          }).catch(error => {
+              console.error("Error updating original message:", error);
+          });
+      });
+  }).catch(error => {
+      console.error("Fehler beim Würfeln:", error);
+  });
+}
 
   _onShowBonusDialog(attr, event) {
     event.preventDefault();
@@ -287,16 +442,21 @@ _onChangeInput(event) {
 
   _onRollFormpoints(event) {
     event.preventDefault();
-    
+
+    // Überprüfen, ob die Shift-Taste gedrückt wurde
+    if (!event.shiftKey) {
+      return; // Funktion nicht ausführen, wenn Shift nicht gedrückt ist
+    }
+
     // Würfeln eines d8
     const roll = new Roll('1d8');
     roll.roll().then(result => {
       const rolledValue = result.total;
-      
+
       // Formpunkte aktualisieren
       const currentFormpoints = this.actor.system.core.formpoints.value;
-      const newFormpoints = rolledValue;
-      
+      const newFormpoints = currentFormpoints + rolledValue;
+
       this.actor.update({ 'system.core.formpoints.value': newFormpoints });
 
       // Ausgabe der Nachricht im Chat
@@ -307,6 +467,7 @@ _onChangeInput(event) {
     });
   }
 
+
   _onAddSkill(event) {
     event.preventDefault();
     const skills = this.actor.system.skills || [];
@@ -316,47 +477,107 @@ _onChangeInput(event) {
 
 _onRollSkill(event) {
   event.preventDefault();
-  const index = event.currentTarget.closest('.skill').dataset.index;
-  const skill = this.actor.system.skills[index];
+  const skillIndex = event.currentTarget.closest('.skill').dataset.index;
+  const skill = this.actor.system.skills[skillIndex];
 
-  // Determine the number of dice based on skill level
   let numDice;
   switch (skill.skilllevel) {
-    case 'trained':
-      numDice = 4;
-      break;
-    case 'expert':
-      numDice = 6;
-      break;
-    case 'master':
-      numDice = 8;
-      break;
-    case 'legendary':
-      numDice = 10;
-      break;
-    case 'untrained':
-    default:
-      numDice = 2;
-      break;
+      case 'trained': numDice = 4; break;
+      case 'expert': numDice = 6; break;
+      case 'master': numDice = 8; break;
+      case 'legendary': numDice = 10; break;
+      case 'untrained':
+      default:
+          numDice = 2; break;
   }
 
-  // Map stat to attribute
-  const statMapping = {
-    strength: 'str',
-    agility: 'agi',
-    wits: 'wit',
-    brains: 'bra'
+  // Hier wird der Attributwert hinzugefügt
+  const attributeMap = {
+      strength: "str",
+      agility: "agi",
+      wits: "wit",
+      brains: "bra"
   };
 
-  const attributeValue = this.actor.system.attributes[statMapping[skill.stat]]?.value || 0;
+  const statKey = attributeMap[skill.stat] || skill.stat;
+  const attributeValue = this.actor.system.attributes[statKey]?.value || 0;
   const totalDice = numDice + Number(attributeValue);
 
-  const rollFormula = `${totalDice}d6`;
+  const rollFormula = `${totalDice}d6cs>=4df1x6cs>=4df1`;
   const roll = new Roll(rollFormula);
 
-  roll.toMessage({
-    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-    flavor: `Rolling for ${skill.skillname} (${skill.skilllevel})`
+  roll.roll({async: true}).then(result => {
+      console.log("Roll formula:", roll.formula);
+      console.log("Roll results:", roll);
+      
+      // Generating a unique ID for the roll
+      const rollId = randomID();
+
+      const critSuccessImg = 'systems/cause/assets/crit_success.png';
+      const successImg = 'systems/cause/assets/success.png';
+      const failureImg = 'systems/cause/assets/failure.png';
+
+      let critSuccesses = 0;
+      let successes = 0;
+      let failures = 0;
+
+      if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+          roll.dice[0].results.forEach(result => {
+              if (result.result === 6) {
+                  critSuccesses++;
+              } else if (result.result >= 4) {
+                  successes++;
+              } else if (result.result === 1) {
+                  failures++;
+              }
+          });
+      } else {
+          console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+      }
+
+      const critSuccessImages = critSuccesses > 0 ? 
+          Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const successImages = successes > 0 ? 
+          Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const failureImages = failures > 0 ? 
+          Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const totalResult = roll.total || 0;
+
+      const messageContent = `
+          <div class="chat-message">
+              <div class="message-content">
+                  <div class="attribute-name">${skill.skillname}</div>
+                  <div class="footer-line"></div>
+                  <div class="results-line">${critSuccessImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${successImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${failureImages}</div>
+                  <div class="footer-line"></div>
+                  <div class="result-total">Total Result: ${totalResult}</div>
+                  <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${totalResult}">Push your Luck?</button>
+              </div>
+          </div>
+      `;
+      console.log("Chat message created with rollId:", rollId);
+
+      game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+          ChatMessage.create({
+              user: game.user._id,
+              speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+              content: messageContent,
+              roll: roll,
+              flags: { rollId: rollId }
+          });
+      });
+  }).catch(error => {
+      console.error("Fehler beim Würfeln:", error);
   });
 }
 
@@ -521,58 +742,59 @@ _onCoreSkillLevelChange(event) {
 
 _onClickCoreSkillBox(event) {
   const skillSlot = event.currentTarget.dataset.skill;
-  console.log("Skill Slot:", skillSlot);
+  console.log("Skill Slot:", skillSlot);  // Konsolenausgabe zur Überprüfung
+
   const coreskillsData = CONFIG.CORESKILLS;
   const container = document.createElement('div');
   container.className = 'coreskill-options';
 
   coreskillsData.forEach((skill) => {
-    const skillDiv = document.createElement('div');
-    skillDiv.className = 'coreskill-option';
-    if (skill.image) {
-      skillDiv.style.backgroundImage = `url('${skill.image}')`;
-    }
-    const skillSpan = document.createElement('span');
-    skillSpan.textContent = skill.type;
-    skillDiv.appendChild(skillSpan);
-    skillDiv.dataset.skill = skill.type;
-    container.appendChild(skillDiv);
+      const skillDiv = document.createElement('div');
+      skillDiv.className = 'coreskill-option';
+      if (skill.image) {
+          skillDiv.style.backgroundImage = `url('${skill.image}')`;
+      }
+      const skillSpan = document.createElement('span');
+      skillSpan.textContent = skill.type;
+      skillDiv.appendChild(skillSpan);
+      skillDiv.dataset.skill = skill.type;
+      container.appendChild(skillDiv);
   });
 
   const content = container.outerHTML;
-  console.log("Generated Dialog Content:", content);
+  console.log("Generated Dialog Content:", content);  // Konsolenausgabe zur Überprüfung
 
-  const dialog = new Dialog({
-    title: "Choose a Coreskill",
-    content: content,
-    buttons: {},
-    default: "ok",
-    render: (html) => {
-      html.find('.coreskill-option').click((event) => {
-        const selectedSkillType = event.currentTarget.dataset.skill;
-        const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
-        console.log(`Selected ${selectedSkillType} for ${skillSlot}`);
-        this._selectCoreSkill(selectedSkill, skillSlot);
-        dialog.close();
-      });
-    }
+  new Dialog({
+      title: "Choose a Coreskill",
+      content: content,
+      buttons: {},
+      render: (html) => {
+          html.find('.coreskill-option').click((event) => {
+              const selectedSkillType = event.currentTarget.dataset.skill;
+              const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
+              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);  // Konsolenausgabe zur Überprüfung
+              this._selectCoreSkill(selectedSkill, skillSlot);
+          });
+      }
   }).render(true);
 }
 
 _selectCoreSkill(selectedSkill, skillSlot) {
-  let updateData = {};
-  updateData[`system.${skillSlot}.type`] = selectedSkill.type;
-  updateData[`system.${skillSlot}.level`] = "untrained"; // Default level
-  updateData[`system.${skillSlot}.stat`] = selectedSkill.stat; // Setting the stat from the config
+  const updateData = {};
+  updateData[`system.${skillSlot}`] = {
+      type: selectedSkill.type,
+      level: 'untrained',  // Standardlevel setzen
+      stat: selectedSkill.stat // Der Stat aus der Config
+  };
   this.actor.update(updateData);
+  console.log("Updated actor data with new core skill:", updateData);  // Konsolenausgabe zur Überprüfung
 }
 
-_onRollCoreSkill(event) {
+_rollCoreSkill(event) {
   event.preventDefault();
   const skillSlot = event.currentTarget.closest('.coreskill-box').dataset.skill;
   const skill = this.actor.system[skillSlot];
 
-  // Determine the number of dice based on skill level
   let numDice;
   switch (skill.level) {
       case 'trained': numDice = 4; break;
@@ -583,18 +805,85 @@ _onRollCoreSkill(event) {
       default:
           numDice = 2; break;
   }
-  console.log("Stat for the skill:", skill.stat);
-  // Add the actor's attribute value actorData.attributes.str.value;
+
   const attributeValue = this.actor.system.attributes[skill.stat]?.value || 0;
   const totalDice = numDice + Number(attributeValue);
-  
-  const rollFormula = `${totalDice}d6`;
+
+  const rollFormula = `${totalDice}d6cs>=4df1x6cs>=4df1`;
   const roll = new Roll(rollFormula);
 
-  roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `Rolling for ${skill.type} (${skill.level})`
+  roll.roll({async: true}).then(result => {
+      console.log("Roll formula:", roll.formula);
+      console.log("Roll results:", roll);
+      
+      // Generating a unique ID for the roll
+      const rollId = randomID();
+
+      const critSuccessImg = 'systems/cause/assets/crit_success.png';
+      const successImg = 'systems/cause/assets/success.png';
+      const failureImg = 'systems/cause/assets/failure.png';
+
+      let critSuccesses = 0;
+      let successes = 0;
+      let failures = 0;
+
+      if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+          roll.dice[0].results.forEach(result => {
+              if (result.result === 6) {
+                  critSuccesses++;
+              } else if (result.result >= 4) {
+                  successes++;
+              } else if (result.result === 1) {
+                  failures++;
+              }
+          });
+      } else {
+          console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+      }
+
+      const critSuccessImages = critSuccesses > 0 ? 
+          Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const successImages = successes > 0 ? 
+          Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const failureImages = failures > 0 ? 
+          Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const totalResult = roll.total || 0;
+
+      const messageContent = `
+          <div class="chat-message">
+              <div class="message-content">
+                  <div class="attribute-name">${skill.type}</div>
+                  <div class="footer-line"></div>
+                  <div class="results-line">${critSuccessImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${successImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${failureImages}</div>
+                  <div class="footer-line"></div>
+                  <div class="result-total">Total Result: ${totalResult}</div>
+                  <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${totalResult}">Push your Luck?</button>
+              </div>
+          </div>
+      `;
+      console.log("Chat message created with rollId:", rollId);
+
+      game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+          ChatMessage.create({
+              user: game.user._id,
+              speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+              content: messageContent,
+              roll: roll,
+              flags: { rollId: rollId }
+          });
+      });
+  }).catch(error => {
+      console.error("Fehler beim Würfeln:", error);
   });
 }
-
 }

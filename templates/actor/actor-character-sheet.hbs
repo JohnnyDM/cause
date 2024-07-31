@@ -1,10 +1,10 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
-    <div class="navtabs">
+    <div class="causenavtabs">
         <a onclick="showTab(event, 'tab1')" id="tab-link-tab1" class="active">Core</a>
         <a onclick="showTab(event, 'tab2')" id="tab-link-tab2">Skills</a>
         <a onclick="showTab(event, 'tab3')" id="tab-link-tab3">Bonds</a>
     </div>
-    <div class="content">
+    <div class="causecontent">
         <div id="tab1" class="tab-content active">
           {{> "systems/cause/templates/actor/parts/actor-core-partial.hbs"}}
         </div>
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="sidebar">
+    <div class="causesidebar">
         <div class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/></div>
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
         <div class="headline1">Attributes</div>
