@@ -35,13 +35,6 @@
     },
     "esmodules": ["module/cause.mjs"],
     "styles": ["css/cause.css"],
-    "languages": [
-      {
-        "lang": "en",
-        "name": "English",
-        "path": "lang/en.json"
-      }
-    ],
     "packs": [],
     "packFolders": [],
     "socket": false,
