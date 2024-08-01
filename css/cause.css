@@ -115,6 +115,13 @@ body {
   font-family: 'Aquifer';
   color: #f4f4f4;
 }
+.headline4-side {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  color: #f4f4f4;
+}
 .textdescrip {
   text-align: center;
 }
@@ -423,6 +430,12 @@ body {
   align-items: center;
 }
 
+.item-box {
+  border: 1px solid #ccc;
+  height: 100%;
+  width: 66%;
+}
+
 .centered-line {
   display: flex;
   justify-content: center;
@@ -477,14 +490,14 @@ body {
   width: 100%;
 }
 
-.weaponskill-option {
+.weaponskill-option, .coreskill-option {
   border: 1px solid #555555;
   padding: 10px;
   margin: 5px 0;
   box-sizing: border-box;
   display: flex;
   align-items: flex-end; /* Text nach unten verschieben */
-  justify-content: flex-end; /* Text nach links verschieben */
+  justify-content: flex-start; /* Text nach links verschieben */
   background-size: cover;
   background-position: center;
   height: 128px;
@@ -498,23 +511,15 @@ body {
   margin: 0 0 10px 10px; /* Abstand vom Rand */
 }
 
-.weaponskill-options {
-  width: 280px;
-}
-
-.coreskill-option {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 5px 0;
-  box-sizing: border-box;
+.weaponskill-dialog {
   display: flex;
-  align-items: flex-end; /* Text nach unten verschieben */
-  justify-content: flex-end; /* Text nach rechts verschieben */
-  background-size: cover;
-  background-position: center;
-  height: 100px; /* Beispielhöhe */
-  cursor: pointer;
-  position: relative; /* Sicherstellen, dass der Text innerhalb der Box bleibt */
+  flex-direction: column;
+  align-items: center;
+}
+.dialog-content {
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
 }
 
 .coreskill-option span {

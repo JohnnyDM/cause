@@ -1,16 +1,45 @@
-<div class="inventory-container">
-  <div class="inventory-header">
-    <div class="headline1">Inventory</div>
-  </div>
-  <div class="inventory-section">
-    <div class="headline2">Weapons</div>
-    <div class="inventory-items">
-      {{#each actor.system.inventory.weapons}}
-      <div class="inventory-item">
-        <span class="item-name">{{this.name}}</span>
-        <span class="item-quantity">{{this.quantity}}</span>
-      </div>
-      {{/each}}
+<ol class='items-list item-box'>
+  <li class='item flexrow items-header'>
+    <div class='item-name'>{{localize 'Name'}}</div>
+    <div class='item-controls'>
+      <a
+        class='item-control item-create'
+        title='{{localize "DOCUMENT.Create" type='weapon'}}'
+        data-type='weapon'
+      >
+        <i class='fas fa-plus'></i>
+      </a>
     </div>
-  </div>
-</div>
+  </li>
+  {{#each weapon as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+      <div class='item-name'>
+        <span class='item-image'>
+          <a class='rollable' data-roll-type='item'>
+            <img
+              src='{{item.img}}'
+              title='{{item.name}}'
+              width='48'
+              height='24'
+            />
+          </a>
+        </span>
+        <span class='weapon-roll' data-item-id='{{item._id}}'>{{item.name}}</span>
+      </div>
+      <div class='item-controls'>
+        <a
+          class='item-control item-edit'
+          title='{{localize "DOCUMENT.Update" type='weapon'}}'
+        >
+          <i class='fas fa-edit'></i>
+        </a>
+        <a
+          class='item-control item-delete'
+          title='{{localize "DOCUMENT.Delete" type='weapon'}}'
+        >
+          <i class='fas fa-trash'></i>
+        </a>
+      </div>
+    </li>
+  {{/each}}
+</ol>
