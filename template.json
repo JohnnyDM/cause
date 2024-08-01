@@ -3,18 +3,9 @@
       "types": ["character", "npc"],
       "templates": {
         "base": {
-          "health": {
-            "value": 0,
-            "min": 0,
-            "max": "@str + @agi"
-          },
-          "mentality": {
-            "value": 0,
-            "min": 0,
-            "max": "@wit + @bra"
-          },
           "biography": ""
-        }
+        },
+        "img": ""
       },
       "character": {
         "templates": ["base"],
@@ -23,6 +14,12 @@
             "value": 1
           },
           "formpoints": {
+            "value": 0
+          },
+          "fatigue": {
+            "value": 0
+          },
+          "armor": {
             "value": 0
           }
         },
@@ -46,6 +43,10 @@
             "level": 0
           },
           "weaponskills2": {
+            "type": "",
+            "level": 0
+          },
+          "weaponskills3": {
             "type": "",
             "level": 0
           },
@@ -88,7 +89,12 @@
               "type": "",
               "level": 0,
               "stat": ""
-          }
+          },
+          "coreskill9": {
+            "type": "",
+            "level": 0,
+            "stat": ""
+        }
       },
       "npc": {
         "templates": ["base"],

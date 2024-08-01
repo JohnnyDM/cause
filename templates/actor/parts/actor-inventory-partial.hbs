@@ -1,0 +1,16 @@
+<div class="inventory-container">
+  <div class="inventory-header">
+    <div class="headline1">Inventory</div>
+  </div>
+  <div class="inventory-section">
+    <div class="headline2">Weapons</div>
+    <div class="inventory-items">
+      {{#each actor.system.inventory.weapons}}
+      <div class="inventory-item">
+        <span class="item-name">{{this.name}}</span>
+        <span class="item-quantity">{{this.quantity}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

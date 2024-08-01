@@ -1,0 +1,38 @@
+<form class="item-sheet weapon-sheet" autocomplete="off">
+  <div class="image-container">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="256"/>
+  </div>
+  <div class="sheet-tabs">
+    <ul class="tab-buttons">
+      <li class="active" data-tab="description">Description</li>
+      <li data-tab="details">Details</li>
+    </ul>
+  </div>
+  <div class="sheet-body">
+    <div class="tab-content active" id="description">
+      <div class="form-group">
+        <label>Description</label>
+      </div>
+      <div>
+        <textarea name="system.description" class="description">{{system.description}}</textarea>
+      </div>
+    </div>
+    <div class="tab-content" id="details">
+      <div class="form-group">
+        <label>Weapon Type</label>
+        <select name="system.weaponType">
+          <option value="Pistols" {{#if (eq system.weaponType "Pistols")}}selected{{/if}}>Pistols</option>
+          <option value="Assault Rifles" {{#if (eq system.weaponType "Assault Rifles")}}selected{{/if}}>Assault Rifles</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Weapon Level</label>
+        <input type="number" name="system.weaponLevel" value="{{system.weaponLevel}}">
+      </div>
+      <div class="form-group">
+        <label>Concealment</label>
+        <input type="number" name="system.concealment" value="{{system.concealment}}">
+      </div>
+    </div>
+  </div>
+</form>

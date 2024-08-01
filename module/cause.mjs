@@ -1,6 +1,6 @@
 //import CauseActor from './documents/actor.mjs'; //Import the main Actor ES module
 import CauseActorSheet from './sheets/actor-sheet.mjs'; //Import the main Actor-Sheet ES module
-//import CauseItem from './documents/item.mjs'; //Import the main Item ES module
+import CauseItem from './documents/item.mjs'; //Import the main Item ES module
 import CauseItemSheet from "./sheets/item-sheet.mjs"; //Import the main Item-Sheet ES module
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs"; //Import helper document for handlebars
 //import CAUSE from "./helpers/config.mjs";

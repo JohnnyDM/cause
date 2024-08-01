@@ -3,6 +3,7 @@ export const preloadHandlebarsTemplates = async function () {
       // Actor partials.
       'systems/cause/templates/actor/parts/actor-skill-partial.hbs',
       'systems/cause/templates/actor/parts/actor-core-partial.hbs',
+      'systems/cause/templates/actor/parts/actor-inventory-partial.hbs',
       // Item partials
       
     ]);
