@@ -1,7 +1,9 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     
     <div class="causesidebar">
-        <div class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/></div>
+        <div class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
+        <input type="number" class="textdescrip-side column" name="system.core.level.value" value="{{system.core.level.value}}" data-dtype="Number"/>
+        </div>
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
         <div class="headline1-side">Attributes</div>
         <div class="row">
@@ -33,16 +35,16 @@
         <div class="textdescrip-side"><input type="number" name="system.core.armor.value" value="{{system.core.armor.value}}" data-dtype="Number" readonly/></div>
         <div class="nav-separator-line"></div>
         <div class="row">
-          <div class="columnp headline3-side" data-action="rollBodySave">Body-Save</div>
-          <div class="columnp headline3-side" data-action="rollMentalSave">Mental-Save</div>
+          <div class="columnp headline4-side" data-action="rollBodySave">Body-Save</div>
+          <div class="columnp headline4-side" data-action="rollMentalSave">Mental-Save</div>
         </div>
     </div>
 
     <nav class="causenavtabs tabs" data-group="primary">
         <a data-tab="core" >Core</a>
         <a data-tab="skills">Skills</a>
-        <a data-tab="bonds">Bonds</a>
         <a data-tab="inventory">Inventory</a>
+        <a data-tab="bonds">Bonds</a>
     </nav>
     <section class="causecontent">
         <div data-tab="core" data-group="primary" class="tab">
@@ -58,15 +60,9 @@
         </div>
 
         <div data-tab="inventory" data-group="primary" class="tab">
-          <!--{{> "systems/cause/templates/actor/parts/actor-inventory-partial.hbs"}}-->
+          {{> "systems/cause/templates/actor/parts/actor-inventory-partial.hbs"}}
         </div>
     </section>
-    <script id="weaponskill-dialog-template" type="text/x-handlebars-template">
-      <h2>Choose a Weaponskill</h2>
-      <div class="weaponskill-options">
-        <!-- Der Inhalt wird direkt ins HTML eingefügt -->
-      </div>
-    </script>
     <script id="coreskill-dialog-template" type="text/x-handlebars-template">
       <h2>Choose a Coreskill</h2>
       <div class="coreskill-options">

@@ -111,7 +111,6 @@
       "weapon": {
         "templates": ["base"],
         "weaponType": "pistole",
-        "attackWith": "agi",
         "weaponLevel": "1",
         "concealment": "0"
       },

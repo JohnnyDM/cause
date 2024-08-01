@@ -5,8 +5,8 @@ export default class CauseActorSheet extends ActorSheet {
       classes: ["cause", "sheet", "actor"],
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
-      height: 630,
-      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "skills" }]
+      height: 650,
+      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "core" }]
     });
   }
 
@@ -18,8 +18,10 @@ export default class CauseActorSheet extends ActorSheet {
     data.system.abilities = data.actor.system.abilities || {};
 
     // Bereite die Skill-Items vor
-    data.items = this._prepareSkills(data.items);
+    //data.items = this._prepareSkills(data.items);
+    
     console.log("Formpoints:", data.system.core.formpoints);
+    this._prepareItems(data);
     return data;
   }
 
@@ -63,7 +65,7 @@ export default class CauseActorSheet extends ActorSheet {
     Hooks.on('renderChatMessage', (app, html, data) => {
       html.find('.push-your-luck-button').click(event => this._onPushYourLuck(event));
   });
-
+    html.on('click', '.item-create', this._onItemCreate.bind(this));
     html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
     html.find('.add-skill').click(this._onAddSkill.bind(this));
     html.find('.edit-skill').click(this._onEditSkill.bind(this));
@@ -71,6 +73,7 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('.skill-level').change(this._onSkillLevelChange.bind(this));
     html.find('.skill-stat').change(this._onSkillStatChange.bind(this));
     html.find('#save-skill').click(this._onSaveSkill.bind(this));
+    html.find('.weapon-roll').click(this._onWeaponRoll.bind(this));
     // Initialize skill level colors
     html.find('.skill-level').each((index, element) => {
       this._updateSkillLevelColor(element);
@@ -85,6 +88,24 @@ export default class CauseActorSheet extends ActorSheet {
       this._onHoverIn.bind(this),
       this._onHoverOut.bind(this)
   );
+
+    // Render the item sheet for viewing/editing prior to the editable check.
+    html.on('click', '.item-edit', (ev) => {
+      const li = $(ev.currentTarget).parents('.item');
+      const item = this.actor.items.get(li.data('itemId'));
+      item.sheet.render(true);
+    });
+  
+    // -------------------------------------------------------------
+    // Everything below here is only needed if the sheet is editable
+    if (!this.isEditable) return;
+
+  html.on('click', '.item-delete', (ev) => {
+    const li = $(ev.currentTarget).parents('.item');
+    const item = this.actor.items.get(li.data('itemId'));
+    item.delete();
+    li.slideUp(200, () => this.render(false));
+  });
     html.find('.delete-weaponskill').click(this._onDeleteWeaponSkill.bind(this));
     html.find('.weaponskill-level').change(this._onWeaponSkillLevelChange.bind(this));
 
@@ -120,6 +141,133 @@ _onHoverOut(event) {
     }
 }
 
+async _onWeaponRoll(event) {
+  event.preventDefault();
+  const itemId = event.currentTarget.dataset.itemId;
+  const item = this.actor.items.get(itemId);
+  const weaponType = item.system.weaponType;
+  const weaponLevel = parseInt(item.system.weaponLevel) || 0;
+
+  // Suche nach dem passenden Weaponskill
+  const weaponSkills = [this.actor.system.weaponskills1, this.actor.system.weaponskills2];
+  const matchingSkill = weaponSkills.find(skill => skill.type.toLowerCase() === weaponType.toLowerCase());
+
+  if (!matchingSkill) {
+    ui.notifications.warn(`No matching Weaponskill found for weapon type: ${weaponType}`);
+    return;
+  }
+
+  // Berechne die Anzahl der Würfel
+  let skillLevel;
+  switch (matchingSkill.level) {
+    case 'trained': skillLevel = 4; break;
+    case 'expert': skillLevel = 6; break;
+    case 'master': skillLevel = 8; break;
+    case 'legendary': skillLevel = 10; break;
+    case 'untrained':
+    default:
+      skillLevel = 2; break;
+  }
+
+  const characterLevel = this.actor.system.core.level.value || 0;
+  const totalDice = Number(skillLevel) + Number(characterLevel) + Number(weaponLevel);
+
+  // Erstelle und führe den Wurf aus
+  const rollFormula = `${totalDice}d6cs>=4df=1x=6cs>=4df=1`;
+  const roll = new Roll(rollFormula);
+
+  roll.roll({ async: true }).then(result => {
+    console.log("Roll formula:", roll.formula);
+    console.log("Roll results:", roll);
+
+    // Generating a unique ID for the roll
+    const rollId = randomID();
+
+    const critSuccessImg = 'systems/cause/assets/crit_success.png';
+    const successImg = 'systems/cause/assets/success.png';
+    const failureImg = 'systems/cause/assets/failure.png';
+
+    let critSuccesses = 0;
+    let successes = 0;
+    let failures = 0;
+
+    if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+      roll.dice[0].results.forEach(result => {
+        if (result.result === 6) {
+          critSuccesses++;
+        } else if (result.result >= 4) {
+          successes++;
+        } else if (result.result === 1) {
+          failures++;
+        }
+      });
+    } else {
+      console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+    }
+
+    const critSuccessImages = critSuccesses > 0 ? 
+      Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+      `<div class="none-text">None</div>`;
+
+    const successImages = successes > 0 ? 
+      Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+      `<div class="none-text">None</div>`;
+
+    const failureImages = failures > 0 ? 
+      Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+      `<div class="none-text">None</div>`;
+
+    const messageContent = `
+      <div class="chat-message">
+        <div class="message-content">
+          <div class="attribute-name">${item.name} (${weaponType})</div>
+          <div class="footer-line"></div>
+          <div class="results-line">${critSuccessImages}</div>
+          <div class="separator-line"></div>
+          <div class="results-line">${successImages}</div>
+          <div class="separator-line"></div>
+          <div class="results-line">${failureImages}</div>
+          <div class="footer-line"></div>
+          <div class="result-total">Total Result: ${roll.total}</div>
+          <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${roll.total}">Push your Luck?</button>
+        </div>
+      </div>
+    `;
+    console.log("Chat message created with rollId:", rollId);
+
+    // Integration with Dice So Nice
+    game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+      ChatMessage.create({
+        user: game.user._id,
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: messageContent,
+        roll: roll,
+        flags: { rollId: rollId }
+      });
+    });
+  }).catch(error => {
+    console.error("Fehler beim Würfeln:", error);
+  });
+}
+
+
+_prepareItems(data) {
+  // Initialize containers.
+  const weapon = [];
+
+  // Iterate through items, allocating to containers
+  for (let i of data.items) {
+    i.img = i.img || DEFAULT_TOKEN;
+    // Append to gear.
+    if (i.type === 'weapon') {
+      weapon.push(i);
+    }
+  }
+
+  // Assign and return
+  data.weapon = weapon;
+}
+
 _onChangeInput(event) {
   const element = event.currentTarget;
   const value = element.type === "checkbox" ? element.checked : element.value;
@@ -127,6 +275,28 @@ _onChangeInput(event) {
 
   console.log(`Updating actor data: ${name} = ${value}`);
   this.actor.update({ [name]: value });
+}
+
+async _onItemCreate(event) {
+  event.preventDefault();
+  const header = event.currentTarget;
+  // Get the type of item to create.
+  const type = header.dataset.type;
+  // Grab any data associated with this control.
+  const data = duplicate(header.dataset);
+  // Initialize a default name.
+  const name = `New ${type.capitalize()}`;
+  // Prepare the item object.
+  const itemData = {
+    name: name,
+    type: type,
+    system: data,
+  };
+  // Remove the type from the dataset since it's in the itemData.type prop.
+  delete itemData.system['type'];
+
+  // Finally, create the item!
+  return await Item.create(itemData, { parent: this.actor });
 }
 
   /**
@@ -419,14 +589,14 @@ _onPushYourLuck(event) {
 
       // Formpunkte aktualisieren
       const currentFormpoints = this.actor.system.core.formpoints.value;
-      const newFormpoints = currentFormpoints + rolledValue;
+      const newFormpoints = rolledValue;
 
       this.actor.update({ 'system.core.formpoints.value': newFormpoints });
 
       // Ausgabe der Nachricht im Chat
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `Rolling for Formpoints and adding the result to current formpoints.`,
+        flavor: `Rolling for Formpoints.`,
       });
     });
   }
@@ -642,12 +812,16 @@ _onClickWeaponSkillBox(event) {
   const dialog = new Dialog({
     title: "Choose a Weaponskill",
     content: content,
+    classes: ["weaponskill-dialog"], // Füge die CSS-Klasse hinzu
     buttons: {},
     default: "ok",
     render: (html) => {
-      // Set the width of the dialog
-      html.closest('.window-content').css('width', '280px');
-      
+      // Passe die Breite des Dialogs an die Breite des Inhalts an
+      const dialogContent = html.closest('.window-content');
+      dialogContent.css('width', 'auto');
+      dialogContent.css('max-width', 'none'); // Entfernt die maximale Breite
+      dialogContent.css('height', 'auto'); // Passe die Höhe an den Inhalt an
+
       html.find('.weaponskill-option').click((event) => {
         const selectedSkillType = event.currentTarget.dataset.skill;
         const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
