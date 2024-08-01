@@ -7,14 +7,13 @@
   src: url("../css/fonts/Darktown Vintage.otf");
 }
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Aquifer';
   display: flex;
   margin: 0;
   height: 100vh;
 }
 .causesidebar {
   width: 200px;
-  background-color: #f4f4f4;
   padding: 10px;
   border-left: 1px solid #ddd;
   position: absolute;
@@ -23,6 +22,8 @@ body {
   top: 0;
   bottom: 0;
   overflow-y: auto;
+  background-image: url(../assets/background_sidebar.png);
+  background-color: #929292;
 }
 .causesidebar a {
   display: block;
@@ -37,16 +38,13 @@ body {
 }
 .causecontent {
   flex: 1;
-  padding: 20px;
-  margin-right: 220px; /* Width of sidebar + padding */
+  padding: 10px;
+  margin-right: 210px; /* Width of sidebar + padding */
   overflow-y: auto;
+  height: 100%;
+  width: 66%;
 }
-.causecontent > div {
-  display: none;
-}
-.causecontent > div.active {
-  display: block;
-}
+
 .number-field {
   margin-bottom: 15px;
 }
@@ -78,12 +76,25 @@ body {
   display: table;
   clear: both;
 }
+.cause .causecontent,
+.cause .causecontent .tab {
+  height: 92%;
+  width: 100%;
+}
 .headline1 {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
   font-family: 'Darktown Vintage';
   padding-bottom: 5px;
+}
+.headline1-side {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Darktown Vintage';
+  padding-bottom: 5px;
+  color: #f4f4f4;
 }
 .headline2 {
   text-align: center;
@@ -96,6 +107,13 @@ body {
   font-size: 15px;
   font-weight: bold;
   font-family: 'Aquifer';
+}
+.headline3-side {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  color: #f4f4f4;
 }
 .textdescrip {
   text-align: center;
@@ -111,6 +129,30 @@ body {
   text-align: center;
 }
 .textdescrip select {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
+}
+.textdescrip-side {
+  text-align: center;
+}
+.textdescrip-side input {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
+  color: #f4f4f4;
+}
+.textdescrip-side select {
   font-family: 'Aquifer';
   font-size: 13px;
   background-color: #FF000000;
@@ -149,13 +191,14 @@ body {
   height: 100%;
 }
 .skills-container {
-  height: 47vh; /* Nimmt den verfügbaren Platz ein */
+  height: 100%; /* Nimmt den verfügbaren Platz ein */
   overflow-y: auto;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
   position: relative;
+  width: 66%;
 }
 .skills {
   display: flex;
@@ -217,7 +260,7 @@ body {
 }
 .add-skill {
   display: block;
-  width: 100%;
+  width: 66%;
   text-align: center;
 }
 .description {
@@ -268,20 +311,31 @@ body {
 .baseskills-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 10px;
+  align-items: center;
+  gap: 20px;
+  width: 66%;
 }
 .baseskills-column {
+  flex: 1 1 1 calc(33.33% - 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
   width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center; /* Zentriert die Überschrift */
+}
+.coreskills-grid {
+  justify-content: center;
 }
 .baseskills-box {
+  width: 100%;
   border: 1px solid #ddd;
   padding: 10px;
-  margin-bottom: 10px;
+  text-align: center;
 }
 .baseskills-box h2 {
   margin-top: 0;
@@ -292,13 +346,13 @@ body {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 10px;
-  flex-grow: 1; /* Nimmt den restlichen verfügbaren Platz ein */
+  width: 100%;
 }
 .skill-box {
   border: 1px solid #ccc;
   padding: 10px;
   margin: 5px 0;
-  flex: 1 1 calc(50% - 10px); /* Zwei Boxen pro Reihe mit Abstand dazwischen */
+  flex: 1 1 1 calc(33.33% - 10px); /* Zwei Boxen pro Reihe mit Abstand dazwischen */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -306,9 +360,9 @@ body {
 }
 .skill-line {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
 }
 .skill-name {
   flex: 0 0 80%;
@@ -357,25 +411,34 @@ body {
   cursor: default; /* Cursor anzeigen, um anzuzeigen, dass die Box nicht klickbar ist */
 }
 
-.weaponskill-box {
-  border: 1px solid #5a5a5a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.weaponskill-box, .coreskill-box {
   border: 1px solid #ccc;
   padding: 10px;
-  margin: 5px 0;
-  flex: 1 1 calc(50% - 10px);
+  flex: 1 1 calc(33.33% - 10px);
   box-sizing: border-box;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 90px;
-  width: 50%;
+  align-items: center;
 }
 
-.weaponskill-box .skill-line {
+.centered-line {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.coreskill-level, .weaponskill-level {
+  width: 100%;
+  text-align: center;
+}
+
+.skill-line {
   display: flex;
   width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .coreskill-name-row {
@@ -397,8 +460,15 @@ body {
   padding-right: 15%;
 }
 
-.coreskill-level {
-  text-align: center;
+.delete-coreskill {
+  flex: 0;
+  text-align: right;
+  cursor: pointer;
+  padding-right: 15%;
+}
+
+.weaponskills-grid {
+  justify-content: center;
 }
 
 .coreskill-level-row {
@@ -417,7 +487,8 @@ body {
   justify-content: flex-end; /* Text nach links verschieben */
   background-size: cover;
   background-position: center;
-  height: 100px; /* Beispielhöhe */
+  height: 128px;
+  width: 256px;
   cursor: pointer;
   position: relative; /* Sicherstellen, dass der Text innerhalb der Box bleibt */
 }
@@ -425,6 +496,10 @@ body {
   font-size: 18px; /* Textgröße anpassen */
   color: white; /* Textfarbe weiß */
   margin: 0 0 10px 10px; /* Abstand vom Rand */
+}
+
+.weaponskill-options {
+  width: 280px;
 }
 
 .coreskill-option {
@@ -545,6 +620,11 @@ body {
   margin: 10px 0;
 }
 
+.nav-separator-line {
+  border-top: 1px solid #585858;
+  margin: 10px 0;
+}
+
 .chat-message .push-your-luck-button {
   display: block;
   margin: 10px auto;
@@ -579,4 +659,132 @@ body {
 .push-your-luck-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.armor {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  padding-top: 3px;
+  color: #f4f4f4;
+}
+
+/* Inventory Tab */
+.inventory-container {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.inventory-header h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.inventory-section {
+  margin-bottom: 20px;
+}
+
+.inventory-section h3 {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.inventory-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.inventory-item {
+  flex: 1 1 calc(33.333% - 10px); /* Three items per row with gap */
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.item-quantity {
+  font-size: 14px;
+}
+
+/* Weapon-Sheet Classes*/
+
+.weapon-sheet {
+  width: 256px;
+}
+
+.weapon-sheet .image-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.weapon-sheet .image-container img {
+  width: 256px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.weapon-sheet .sheet-tabs {
+  border-top: 1px solid #ddd;
+}
+
+.weapon-sheet .tab-buttons {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.weapon-sheet .tab-buttons li {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.weapon-sheet .tab-buttons li.active {
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+}
+
+.weapon-sheet .tab-content {
+  display: none;
+  padding: 10px;
+}
+
+.weapon-sheet .tab-content.active {
+  display: block;
+}
+
+.weapon-sheet .form-group {
+  margin-bottom: 10px;
+}
+
+.weapon-sheet .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.weapon-sheet .form-group input,
+.weapon-sheet .form-group select,
+.weapon-sheet .form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.weapon-sheet .form-group textarea {
+  height: 100px;
 }

@@ -6,7 +6,7 @@ export default class CauseActorSheet extends ActorSheet {
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
       height: 630,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
+      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "skills" }]
     });
   }
 
@@ -44,22 +44,6 @@ export default class CauseActorSheet extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-
-    // Store the current tab ID
-    const storedTab = localStorage.getItem('activeTab');
-    console.log('Stored Tab:', storedTab);  // Debugging log
-    if (storedTab) {
-      CauseActorSheet.showTab(null, storedTab);
-    }
-
-    // Add event listeners for tabs
-    html.find('.sidebar a').click(event => {
-      event.preventDefault();
-      const tabId = event.currentTarget.getAttribute('onclick').split("'")[1];
-      console.log('Clicked Tab:', tabId);  // Debugging log
-      CauseActorSheet.showTab(event, tabId);
-      localStorage.setItem('activeTab', tabId);
-    });
 
     html.find('input, select').change(event => this._onChangeInput(event));
 
@@ -120,26 +104,6 @@ export default class CauseActorSheet extends ActorSheet {
     )
 
     html.find('.coreskill-name').click(this._rollCoreSkill.bind(this));
-  }
-
-  /** @override */
-  async _updateObject(event, formData) {
-    // Ensure that the tab state is preserved
-    const activeTab = localStorage.getItem('activeTab');
-    await super._updateObject(event, formData);
-    if (activeTab) {
-      CauseActorSheet.showTab(null, activeTab);
-    }
-  }
-
-  // Add the showTab function as a static method
-  static showTab(event, tabId) {
-    if (event) event.preventDefault();
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => {
-      content.classList.remove('active');
-    });
-    document.getElementById(tabId).classList.add('active');
   }
 
   _onHoverIn(event) {
@@ -681,6 +645,9 @@ _onClickWeaponSkillBox(event) {
     buttons: {},
     default: "ok",
     render: (html) => {
+      // Set the width of the dialog
+      html.closest('.window-content').css('width', '280px');
+      
       html.find('.weaponskill-option').click((event) => {
         const selectedSkillType = event.currentTarget.dataset.skill;
         const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
@@ -764,7 +731,7 @@ _onClickCoreSkillBox(event) {
   const content = container.outerHTML;
   console.log("Generated Dialog Content:", content);  // Konsolenausgabe zur Überprüfung
 
-  new Dialog({
+  const dialog = new Dialog({
       title: "Choose a Coreskill",
       content: content,
       buttons: {},
@@ -774,6 +741,7 @@ _onClickCoreSkillBox(event) {
               const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
               console.log(`Selected ${selectedSkillType} for ${skillSlot}`);  // Konsolenausgabe zur Überprüfung
               this._selectCoreSkill(selectedSkill, skillSlot);
+              dialog.close();
           });
       }
   }).render(true);
