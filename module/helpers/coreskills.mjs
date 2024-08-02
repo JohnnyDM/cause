@@ -7,7 +7,7 @@ export const CORESKILLS = [
   },
   {
     type: "Improvised Weapons",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/improvised.png",
     stat: "str"
   },
   {
@@ -17,12 +17,12 @@ export const CORESKILLS = [
   },
   {
     type: "Athletics",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/athletics.png",
     stat: "str"
   },
   {
     type: "Swimming",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/swimming.png",
     stat: "str"
   },
 
@@ -39,17 +39,17 @@ export const CORESKILLS = [
   },
   {
     type: "Sleight of Hands",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/sleight_of_hands.png",
     stat: "agi"
   },
   {
     type: "Acrobatics",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/acrobatics.png",
     stat: "agi"
   },
   {
     type: "Driving",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/driving.png",
     stat: "agi"
   },
 
@@ -61,7 +61,7 @@ export const CORESKILLS = [
   },
   {
     type: "Orientation",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/navigate.png",
     stat: "wit"
   },
   {
@@ -71,12 +71,12 @@ export const CORESKILLS = [
   },
   {
     type: "Survival",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/survival.png",
     stat: "wit"
   },
   {
     type: "Spot hidden",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/spot-hidden.png",
     stat: "wit"
   },
 
@@ -93,7 +93,7 @@ export const CORESKILLS = [
   },
   {
     type: "Crafting",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/crafting.png",
     stat: "bra"
   },
   {
@@ -103,7 +103,7 @@ export const CORESKILLS = [
   },
   {
     type: "Psychology",
-    image: "systems/cause/assets/",
+    image: "systems/cause/assets/psychology.png",
     stat: "bra"
   }
 

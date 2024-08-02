@@ -540,7 +540,6 @@ body {
   width: 550px; /* Passen Sie die Breite nach Bedarf an */
   max-width: 90vw; /* Stellt sicher, dass der Dialog nicht breiter als 90% des Ansichtsfensters ist */
   background-color: #2e2e2e;
-  background-image: none;
   color: #fff;
 }
 
@@ -551,11 +550,10 @@ body {
   width: 100%;
 }
 
-.window-app.wider-dialog .window-content {
+.wider-dialog .window-content {
   width: 1125px; /* Passen Sie die Breite nach Bedarf an */
   max-width: 90vw; /* Stellt sicher, dass der Dialog nicht breiter als 90% des Ansichtsfensters ist */
   background-color: #2e2e2e;
-  background-image: none;
   color: #fff;
 }
 
@@ -565,16 +563,33 @@ body {
   margin: 0 0 10px 10px; /* Abstand vom Rand */
 }
 
-.dialog-content {
-  width: auto !important;
-  max-width: none !important;
-  height: auto !important;
-}
-
 .coreskill-option span {
   font-size: 18px; /* Textgröße anpassen */
   color: white; /* Textfarbe weiß */
   margin: 0 0 10px 10px; /* Abstand vom Rand */
+}
+
+.skills-options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.skills-column {
+  flex: 1 1 200px; /* Diese Breite anpassen, um mehr Platz zu geben */
+  margin: 5px;
+}
+
+.skill-option {
+  margin: 5px 0;
+  padding: 5px;
+  background-size: cover;
+  color: #fff;
+  height: 56px;
+  width: 128;
+}
+
+.skill-wider-dialog {
+  width: 1200px; /* Oder eine andere gewünschte Breite */
 }
 
 .causenavtabs {
@@ -867,4 +882,37 @@ body {
 .stat-button.active {
   background-color: #007bff;
   color: #fff;
+}
+
+.bonds-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bonds-list, .fears-list, .wishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bond, .fear, .wish {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.bond input[type="text"], .bond input[type="number"],
+.fear input[type="text"], .wish input[type="text"] {
+  padding: 5px;
+  width: 100%;
+}
+
+.fears-wishes {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fears, .wishes {
+  width: 48%;
 }
