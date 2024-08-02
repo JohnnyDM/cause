@@ -22,6 +22,43 @@ export default class CauseActorSheet extends ActorSheet {
     
     console.log("Formpoints:", data.system.core.formpoints);
     this._prepareItems(data);
+
+    // Standardbildpfad
+    const defaultImage = 'systems/cause/assets/blank-black.png';
+
+    // Liste der Coreskills
+    const coreskills = [
+      'coreskills1', 'coreskills2', 'coreskills3', 'coreskills4', 
+      'coreskills5', 'coreskills6', 'coreskills7', 'coreskills8'
+    ];
+
+    // Überprüfe die nicht ausgewählten Coreskills und setze das Standardbild
+    coreskills.forEach(skill => {
+      // Initialisiere den Coreskill, falls er nicht existiert
+      if (!data.system[skill]) {
+        data.system[skill] = { type: "", img: defaultImage };
+      }
+      if (!data.system[skill].type) {
+        data.system[skill].img = defaultImage;
+      }
+    });
+
+      // Liste der Waffenfertigkeiten
+    const weaponskills = [
+      'weaponskills1', 'weaponskills2', 'weaponskills3'
+    ];
+
+    // Überprüfe die nicht ausgewählten Waffenfertigkeiten und setze das Standardbild
+    weaponskills.forEach(skill => {
+      // Initialisiere die Waffenfertigkeit, falls sie nicht existiert
+      if (!data.system[skill]) {
+        data.system[skill] = { type: "", img: defaultImage };
+      }
+      if (!data.system[skill].type) {
+        data.system[skill].img = defaultImage;
+      }
+    });
+
     return data;
   }
 
@@ -88,7 +125,15 @@ export default class CauseActorSheet extends ActorSheet {
       this._onHoverIn.bind(this),
       this._onHoverOut.bind(this)
   );
-
+    // Add hover effect for skill names
+    html.find('.skill-name').hover(
+      (event) => {
+        $(event.currentTarget).addClass('highlight');
+      },
+      (event) => {
+        $(event.currentTarget).removeClass('highlight');
+      }
+    );
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
       const li = $(ev.currentTarget).parents('.item');
@@ -99,6 +144,25 @@ export default class CauseActorSheet extends ActorSheet {
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
+
+    // Listener for right-click on core skills and skills
+    html.find('.coreskill-box .coreskill-name').contextmenu(event => {
+      event.preventDefault();
+      const skillSlot = $(event.currentTarget).closest('.coreskill-box').data('skill');
+      const skill = this.actor.system[skillSlot];
+      console.log("Core skill slot:", skillSlot); // Konsolenausgabe für Debugging
+      console.log("Core skill:", skill); // Konsolenausgabe für Debugging
+      this._onShowSkillBonusDialog(skill, skill.stat, event);
+  });
+
+  html.find('.skill-name').contextmenu(event => {
+    event.preventDefault();
+    const skillSlot = $(event.currentTarget).closest('.skill').data('index');
+    const skill = this.actor.system.skills[skillSlot];
+    console.log("Skill slot:", skillSlot); // Konsolenausgabe für Debugging
+    console.log("Skill:", skill); // Konsolenausgabe für Debugging
+    this._onShowSkillBonusDialog(skill, skill.stat, event);
+});
 
   html.on('click', '.item-delete', (ev) => {
     const li = $(ev.currentTarget).parents('.item');
@@ -126,6 +190,186 @@ export default class CauseActorSheet extends ActorSheet {
 
     html.find('.coreskill-name').click(this._rollCoreSkill.bind(this));
   }
+
+  _onShowSkillBonusDialog(skill, stat, event) {
+    event.preventDefault();
+    console.log("Entering _onShowSkillBonusDialog"); // Konsolenausgabe, um sicherzustellen, dass die Methode aufgerufen wird
+    console.log("Skill passed to _onShowSkillBonusDialog:", skill); // Konsolenausgabe des übergebenen Skills
+    console.log("Stat passed to _onShowSkillBonusDialog:", stat); // Konsolenausgabe des übergebenen Stats
+
+    // Überprüfen, ob der Skill und der Stat vorhanden sind
+    if (!skill || (!skill.type && !skill.skillname)) {
+        console.error("Skill or skill.type/skill.skillname is undefined:", skill);
+        return;
+    }
+
+    const actorData = this.actor.system;
+    const skillName = skill.type || skill.skillname;
+    console.log(skillName);
+    const skillStat = stat || skill.stat;
+    const skillLevel = skill.level || skill.skilllevel;
+
+    new Dialog({
+      title: `Add Bonus Dice ${skillName}`,
+      content: `
+        <form>
+          <div class="form-group">
+            <label>Attribute:</label>
+            <div class="attribute-buttons">
+              <button type="button" class="attribute-button" data-attribute="str" ${skillStat === "str" ? 'class="active"' : ''}>Strength</button>
+              <button type="button" class="attribute-button" data-attribute="agi" ${skillStat === "agi" ? 'class="active"' : ''}>Agility</button>
+              <button type="button" class="attribute-button" data-attribute="wit" ${skillStat === "wit" ? 'class="active"' : ''}>Wits</button>
+              <button type="button" class="attribute-button" data-attribute="bra" ${skillStat === "bra" ? 'class="active"' : ''}>Brains</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Form Points:</label>
+            <div class="form-points-input">
+              <button type="button" class="decrease-form-points">-</button>
+              <input type="number" name="form-points" min="0" value="0" max="${actorData.core.formpoints.value}">
+              <button type="button" class="increase-form-points">+</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Bonus Dice:</label>
+            <div class="bonus-dice-input">
+              <button type="button" class="decrease-bonus-dice">-</button>
+              <input type="number" name="bonus-dice" min="0" value="0">
+              <button type="button" class="increase-bonus-dice">+</button>
+            </div>
+          </div>
+        </form>
+      `,
+      buttons: {
+        roll: {
+          label: "Roll",
+          callback: (html) => {
+            const bonusDice = parseInt(html.find('[name="bonus-dice"]').val(), 10);
+            const formPoints = parseInt(html.find('[name="form-points"]').val(), 10);
+            const selectedAttribute = html.find('.attribute-button.active').data('attribute');
+            this._rollSkillWithBonus(skill, selectedAttribute, bonusDice, formPoints);
+          }
+        }
+      },
+      default: "roll",
+      render: (html) => {
+        html.find('.attribute-button').click((event) => {
+          html.find('.attribute-button').removeClass('active');
+          $(event.currentTarget).addClass('active');
+        });
+
+        html.find('.decrease-form-points').click((event) => {
+          const input = html.find('[name="form-points"]');
+          let value = parseInt(input.val(), 10);
+          if (value > 0) input.val(--value);
+        });
+        html.find('.increase-form-points').click((event) => {
+          const input = html.find('[name="form-points"]');
+          let value = parseInt(input.val(), 10);
+          if (value < actorData.core.formpoints.value) input.val(++value);
+        });
+        html.find('.decrease-bonus-dice').click((event) => {
+          const input = html.find('[name="bonus-dice"]');
+          let value = parseInt(input.val(), 10);
+          if (value > 0) input.val(--value);
+        });
+        html.find('.increase-bonus-dice').click((event) => {
+          const input = html.find('[name="bonus-dice"]');
+          let value = parseInt(input.val(), 10);
+          input.val(++value);
+        });
+      }
+    }).render(true);
+}
+_rollSkillWithBonus(skill, stat, bonusDice, formPoints) {
+  const skillLevelMap = {
+      'untrained': 2,
+      'trained': 4,
+      'expert': 6,
+      'master': 8,
+      'legendary': 10
+  };
+
+  const numDice = skillLevelMap[skill.level] || 2;
+  const attributeValue = this.actor.system.attributes[stat]?.value || 0;
+  const totalDice = numDice + Number(attributeValue) + Number(bonusDice) + Number(formPoints);
+
+  const rollFormula = `${totalDice}d6cs>=4df=1x=6cs>=4`;
+  const roll = new Roll(rollFormula);
+
+  roll.roll({async: true}).then(result => {
+      console.log("Roll formula:", roll.formula);
+      console.log("Roll results:", roll);
+
+      // Generating a unique ID for the roll
+      const rollId = randomID();
+
+      const critSuccessImg = 'systems/cause/assets/crit_success.png';
+      const successImg = 'systems/cause/assets/success.png';
+      const failureImg = 'systems/cause/assets/failure.png';
+
+      let critSuccesses = 0;
+      let successes = 0;
+      let failures = 0;
+
+      if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+          roll.dice[0].results.forEach(result => {
+              if (result.result === 6) {
+                  critSuccesses++;
+              } else if (result.result >= 4) {
+                  successes++;
+              } else if (result.result === 1) {
+                  failures++;
+              }
+          });
+      } else {
+          console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+      }
+
+      const critSuccessImages = critSuccesses > 0 ? 
+          Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const successImages = successes > 0 ? 
+          Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const failureImages = failures > 0 ? 
+          Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const messageContent = `
+          <div class="chat-message">
+              <div class="message-content">
+                  <div class="attribute-name">${skill.type || skill.skillname} (${stat})</div>
+                  <div class="footer-line"></div>
+                  <div class="results-line">${critSuccessImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${successImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${failureImages}</div>
+                  <div class="footer-line"></div>
+                  <div class="result-total">Total Result: ${roll.total}</div>
+                  <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${roll.total}">Push your Luck?</button>
+              </div>
+          </div>
+      `;
+      console.log("Chat message created with rollId:", rollId);
+
+      // Integration with Dice So Nice
+      game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+          ChatMessage.create({
+              user: game.user._id,
+              speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+              content: messageContent,
+              roll: roll,
+              flags: { rollId: rollId }
+          });
+      });
+  }).catch(error => {
+      console.error("Fehler beim Würfeln:", error);
+  });
+}
 
   _onHoverIn(event) {
     const element = $(event.currentTarget);
@@ -790,19 +1034,22 @@ _onClickWeaponSkillBox(event) {
   const skillSlot = event.currentTarget.dataset.skill;
   console.log("Skill Slot:", skillSlot);
   const weaponskillsData = CONFIG.WEAPONSKILLS;
+
+  // Erstelle den Container für die Waffenfertigkeiten
   const container = document.createElement('div');
   container.className = 'weaponskill-options';
 
+  // Füge die Waffenfertigkeiten hinzu
   weaponskillsData.forEach((skill) => {
     const skillDiv = document.createElement('div');
     skillDiv.className = 'weaponskill-option';
-    if (skill.image) {
-      skillDiv.style.backgroundImage = `url('${skill.image}')`;
-    }
+    const skillImage = skill.image || 'systems/cause/assets/systems/cause/assets/blank-black.png'; // Standardbild, wenn kein Bild vorhanden
+    skillDiv.style.backgroundImage = `url('${skillImage}')`;
     const skillSpan = document.createElement('span');
     skillSpan.textContent = skill.type;
     skillDiv.appendChild(skillSpan);
     skillDiv.dataset.skill = skill.type;
+    skillDiv.dataset.image = skillImage; // Füge das Bild als Dataset hinzu
     container.appendChild(skillDiv);
   });
 
@@ -812,16 +1059,9 @@ _onClickWeaponSkillBox(event) {
   const dialog = new Dialog({
     title: "Choose a Weaponskill",
     content: content,
-    classes: ["weaponskill-dialog"], // Füge die CSS-Klasse hinzu
     buttons: {},
     default: "ok",
     render: (html) => {
-      // Passe die Breite des Dialogs an die Breite des Inhalts an
-      const dialogContent = html.closest('.window-content');
-      dialogContent.css('width', 'auto');
-      dialogContent.css('max-width', 'none'); // Entfernt die maximale Breite
-      dialogContent.css('height', 'auto'); // Passe die Höhe an den Inhalt an
-
       html.find('.weaponskill-option').click((event) => {
         const selectedSkillType = event.currentTarget.dataset.skill;
         const selectedSkill = weaponskillsData.find(skill => skill.type === selectedSkillType);
@@ -830,16 +1070,21 @@ _onClickWeaponSkillBox(event) {
         dialog.close();
       });
     }
-  }).render(true);
+  }, { classes: ["weaponskill-dialog"], width: 550 }).render(true); // Setze die Klasse und die Breite hier
 }
 
 _selectWeaponSkill(skill, skillSlot) {
   console.log(`_selectWeaponSkill called with skill: ${skill.type}, slot: ${skillSlot}`);
+  const skillImage = skill.image || 'systems/cause/assets/blank-black.png'; // Standardbild, wenn kein Bild vorhanden
   const updateData = {};
-  updateData[`system.${skillSlot}`] = { type: skill.type, level: "untrained" };
+  updateData[`system.${skillSlot}`] = {
+    type: skill.type,
+    level: "untrained",
+    img: skillImage // Füge das Bild zum Update-Daten hinzu
+  };
   this.actor.update(updateData).then(() => {
-      console.log(`Updated ${skillSlot} with`, skill);
-      this.render();
+    console.log(`Updated ${skillSlot} with`, skill);
+    this.render();
   });
 
   // Entfernen der Highlight-Klasse und Hinzufügen der Selected-Klasse
@@ -852,9 +1097,8 @@ _onDeleteWeaponSkill(event) {
   event.preventDefault();
   const skillSlot = event.currentTarget.dataset.skill;
   const updateData = {};
-  updateData[`system.${skillSlot}`] = { type: "", level: "" };
+  updateData[`system.${skillSlot}`] = { type: "", level: 0, img: 'systems/cause/assets/blank-black.png' }; // Standardbild setzen
   this.actor.update(updateData);
-  this.render();
 }
 
 _onWeaponSkillLevelChange(event) {
@@ -869,8 +1113,16 @@ _onDeleteCoreSkill(event) {
   event.preventDefault();
   const skillSlot = event.currentTarget.dataset.skill;
   const updateData = {};
-  updateData[`system.${skillSlot}`] = { type: "", level: 0 };
-  this.actor.update(updateData);
+  updateData[`system.${skillSlot}`] = { 
+    type: "", 
+    level: 0,
+    img: 'systems/cause/assets/blank-black.png' // Standardbildpfad setzen
+  };
+  this.actor.update(updateData).then(() => {
+    console.log("Deleted core skill for slot:", skillSlot); // Konsolenausgabe zur Überprüfung
+  }).catch(error => {
+    console.error("Error deleting core skill:", error);
+  });
 }
 
 _onCoreSkillLevelChange(event) {
@@ -886,50 +1138,91 @@ _onClickCoreSkillBox(event) {
   console.log("Skill Slot:", skillSlot);  // Konsolenausgabe zur Überprüfung
 
   const coreskillsData = CONFIG.CORESKILLS;
+
+  // Mapping der Coreskills zu ihren jeweiligen Attributen
+  const mappedSkills = {
+    str: coreskillsData.filter(skill => skill.stat === 'str'),
+    agi: coreskillsData.filter(skill => skill.stat === 'agi'),
+    wit: coreskillsData.filter(skill => skill.stat === 'wit'),
+    bra: coreskillsData.filter(skill => skill.stat === 'bra')
+  };
+
+  // Erstelle den Container mit den Spalten und den entsprechenden Überschriften
   const container = document.createElement('div');
   container.className = 'coreskill-options';
 
-  coreskillsData.forEach((skill) => {
+  const columns = {
+    str: document.createElement('div'),
+    agi: document.createElement('div'),
+    wit: document.createElement('div'),
+    bra: document.createElement('div')
+  };
+
+  // Setze die Überschriften für die Spalten
+  columns.str.innerHTML = '<h3>Strength</h3>';
+  columns.agi.innerHTML = '<h3>Agility</h3>';
+  columns.wit.innerHTML = '<h3>Wits</h3>';
+  columns.bra.innerHTML = '<h3>Brains</h3>';
+
+  // Füge die Skills zu den entsprechenden Spalten hinzu
+  for (let [key, value] of Object.entries(mappedSkills)) {
+    value.forEach((skill) => {
       const skillDiv = document.createElement('div');
       skillDiv.className = 'coreskill-option';
       if (skill.image) {
-          skillDiv.style.backgroundImage = `url('${skill.image}')`;
+        skillDiv.style.backgroundImage = `url('${skill.image}')`;
       }
       const skillSpan = document.createElement('span');
       skillSpan.textContent = skill.type;
       skillDiv.appendChild(skillSpan);
       skillDiv.dataset.skill = skill.type;
-      container.appendChild(skillDiv);
-  });
+      skillDiv.dataset.img = skill.image || ''; // Bildpfad als Datenattribut hinzufügen
+      columns[key].appendChild(skillDiv);
+    });
+  }
+
+  // Füge die Spalten zum Container hinzu
+  const columnWrapper = document.createElement('div');
+  columnWrapper.className = 'column-wrapper';
+  for (let column of Object.values(columns)) {
+    columnWrapper.appendChild(column);
+  }
+  container.appendChild(columnWrapper);
 
   const content = container.outerHTML;
   console.log("Generated Dialog Content:", content);  // Konsolenausgabe zur Überprüfung
 
   const dialog = new Dialog({
-      title: "Choose a Coreskill",
-      content: content,
-      buttons: {},
-      render: (html) => {
-          html.find('.coreskill-option').click((event) => {
-              const selectedSkillType = event.currentTarget.dataset.skill;
-              const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
-              console.log(`Selected ${selectedSkillType} for ${skillSlot}`);  // Konsolenausgabe zur Überprüfung
-              this._selectCoreSkill(selectedSkill, skillSlot);
-              dialog.close();
-          });
-      }
-  }).render(true);
+    title: "Choose a Coreskill",
+    content: content,
+    buttons: {},
+    default: "ok",
+    render: (html) => {
+      html.find('.coreskill-option').click((event) => {
+        const selectedSkillType = event.currentTarget.dataset.skill;
+        const selectedSkill = coreskillsData.find(skill => skill.type === selectedSkillType);
+        const selectedSkillImg = event.currentTarget.dataset.img || 'systems/cause/assets/blank-black.png'; // Bildpfad abrufen oder Standardbild verwenden
+        console.log(`Selected ${selectedSkillType} for ${skillSlot}, Image: ${selectedSkillImg}`);  // Konsolenausgabe zur Überprüfung
+        this._selectCoreSkill(selectedSkill, skillSlot, selectedSkillImg);
+        dialog.close();
+      });
+    }
+  }, { classes: ["wider-dialog"], width: 1125 }).render(true); // Setze die Klasse und die Breite hier
 }
 
-_selectCoreSkill(selectedSkill, skillSlot) {
+_selectCoreSkill(selectedSkill, skillSlot, imgPath) {
   const updateData = {};
   updateData[`system.${skillSlot}`] = {
-      type: selectedSkill.type,
-      level: 'untrained',  // Standardlevel setzen
-      stat: selectedSkill.stat // Der Stat aus der Config
+    type: selectedSkill.type,
+    level: 'untrained',  // Standardlevel setzen
+    stat: selectedSkill.stat, // Der Stat aus der Config
+    img: imgPath // Bildpfad aus dem Dialog oder Standardbild
   };
-  this.actor.update(updateData);
-  console.log("Updated actor data with new core skill:", updateData);  // Konsolenausgabe zur Überprüfung
+  this.actor.update(updateData).then(() => {
+    console.log("Updated actor data with new core skill:", updateData);  // Konsolenausgabe zur Überprüfung
+  }).catch(error => {
+    console.error("Error updating actor data:", error);
+  });
 }
 
 _rollCoreSkill(event) {

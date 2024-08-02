@@ -1,34 +1,36 @@
 export const CORESKILLS = [
-  {
-    type: "Attentive",
-    image: "systems/cause/assets/attentiv.png",
-    stat: "wit"
-  },
-  {
-    type: "Dodge",
-    image: "systems/cause/assets/dodge.png",
-    stat: "agi"
-    
-  },
+  //Strength
   {
     type: "Unarmed Combat",
     image: "systems/cause/assets/unarmed-combat.png",
     stat: "str"
   },
   {
-    type: "HUMINT",
-    image: "systems/cause/assets/humint.png",
-    stat: "wit"
+    type: "Improvised Weapons",
+    image: "systems/cause/assets/",
+    stat: "str"
   },
   {
-    type: "First Aid",
-    image: "systems/cause/assets/first-aid.png",
-    stat: "wit"
+    type: "Withstand",
+    image: "systems/cause/assets/withstand.png",
+    stat: "str"
   },
   {
-    type: "Computer Science",
-    image: "systems/cause/assets/computer-science.png",
-    stat: "bra"
+    type: "Athletics",
+    image: "systems/cause/assets/",
+    stat: "str"
+  },
+  {
+    type: "Swimming",
+    image: "systems/cause/assets/",
+    stat: "str"
+  },
+
+  //Agility
+  {
+    type: "Responsiveness",
+    image: "systems/cause/assets/dodge.png",
+    stat: "agi"
   },
   {
     type: "Stealth",
@@ -36,8 +38,62 @@ export const CORESKILLS = [
     stat: "agi"
   },
   {
+    type: "Sleight of Hands",
+    image: "systems/cause/assets/",
+    stat: "agi"
+  },
+  {
+    type: "Acrobatics",
+    image: "systems/cause/assets/",
+    stat: "agi"
+  },
+  {
+    type: "Driving",
+    image: "systems/cause/assets/",
+    stat: "agi"
+  },
+
+  //Wits
+  {
+    type: "HUMINT",
+    image: "systems/cause/assets/humint.png",
+    stat: "wit"
+  },
+  {
+    type: "Orientation",
+    image: "systems/cause/assets/",
+    stat: "wit"
+  },
+  {
+    type: "Attentive",
+    image: "systems/cause/assets/attentiv.png",
+    stat: "wit"
+  },
+  {
+    type: "Survival",
+    image: "systems/cause/assets/",
+    stat: "wit"
+  },
+  {
+    type: "Spot hidden",
+    image: "systems/cause/assets/",
+    stat: "wit"
+  },
+
+  //Brains
+  {
     type: "Occult",
     image: "systems/cause/assets/occult.png",
+    stat: "bra"
+  },
+  {
+    type: "First Aid",
+    image: "systems/cause/assets/first-aid.png",
+    stat: "bra"
+  },
+  {
+    type: "Crafting",
+    image: "systems/cause/assets/",
     stat: "bra"
   },
   {
@@ -46,23 +102,9 @@ export const CORESKILLS = [
     stat: "bra"
   },
   {
-    type: "Mechanics",
-    image: "systems/cause/assets/mechanics.png",
-    stat: "str"
-  },
-  {
-    type: "Pilot",
-    image: "systems/cause/assets/pilot.png",
+    type: "Psychology",
+    image: "systems/cause/assets/",
     stat: "bra"
-  },
-  {
-    type: "Microelectronics",
-    image: "systems/cause/assets/microelectronics.png",
-    stat: "bra"
-  },
-  {
-    type: "Withstand",
-    image: "systems/cause/assets/withstand.png",
-    stat: "str"
   }
+
 ];
