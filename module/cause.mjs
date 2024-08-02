@@ -6,6 +6,7 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs"; //Import h
 //import CAUSE from "./helpers/config.mjs";
 import { WEAPONSKILLS } from './helpers/weaponskills.mjs';
 import { CORESKILLS } from './helpers/coreskills.mjs';
+import { RECSKILLS } from './helpers/recommendedskills.mjs';
 
 Hooks.once("init", function () {
     console.log("Cause TTFS | Initialising Cause Tabletop Framework System"); //Initialisation message in console
@@ -44,6 +45,7 @@ Hooks.once("init", function () {
     //CONFIG.CAUSE = CAUSE; //creating a custom constant for our Config
     CONFIG.WEAPONSKILLS = WEAPONSKILLS;
     CONFIG.CORESKILLS = CORESKILLS;
+    CONFIG.SKILLS = RECSKILLS;
     //override the base documents classes with our own
     //CONFIG.Actor.documentClass = CauseActor;
     //CONFIG.Item.documentClass = CauseItem;
