@@ -1,0 +1,829 @@
+@font-face {
+  font-family: "Aquifer";
+  src: url("../css/fonts/Aquifer.otf");
+}
+@font-face {
+  font-family: "Darktown Vintage";
+  src: url("../css/fonts/Darktown Vintage.otf");
+}
+body {
+  font-family: 'Aquifer';
+  display: flex;
+  margin: 0;
+  height: 100vh;
+}
+
+.causesidebar {
+  width: 200px;
+  padding: 10px;
+  border-left: 1px solid #ddd;
+  position: absolute;
+  margin-top: 30px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background-image: url(../assets/background_sidebar.png);
+  background-color: #929292;
+}
+.causesidebar a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+.causesidebar a:hover {
+  background-color: #ddd;
+}
+.causecontent {
+  color: black;
+  flex: 1;
+  padding: 10px;
+  padding-top: 0px;
+  margin-right: 210px; /* Width of sidebar + padding */
+  overflow-y: auto;
+  height: 100%;
+  width: 66%;
+  border: solid black;
+  background-image: url("../assets/background-paper-texture.png");
+  background-color: #585858;
+}
+
+.number-field {
+  margin-bottom: 15px;
+}
+.number-field input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+.column {
+  float: left;
+  width: 50%;
+  padding: 0px;
+  text-align: center;
+}
+.columns {
+  float: left;
+  width: 33%;
+  padding: 0px;
+  text-align: center;
+}
+.columnp {
+  float: left;
+  width: 50%;
+  padding-top: 5px;
+  text-align: center;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.cause .causecontent,
+.cause .causecontent .tab {
+  height: 92%;
+  width: 100%;
+}
+.headline1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Darktown Vintage';
+  padding-bottom: 5px;
+}
+.headline1-side {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Darktown Vintage';
+  padding-bottom: 5px;
+  color: #f4f4f4;
+}
+.headline2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+}
+.headline3 {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+}
+.headline3-side {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  color: #f4f4f4;
+}
+.headline4-side {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  color: #f4f4f4;
+}
+.textdescrip {
+  text-align: center;
+}
+.textdescrip input {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
+}
+.textdescrip select {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
+}
+.textdescrip-side {
+  text-align: center;
+}
+.textdescrip-side input {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
+  color: #f4f4f4;
+}
+.textdescrip-side select {
+  font-family: 'Aquifer';
+  font-size: 13px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
+}
+.charname {
+  text-align: center;
+}
+.charname input {
+  font-family: 'Aquifer';
+  font-size: 25px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: center;
+}
+.charname select {
+  font-family: 'Aquifer';
+  font-size: 25px;
+  background-color: #FF000000;
+  border-bottom: 1.5px dotted;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  text-align: left;
+}
+.skills-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.skills-container {
+  height: 100%; /* Nimmt den verfügbaren Platz ein */
+  overflow-y: auto;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  width: 66%;
+}
+.skills {
+  display: flex;
+  flex-direction: column;
+}
+.skill-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Damit die Skills in zwei Spalten angeordnet werden */
+}
+.skill {
+  width: 48%; /* Zwei Skills pro Reihe mit etwas Abstand dazwischen */
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+.skill-name-row,
+.skill-level-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.skill-name {
+  width: 80%;
+}
+.skill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+}
+.skill button i {
+  font-size: 1.2em;
+  color: #333;
+}
+.skill-level,
+.skill-stat,
+.firearm-type {
+  width: 80%;
+  padding: 5px;
+}
+.skill-level.untrained {
+  background-color: rgba(240, 240, 240, 0.5);
+}
+.skill-level.trained {
+  background-color: rgba(21, 241, 58, 0.5);
+}
+.skill-level.expert {
+  background-color: rgba(30, 61, 235, 0.5);
+}
+.skill-level.master {
+  background-color: rgba(168, 0, 98, 0.5);
+}
+.skill-level.legendary {
+  background-color: rgba(252, 6, 6, 0.5);
+}
+.add-skill {
+  display: block;
+  width: 66%;
+  text-align: center;
+}
+.description {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  resize: vertical;
+}
+.firearm-checkbox {
+  width: 10%;
+}
+.hidden {
+  display: none;
+}
+.edit-skill,
+.delete-skill {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+}
+.edit-skill i,
+.delete-skill i {
+  font-size: 1.2em;
+  color: #333;
+}
+.edit-skill:hover i {
+  color: #007bff; /* Farbe für Hover-Effekt */
+}
+.delete-skill:hover i {
+  color: #dc3545; /* Farbe für Hover-Effekt */
+}
+#edit-skill-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* Baseskills Tab */
+.baseskills-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 66%;
+}
+.baseskills-column {
+  flex: 1 1 1 calc(33.33% - 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.coreskills-grid {
+  justify-content: center;
+}
+.baseskills-box {
+  color: lightslategray;
+  text-shadow: 0 0 3px black;
+  width: 100%;
+  border: 3px solid black;
+  padding: 10px;
+  text-align: center;
+  margin: 6px;
+  background-color: #1b2329;
+}
+
+.baseskills-box h2 {
+  margin-top: 0;
+  text-align: center; /* Zentriert die Überschrift */
+}
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.skill-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  flex: 1 1 1 calc(33.33% - 10px); /* Zwei Boxen pro Reihe mit Abstand dazwischen */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.skill-line {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.skill-name {
+  flex: 0 0 80%;
+}
+.skill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex: 0 0 10%;
+}
+.skill button i {
+  font-size: 1.2em;
+  color: #333;
+}
+.skill-level {
+  flex: 0 0 80%;
+  padding: 5px;
+}
+.skill-level.untrained {
+  background-color: rgba(240, 240, 240, 0.5);
+}
+.skill-level.trained {
+  background-color: rgba(21, 241, 58, 0.5);
+}
+.skill-level.expert {
+  background-color: rgba(30, 61, 235, 0.5);
+}
+.skill-level.master {
+  background-color: rgba(168, 0, 98, 0.5);
+}
+.skill-level.legendary {
+  background-color: rgba(252, 6, 6, 0.5);
+}
+@media (max-width: 768px) {
+  .skill-box {
+    flex: 1 1 100%; /* Eine Box pro Reihe auf kleineren Bildschirmen */
+  }
+}
+.skill-box:not(.selected):hover {
+  background-color: #585858;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.skill-box.selected {
+  border: 2px solid red ; /* Visuelle Hervorhebung */
+  cursor: default; /* Cursor anzeigen, um anzuzeigen, dass die Box nicht klickbar ist */
+}
+
+.weaponskill-box, .coreskill-box {
+  border: 2px solid #060707;
+  padding: 10px;
+  flex: 1 1 calc(33.33% - 10px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90px;
+  align-items: center;
+  background-color: #474e53;
+}
+
+.item-box {
+  border: 1px solid #ccc;
+  height: 100%;
+  width: 66%;
+}
+
+.centered-line {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.coreskill-level, .weaponskill-level {
+  width: 100%;
+  text-align: center;
+}
+
+.skill-line {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.coreskill-name-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.coreskill-name {
+  flex: 1;
+  text-align: left;
+  padding-left: 15%;
+}
+
+.delete-weaponskill {
+  flex: 0;
+  text-align: right;
+  cursor: pointer;
+  padding-right: 15%;
+}
+
+.delete-coreskill {
+  flex: 0;
+  text-align: right;
+  cursor: pointer;
+  padding-right: 15%;
+}
+
+.weaponskills-grid {
+  justify-content: center;
+}
+
+.coreskill-level-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.weaponskill-option, .coreskill-option {
+  border: 1px solid #060707;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end; /* Text nach unten verschieben */
+  justify-content: flex-start; /* Text nach links verschieben */
+  background-size: cover;
+  background-position: center;
+  height: 128px;
+  width: 256px;
+  cursor: pointer;
+  position: relative; /* Sicherstellen, dass der Text innerhalb der Box bleibt */
+}
+.weaponskill-option span {
+  font-size: 18px; /* Textgröße anpassen */
+  color: white; /* Textfarbe weiß */
+  margin: 0 0 10px 10px; /* Abstand vom Rand */
+}
+
+.weaponskill-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dialog-content {
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+}
+
+.coreskill-option span {
+  font-size: 18px; /* Textgröße anpassen */
+  color: white; /* Textfarbe weiß */
+  margin: 0 0 10px 10px; /* Abstand vom Rand */
+}
+
+.causenavtabs {
+  display: flex;
+  justify-content: flex-start;
+  width: 66%;
+  position: relative;
+  /* background-color: #585858;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd; */
+}
+
+.causenavtabs a {
+  width: 20%;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+  color: #333;
+  border: solid 1px darkslategray;
+  /*border-bottom: 2px solid transparent;*/
+  cursor: pointer;
+  background-color: #929292;
+  margin-right: 1px;
+
+}
+
+.causenavtabs a:hover {
+  background-color: #ddd;
+  text-shadow: 0 0 0px;
+}
+
+.causenavtabs > [data-tab].active {
+  color: black;
+  text-shadow: 0 0 1px dimgray ;
+  background-color: #585858;
+  border: #333333 solid;
+  border-bottom: transparent;
+}
+
+/* .tabs > [data-tab].active {
+    text-shadow: 0 0 0px;
+} */
+
+.form-points-input,
+.bonus-dice-input {
+  display: flex;
+  align-items: center;
+}
+
+.form-points-input button,
+.bonus-dice-input button {
+  width: 30px;
+  height: 30px;
+  background-color: #ccc;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.form-points-input button:hover,
+.bonus-dice-input button:hover {
+  background-color: #bbb;
+}
+
+.form-points-input input,
+.bonus-dice-input input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  height: 30px;
+  margin: 0 5px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.chat-message .message-content {
+  font-family: 'Darktown Vintage', sans-serif;
+  text-align: center;
+}
+
+.chat-message .attribute-name {
+  font-size: 16px;
+  font-family: 'Darktown Vintage', sans-serif;
+}
+
+.chat-message .empty-line {
+  height: 20px; /* Adjust the height as needed */
+}
+
+.chat-message .results-line img {
+  display: inline-block;
+  margin: 0 2px; /* Adjust the margin as needed */
+  width: 30px; /* Set the width to 10px */
+  height: 30px; /* Set the height to 10px */
+}
+
+.chat-message .separator-line {
+  margin: 2px 0;
+}
+
+.chat-message .result-total {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chat-message .footer-line {
+  border-top: 1px solid #585858;
+  margin: 10px 0;
+}
+
+.nav-separator-line {
+  border-top: 1px solid #585858;
+  margin: 10px 0;
+}
+
+.chat-message .push-your-luck-button {
+  display: block;
+  margin: 10px auto;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-message .push-your-luck-button:hover {
+  background-color: #0056b3;
+}
+
+.result-img {
+  width: 30px;
+  height: 30px;
+}
+
+.none-text {
+  font-size: 20px;
+  text-align: center;
+}
+
+.luck-message {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.push-your-luck-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.armor {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Aquifer';
+  padding-top: 3px;
+  color: #f4f4f4;
+}
+
+/* Inventory Tab */
+.inventory-container {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.inventory-header h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.inventory-section {
+  margin-bottom: 20px;
+}
+
+.inventory-section h3 {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.inventory-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.inventory-item {
+  flex: 1 1 calc(33.333% - 10px); /* Three items per row with gap */
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.item-quantity {
+  font-size: 14px;
+}
+
+/* Weapon-Sheet Classes*/
+
+.weapon-sheet {
+  width: 256px;
+}
+
+.weapon-sheet .image-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.weapon-sheet .image-container img {
+  width: 256px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.weapon-sheet .sheet-tabs {
+  border-top: 1px solid #ddd;
+}
+
+.weapon-sheet .tab-buttons {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.weapon-sheet .tab-buttons li {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.weapon-sheet .tab-buttons li.active {
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+}
+
+.weapon-sheet .tab-content {
+  display: none;
+  padding: 10px;
+}
+
+.weapon-sheet .tab-content.active {
+  display: block;
+}
+
+.weapon-sheet .form-group {
+  margin-bottom: 10px;
+}
+
+.weapon-sheet .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.weapon-sheet .form-group input,
+.weapon-sheet .form-group select,
+.weapon-sheet .form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.weapon-sheet .form-group textarea {
+  height: 100px;
+}
