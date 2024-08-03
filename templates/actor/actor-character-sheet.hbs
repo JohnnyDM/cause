@@ -60,7 +60,24 @@
         </div>
 
         <div data-tab="inventory" data-group="primary" class="tab">
-          {{> "systems/cause/templates/actor/parts/actor-inventory-partial.hbs"}}
+          <nav class="inventorynavtabs tabs" data-group="secondary">
+            <a data-tab="weapons" >Weapons and Armors</a>
+            <a data-tab="tools">Tools</a>
+            <a data-tab="objects">Objects</a>
+          </nav>
+          <section class="inventorycontent">
+            <div data-tab="weapons" data-group="secondary" class="tab invtab">
+              {{> "systems/cause/templates/actor/parts/actor-inventory-partial.hbs"}}
+            </div>
+        
+            <div data-tab="tools" data-group="secondary" class="tab invtab">
+              
+            </div>
+        
+            <div data-tab="objects" data-group="secondary" class="tab invtab">
+              
+            </div>
+          </section>
         </div>
     </section>
     <script id="coreskill-dialog-template" type="text/x-handlebars-template">
