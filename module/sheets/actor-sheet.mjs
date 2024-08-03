@@ -6,7 +6,7 @@ export default class CauseActorSheet extends ActorSheet {
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
       height: 650,
-      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "core" }]
+      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "core" }, { navSelector: ".inventorynavtabs", contentSelector: ".inventorycontent", initial: "weapons" }]
     });
   }
 
@@ -363,7 +363,7 @@ export default class CauseActorSheet extends ActorSheet {
           callback: (html) => {
             const bonusDice = parseInt(html.find('[name="bonus-dice"]').val(), 10);
             const formPoints = parseInt(html.find('[name="form-points"]').val(), 10);
-            const selectedAttribute = html.find('.attribute-button.active').data('attribute');
+            const selectedAttribute = html.find('.attribute-button.active').data('attribute') || skillStat;
             this._rollSkillWithBonus(skill, selectedAttribute, bonusDice, formPoints);
           }
         }
@@ -406,12 +406,22 @@ _rollSkillWithBonus(skill, stat, bonusDice, formPoints) {
       'master': 8,
       'legendary': 10
   };
-
+  const skillStat = {
+    'wit': 'wit',
+    'str': 'str',
+    'agi': 'agi',
+    'bra': 'bra',
+    'strength': 'str',
+    'agility': 'agi',
+    'wits': 'wit',
+    'brains': 'bra'
+};
+  console.error("Stat:", stat);
   const numDice = skillLevelMap[skill.level] || 2;
-  const attributeValue = this.actor.system.attributes[stat]?.value || 0;
+  const attributeValue = this.actor.system.attributes[skillStat[stat]]?.value || 0;
   const totalDice = numDice + Number(attributeValue) + Number(bonusDice) + Number(formPoints);
 
-  const rollFormula = `${totalDice}d6cs>=4df=1x=6cs>=4`;
+  const rollFormula = `${totalDice}d6cs>=4df=1x=6cs>=4df=1`;
   const roll = new Roll(rollFormula);
 
   roll.roll({async: true}).then(result => {
