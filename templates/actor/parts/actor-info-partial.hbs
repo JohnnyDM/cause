@@ -1,39 +1,78 @@
 <div class="bonds-container">
-  {{!-- Bonds --}}
+  <!-- Bonds -->
   <div class="bonds">
     <h2>Bonds</h2>
     <div class="bonds-list">
-      {{#each [1,2,3,4] as |index|}}
+      {{!-- Bond 1 --}}
       <div class="bond">
-        <input type="text" name="system.core.bonds.bond{{index}}.name" value="{{lookup system.core.bonds (concat 'bond' index) 'name'}}" placeholder="Bond Name" />
-        <input type="text" name="system.core.bonds.bond{{index}}.relation" value="{{lookup system.core.bonds (concat 'bond' index) 'relation'}}" placeholder="Relation" />
-        <input type="number" name="system.core.bonds.bond{{index}}.points" value="{{lookup system.core.bonds (concat 'bond' index) 'points'}}" placeholder="Points" />
+        <input type="text" name="system.core.bonds.bond1.name" value="{{system.core.bonds.bond1.name}}" placeholder="Bond Name" />
+        <input type="text" name="system.core.bonds.bond1.relation" value="{{system.core.bonds.bond1.relation}}" placeholder="Relation" />
+        <input type="number" name="system.core.bonds.bond1.points" value="{{system.core.bonds.bond1.points}}" placeholder="Points" />
       </div>
-      {{/each}}
+      {{!-- Bond 2 --}}
+      <div class="bond">
+        <input type="text" name="system.core.bonds.bond2.name" value="{{system.core.bonds.bond2.name}}" placeholder="Bond Name" />
+        <input type="text" name="system.core.bonds.bond2.relation" value="{{system.core.bonds.bond2.relation}}" placeholder="Relation" />
+        <input type="number" name="system.core.bonds.bond2.points" value="{{system.core.bonds.bond2.points}}" placeholder="Points" />
+      </div>
+      {{!-- Bond 3 --}}
+      <div class="bond">
+        <input type="text" name="system.core.bonds.bond3.name" value="{{system.core.bonds.bond3.name}}" placeholder="Bond Name" />
+        <input type="text" name="system.core.bonds.bond3.relation" value="{{system.core.bonds.bond3.relation}}" placeholder="Relation" />
+        <input type="number" name="system.core.bonds.bond3.points" value="{{system.core.bonds.bond3.points}}" placeholder="Points" />
+      </div>
+      {{!-- Bond 4 --}}
+      <div class="bond">
+        <input type="text" name="system.core.bonds.bond4.name" value="{{system.core.bonds.bond4.name}}" placeholder="Bond Name" />
+        <input type="text" name="system.core.bonds.bond4.relation" value="{{system.core.bonds.bond4.relation}}" placeholder="Relation" />
+        <input type="number" name="system.core.bonds.bond4.points" value="{{system.core.bonds.bond4.points}}" placeholder="Points" />
+      </div>
     </div>
   </div>
 
-  {{!-- Fears and Wishes --}}
+  <!-- Fears and Wishes -->
   <div class="fears-wishes">
     <div class="fears">
       <h2>Fears</h2>
       <div class="fears-list">
-        {{#each [1,2,3,4] as |index|}}
+        {{!-- Fear 1 --}}
         <div class="fear">
-          <input type="text" name="system.core.fears.fear{{index}}.name" value="{{lookup system.core.fears (concat 'fear' index) 'name'}}" placeholder="Fear Name" />
+          <input type="text" name="system.core.fears.fear1.name" value="{{system.core.fears.fear1.name}}" placeholder="Fear Name" />
         </div>
-        {{/each}}
+        {{!-- Fear 2 --}}
+        <div class="fear">
+          <input type="text" name="system.core.fears.fear2.name" value="{{system.core.fears.fear2.name}}" placeholder="Fear Name" />
+        </div>
+        {{!-- Fear 3 --}}
+        <div class="fear">
+          <input type="text" name="system.core.fears.fear3.name" value="{{system.core.fears.fear3.name}}" placeholder="Fear Name" />
+        </div>
+        {{!-- Fear 4 --}}
+        <div class="fear">
+          <input type="text" name="system.core.fears.fear4.name" value="{{system.core.fears.fear4.name}}" placeholder="Fear Name" />
+        </div>
       </div>
     </div>
 
     <div class="wishes">
       <h2>Wishes</h2>
       <div class="wishes-list">
-        {{#each [1,2,3,4] as |index|}}
+        {{!-- Wish 1 --}}
         <div class="wish">
-          <input type="text" name="system.core.wishes.wish{{index}}.name" value="{{lookup system.core.wishes (concat 'wish' index) 'name'}}" placeholder="Wish Name" />
+          <input type="text" name="system.core.wishes.wish1.name" value="{{system.core.wishes.wish1.name}}" placeholder="Wish Name" />
         </div>
-        {{/each}}
+        {{!-- Wish 2 --}}
+        <div class="wish">
+          <input type="text" name="system.core.wishes.wish2.name" value="{{system.core.wishes.wish2.name}}" placeholder="Wish Name" />
+        </div>
+        {{!-- Wish 3 --}}
+        <div class="wish">
+          <input type="text" name="system.core.wishes.wish3.name" value="{{system.core.wishes.wish3.name}}" placeholder="Wish Name" />
+        </div>
+        {{!-- Wish 4 --}}
+        <div class="wish">
+          <input type="text" name="system.core.wishes.wish4.name" value="{{system.core.wishes.wish4.name}}" placeholder="Wish Name" />
+        </div>
       </div>
     </div>
   </div>
