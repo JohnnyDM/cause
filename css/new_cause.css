@@ -16,7 +16,13 @@ body {
   background-image: url(../assets/background_main_new.png);
   background-size: cover;
   background-position: center;
-  background-color: #2e2e2e;;
+  background-color: #2e2e2e;
+}
+.window-app.actor {
+  max-height: 650px;
+  max-width: 650px;
+  min-height: 650px;
+  min-width: 650px;
 }
 
 
@@ -114,7 +120,8 @@ body {
   flex: 1;
   padding: 10px;
   padding-top: 0px;
-  margin-right: 210px; /* Width of sidebar + padding */
+  margin-right: 200px; /* Width of sidebar + padding */
+  margin-left: 14px;
   overflow-y: auto;
   height: 92%;
   width: 66%;
@@ -257,7 +264,7 @@ body {
   background-position: center;
   /*border-radius: 15px; !* Rundet die Ecken des Containers ab *!*/
   overflow: hidden; /* Stellt sicher, dass der Inhalt des Containers die abgerundeten Ecken respektiert */
-  padding-left: 10px;
+  padding-left: 14px;
 }
 .causenavtabs a {
   padding: 10px 20px;
@@ -282,6 +289,42 @@ body {
   border: #333333 solid 3px;
   border-bottom: transparent;
   background-image: url("../assets/background_main.png");
+}
+
+/*Side-Navigation*/
+.sidenavtabs {
+  transform: rotate(-90deg);
+  position: absolute;
+  bottom: 132px;
+  left: -114px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.sidenavtabs a {
+  cursor: pointer;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 15px;
+  background-image: url(../assets/background_main.png);
+  border: #333333 solid 1px;
+  color: black;
+  padding-left: 2px;
+  padding-right: 2px;
+  text-decoration: none;
+}
+
+.sidenavtabs > [data-tab].active {
+  text-shadow: 0 0 2px beige ;
+  background-color: rgba(100, 100, 100, 0.3);
+  border: #333333 solid 3px;
+  border-bottom: transparent;
+  background-image: url("../assets/background_main.png");
+}
+
+.sidenavtabs a:hover {
+  background-color: #ddd;
+  text-shadow: 0 0 3px beige;
 }
 
 /* Skills */
@@ -660,9 +703,11 @@ body {
 
 
 /* Inventory */
+/* Alt Inventory
 .inventory-container {
   padding: 10px;
   box-sizing: border-box;
+  margin-left: 15px;
 }
 
 .inventory-header h2 {
@@ -689,7 +734,7 @@ body {
 }
 
 .inventory-item {
-  flex: 1 1 calc(33.333% - 10px); /* Three items per row with gap */
+  flex: 1 1 calc(33.333% - 10px);
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
@@ -707,6 +752,92 @@ body {
   border: 1px solid #ccc;
   height: 100%;
   width: 66%;
+}*/
+
+.inventorycontent {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.equipped-box {
+  height: 300px;
+}
+
+.invweaponbox {
+  width: 128px;
+  height: 64px;
+  border: 1px solid #2e2e2e;
+}
+
+.invweaponbox1 {
+  position: absolute;
+}
+
+.invweaponbox2 {
+  position: absolute;
+  top: 195px;
+}
+
+.invweaponbox3 {
+  position: absolute;
+  top: 297px;
+}
+
+.invarmorbox {
+  width: 128px;
+  height: 256px;
+  border: 1px solid #2e2e2e;
+}
+
+.invarmorbox1 {
+  position: absolute;
+  left: 294px;
+}
+
+.weapons-armor-section {
+  display: flex;
+  justify-content: space-between;
+  height: 200px; /* Freihalten der ersten 80% des Platzes */
+}
+
+.weapon-list {
+  width: 50%;
+}
+
+.waimg {
+  position:absolute;
+  scale: 0.8;
+  top: 38px;
+  left: 35px;
+  border: none;
+}
+
+.item-list-box {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  border: 1px solid #ccc;
+  padding: 2px;
+}
+
+.item-list-box div:hover {
+  background-color: #007bff;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+
+.item-name {
+  flex: 1;
+}
+
+.item-edit, .item-delete {
+  margin-left: 10px;
+  width: 10px;
 }
 
 /* Weapon-Sheet Classes*/

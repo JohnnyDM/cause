@@ -6,9 +6,9 @@ export default class CauseItemSheet extends ItemSheet {
       height: 370,
       tabs: [
         {
-          navSelector: '.sheet-tabs',
-          contentSelector: '.sheet-body',
-          initial: 'description',
+          navSelector: '.weapontabs',
+          contentSelector: '.weaponcontent',
+          initial: 'desc',
         },
       ],
     });

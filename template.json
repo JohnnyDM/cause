@@ -37,88 +37,104 @@
             "value": 0
           }
         },
-          "skills": [],
-          "weaponskills1": {
-            "type": "",
-            "level": 0,
-            "img": ""
+        "favslots": {
+          "weaponslots": {
+            "mainweapon": { "name": "Main-Weapon", "weaponType": "", "concealment": "", "img": ""  },
+            "sideweapon": { "name": "Side-Weapon", "weaponType": "", "concealment": "", "img": ""  },
+            "meleeweapon": { "name": "Melee-Weapon", "weaponType": "", "concealment": "", "img": ""  }
           },
-          "weaponskills2": {
-            "type": "",
-            "level": 0,
-            "img": ""
-          },
-          "weaponskills3": {
-            "type": "",
-            "level": 0,
-            "img": ""
-          },
-          "coreskill1": {
+          "coreslots": [],
+          "skillslots": [],
+          "toolslots": {
+            "tool1": {  },
+            "tool2": {  },
+            "tool3": {  },
+            "tool4": {  },
+            "tool5": {  }
+          }
+        },
+        "skills": [],
+        "weaponskills1": {
+          "type": "",
+          "level": 0,
+          "img": ""
+        },
+        "weaponskills2": {
+          "type": "",
+          "level": 0,
+          "img": ""
+        },
+        "weaponskills3": {
+          "type": "",
+          "level": 0,
+          "img": ""
+        },
+        "coreskill1": {
           "type": "",
           "level": 0,
           "stat": "",
           "img": ""
-          },
-          "coreskill2": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill3": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill4": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill5": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill6": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill7": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill8": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "bonds": {
-            "bond1": { "name": "", "relation": "", "points": 0 },
-            "bond2": { "name": "", "relation": "", "points": 0 },
-            "bond3": { "name": "", "relation": "", "points": 0 },
-            "bond4": { "name": "", "relation": "", "points": 0 }
-          },
-          "fears": {
-            "fear1": { "name": "" },
-            "fear2": { "name": "" },
-            "fear3": { "name": "" },
-            "fear4": { "name": "" }
-          },
-          "wishes": {
-            "wish1": { "name": "" },
-            "wish2": { "name": "" },
-            "wish3": { "name": "" },
-            "wish4": { "name": "" }
-          }
+        },
+        "coreskill2": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill3": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill4": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill5": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill6": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill7": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "coreskill8": {
+          "type": "",
+          "level": 0,
+          "stat": "",
+          "img": ""
+        },
+        "bonds": {
+          "bond1": { "name": "", "relation": "", "points": 0 },
+          "bond2": { "name": "", "relation": "", "points": 0 },
+          "bond3": { "name": "", "relation": "", "points": 0 },
+          "bond4": { "name": "", "relation": "", "points": 0 }
+        },
+        "fears": {
+          "fear1": { "name": "" },
+          "fear2": { "name": "" },
+          "fear3": { "name": "" },
+          "fear4": { "name": "" }
+        },
+        "wishes": {
+          "wish1": { "name": "" },
+          "wish2": { "name": "" },
+          "wish3": { "name": "" },
+          "wish4": { "name": "" }
+        }
       },
       "npc": {
         "templates": ["base"],

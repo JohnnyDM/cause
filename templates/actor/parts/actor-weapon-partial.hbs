@@ -1,0 +1,46 @@
+<div class="equipped-box">
+    <img src="systems/cause/assets/inventory/man.png" class="waimg"/>
+    <div class="invweaponbox1 weapondropbox" data-drop-target="invweaponbox1">
+      <span>{{system.favslots.weaponslots.mainweapon.name.value}}</span>
+      <div class="invweaponbox"></div>
+    </div>
+    <div class="invweaponbox2 weapondropbox" data-drop-target="invweaponbox2">
+      <span>Side Weapon</span>
+      <div class="invweaponbox"></div>
+    </div>
+    <div class="invweaponbox3 weapondropbox" data-drop-target="invweaponbox3">
+      <span>Melee Weapon</span>
+      <div class="invweaponbox"></div>
+    </div>
+    <div class="invarmorbox1">
+      <span>Armor</span>
+      <div class="invarmorbox"></div>
+    </div>
+</div>
+
+<div class="weapons-armor-section">
+    <div class="weapons-list">
+    <h2>Weapons</h2>
+    <div class="item-list-box">
+        {{#each weapon}}
+        <div class="item-row" draggable="true" data-item-id="{{this._id}}">
+            <span class="item-name">{{this.name}}</span>
+            <span class="item-edit"><i class="fas fa-edit"></i></span>
+            <span class="item-delete"><i class="fas fa-trash"></i></span>
+        </div>
+        {{/each}}
+    </div>
+    </div>
+    <div class="armor-list">
+    <h2>Armors</h2>
+    <div class="item-list-box">
+        {{#each items.armors}}
+        <div class="item-row" draggable="true">
+            <span class="item-name">{{this.name}}</span>
+            <span class="item-edit"><i class="fas fa-edit"></i></span>
+            <span class="item-delete"><i class="fas fa-trash"></i></span>
+        </div>
+        {{/each}}
+    </div>
+    </div>
+</div>
