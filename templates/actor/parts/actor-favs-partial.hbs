@@ -1,0 +1,45 @@
+<div class="favs-container">
+  <div class="favs-section favs-section-top-left">
+    <h2>Weapons</h2>
+    <div class="favs-list">
+      {{#each system.favslots.weaponslots}}
+      <div class="favs-item">
+        <span class="favs-name">{{this.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-top-right">
+    <h2>Core Skills</h2>
+    <div class="favs-list">
+      {{#each coreSkills}}
+      <div class="favs-item">
+        <span class="favs-name">{{this.type}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-bottom-left">
+    <h2>Skills</h2>
+    <div class="favs-list">
+      {{#each system.favslots.skillslots}}
+      <div class="favs-item">
+        <span class="favs-name">{{this.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-bottom-right">
+    <h2>Tools</h2>
+    <div class="favs-list">
+      {{#each system.favslots.toolslots}}
+      <div class="favs-item">
+        <span class="favs-name">{{this.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

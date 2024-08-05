@@ -15,6 +15,11 @@ export default class CauseActorSheet extends ActorSheet {
     data.system.attributes = data.actor.system.attributes || {};
     data.system.abilities = data.actor.system.abilities || {};
 
+    const coreSkills = Object.keys(data.system)
+    .filter(key => key.startsWith('coreskill') && data.system[key].type)
+    .map(key => data.system[key]);
+
+  data.coreSkills = coreSkills;
 
     if (typeof this.pushYourLuckRollCounter === 'undefined') {
       this.pushYourLuckRollCounter = 0; 
@@ -149,10 +154,8 @@ export default class CauseActorSheet extends ActorSheet {
 
     html.find('.item-delete').click(this._onDeleteItem.bind(this));
     html.find('.item-edit').click(this._onEditItem.bind(this));
-    html.find('.delete-weaponskill').click(this._onDeleteWeaponSkill.bind(this));
     html.find('.weaponskill-level').change(this._onWeaponSkillLevelChange.bind(this));
 
-    html.find('.delete-coreskill').click(this._onDeleteCoreSkill.bind(this));
     html.find('.coreskill-level').change(this._onCoreSkillLevelChange.bind(this));
     html.find('.coreskill-box').click(event => {
       if (!$(event.currentTarget).hasClass('selected')) {
@@ -165,7 +168,18 @@ export default class CauseActorSheet extends ActorSheet {
         this._onHoverOut.bind(this)
     )
 
-    html.find('.coreskill-name').click(this._rollCoreSkill.bind(this));
+    html.find('.coreskill-name').click(event => {
+      if (event.shiftKey) {
+        this._onDeleteCoreSkill(event);
+      } else {
+        this._rollCoreSkill(event);
+      }
+    });
+    html.find('.weaponskill-name').click(event => {
+      if (event.shiftKey) {
+        this._onDeleteWeaponSkill(event);
+      }
+    });
 
     html.find('.add-skill').contextmenu(event => {
       event.preventDefault();
@@ -174,33 +188,33 @@ export default class CauseActorSheet extends ActorSheet {
 
     html.find('.item-row').each((index, element) => {
       element.draggable = true;
-      element.addEventListener('dragstart', this._onDragStart.bind(this));
+      element.addEventListener('dragstart', this._onDragStartGear.bind(this));
     });
     html.find('.weapondropbox').each((index, element) => {
-      element.addEventListener('dragover', this._onDragOver.bind(this));
-      element.addEventListener('drop', this._onDrop.bind(this));
+      element.addEventListener('dragover', this._onDragOverGear.bind(this));
+      element.addEventListener('drop', this._onDropGear.bind(this));
     });
   }
 
-  _onDragStart(event) {
+  _onDragStartGear(event) {
     const itemId = event.currentTarget.dataset.itemId;
     event.dataTransfer.setData('text/plain', itemId);
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  _onDragOver(event) {
+  _onDragOverGear(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }
 
-  _onDrop(event) {
+  _onDropGear(event) {
     event.preventDefault();
     const itemId = event.dataTransfer.getData('text/plain');
     const dropTargetId = event.currentTarget.dataset.dropTarget;
-    this._handleItemDrop(itemId, dropTargetId);
+    this._handleItemDropGear(itemId, dropTargetId);
   }
 
-  _handleItemDrop(itemId, dropTargetId) {
+  _handleItemDropGear(itemId, dropTargetId) {
     const actor = this.actor;
     const item = actor.items.get(itemId);
     if (!item) {
@@ -224,7 +238,9 @@ export default class CauseActorSheet extends ActorSheet {
           "Heavy Weapon"
         ];
         if (validWeaponTypes1.includes(item.system.weaponType)) {
-          actor.system.favslots.weaponslots.mainweapon.name = item.name;
+          actor.update({'system.favslots.weaponslots.mainweapon.name': item.name});
+          actor.update({'system.favslots.weaponslots.mainweapon.img': item.img});
+          actor.update({'system.favslots.weaponslots.mainweapon.weaponType': item.system.weaponType});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Main-Weapon-Slot!`);
         }
@@ -236,7 +252,9 @@ export default class CauseActorSheet extends ActorSheet {
           "Shotgun"
         ];
         if (validWeaponTypes2.includes(item.system.weaponType)) {
-          console.log("Ok");
+          actor.update({'system.favslots.weaponslots.sideweapon.name': item.name});
+          actor.update({'system.favslots.weaponslots.sideweapon.img': item.img});
+          actor.update({'system.favslots.weaponslots.sideweapon.weaponType': item.system.weaponType});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Side-Weapon-Slot!`);
         }
@@ -246,7 +264,9 @@ export default class CauseActorSheet extends ActorSheet {
           "Melee Weapon"
         ];
         if (validWeaponTypes3.includes(item.system.weaponType)) {
-          console.log("Ok");
+          actor.update({'system.favslots.weaponslots.meleeweapon.name': item.name});
+          actor.update({'system.favslots.weaponslots.meleeweapon.img': item.img});
+          actor.update({'system.favslots.weaponslots.meleeweapon.weaponType': item.system.weaponType});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Melee-Weapon-Slot!`);
         }
@@ -1494,6 +1514,10 @@ _onWeaponSkillLevelChange(event) {
 _onDeleteCoreSkill(event) {
   event.preventDefault();
   const skillSlot = event.currentTarget.dataset.skill;
+  if (!skillSlot) {
+    console.error("Skill slot is not defined in the event target.");
+    return;
+  }
   const updateData = {};
   updateData[`system.${skillSlot}`] = { 
     type: "", 

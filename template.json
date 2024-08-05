@@ -21,6 +21,9 @@
           },
           "armor": {
             "value": 0
+          },
+          "conceal": {
+            "value": 0
           }
         },
         "attributes": {
@@ -39,7 +42,7 @@
         },
         "favslots": {
           "weaponslots": {
-            "mainweapon": { "name": "Main-Weapon", "weaponType": "", "concealment": "", "img": ""  },
+            "mainweapon": { "name": "Main-Weapon", "weaponType": "", "concealment": "", "img": "systems/cause/assets/unarmed-combat.png"  },
             "sideweapon": { "name": "Side-Weapon", "weaponType": "", "concealment": "", "img": ""  },
             "meleeweapon": { "name": "Melee-Weapon", "weaponType": "", "concealment": "", "img": ""  }
           },
@@ -54,69 +57,17 @@
           }
         },
         "skills": [],
-        "weaponskills1": {
-          "type": "",
-          "level": 0,
-          "img": ""
-        },
-        "weaponskills2": {
-          "type": "",
-          "level": 0,
-          "img": ""
-        },
-        "weaponskills3": {
-          "type": "",
-          "level": 0,
-          "img": ""
-        },
-        "coreskill1": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill2": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill3": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill4": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill5": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill6": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill7": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
-        "coreskill8": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-        },
+        "weaponskills1": {  "type": "", "level": 0, "img": "" },
+        "weaponskills2": {  "type": "", "level": 0, "img": "" },
+        "weaponskills3": {  "type": "", "level": 0, "img": "" },
+        "coreskill1": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill2": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill3": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill4": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill5": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill6": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill7": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill8": { "type": "", "level": 0, "stat": "", "img": "" },
         "bonds": {
           "bond1": { "name": "", "relation": "", "points": 0 },
           "bond2": { "name": "", "relation": "", "points": 0 },
@@ -142,7 +93,7 @@
       }
     },
     "Item": {
-      "types": ["weapon", "armor", "consumable", "skill", "feature", "disorder"],
+      "types": ["weapon", "armor", "tool", "object", "feature"],
       "templates": {
         "base": {
           "description": ""
@@ -150,42 +101,21 @@
       },
       "weapon": {
         "templates": ["base"],
-        "weaponType": "pistole",
+        "weaponType": "pistol",
         "weaponLevel": "1",
         "concealment": "0"
       },
       "armor": {
-        "templates": ["base"],
-        "statMalus1": "agi",
-        "statMalus2": "str",
-        "armorLevel": "1",
-        "concealment": ""
+        "templates": ["base"]
       },
-      "consumable": {
-        "templates": ["base"],
-        "type": "",
-        "tags": "",
-        "quantity": 1
+      "tools": {
+        "templates": ["base"]
       },
-      "skill": {
-        "templates": ["base"],
-        "firearmsSkill": false,
-        "forFirearm": {
-          "pistol": "Pistol",
-          "lmg": "Light Machine Gun",
-          "shotgun": "Shotgun",
-          "assault": "Aussault Rifle",
-          "sniper": "Sniper Rifle"          
-        },
-        "skillLevel": 1
+      "object": {
+        "templates": ["base"]
       },
       "feature": {
-        "templates": ["base"],
-        "featLevel": 1
-      },
-      "disorder": {
-        "templates": ["base"],
-        "disorderLevel": 1
+        "templates": ["base"]
       }
     }
   }

@@ -1,8 +1,9 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
     
     <div class="causesidebar">
-        <div class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
-        <input type="number" class="textdescrip-side column" name="system.core.level.value" value="{{system.core.level.value}}" data-dtype="Number"/>
+        <div class="row charname">
+          <div class="column" style="width:140px; font-size:5px;"><input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/></div>
+          <div class="column" style="width:35px; margin-left: 0px;"><input type="number" class="textdescrip-side column" name="system.core.level.value" value="{{system.core.level.value}}" data-dtype="Number"/></div>
         </div>
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
         <div class="headline1-side">Attributes</div>
@@ -22,7 +23,6 @@
           <div class="textdescrip-side column"><input type="number" name="system.attributes.wit.value" value="{{system.attributes.wit.value}}" data-dtype="Number"/></div>
           <div class="textdescrip-side column"><input type="number" name="system.attributes.bra.value" value="{{system.attributes.bra.value}}" data-dtype="Number"/></div>
         </div>
-        <div class="nav-separator-line"></div>
         <div class="row">
           <div class="columnp headline3-side" data-action="rollFormpoints">Formpoints</div>
           <div class="columnp headline3-side" data-action="rollBrains">Fatigue</div>
@@ -31,22 +31,35 @@
           <div class="textdescrip-side column"><input type="number" name="system.core.formpoints.value" value="{{system.core.formpoints.value}}" data-dtype="Number" readonly/></div>
           <div class="textdescrip-side column"><input type="number" name="system.core.fatigue.value" value="{{system.core.fatigue.value}}" data-dtype="Number" readonly/></div>
         </div>
-        <div class="armor">Armor</div>
-        <div class="textdescrip-side"><input type="number" name="system.core.armor.value" value="{{system.core.armor.value}}" data-dtype="Number" readonly/></div>
+        <div class="row">
+          <div class="columnp headline3-side">Armor</div>
+          <div class="columnp headline3-side">Conceal</div>
+        </div>
+        <div class="row">
+          <div class="textdescrip-side column"><input type="number" name="system.core.armor.value" value="{{system.core.armor.value}}" data-dtype="Number" readonly/></div>
+          <div class="textdescrip-side column"><input type="number" name="system.core.conceal.value" value="{{system.core.conceal.value}}" data-dtype="Number" readonly/></div>
+        </div>
         <div class="nav-separator-line"></div>
         <div class="row">
           <div class="columnp headline4-side" data-action="rollBodySave">Body-Save</div>
           <div class="columnp headline4-side" data-action="rollMentalSave">Mental-Save</div>
         </div>
+        <div class="nav-separator-line"></div>
+        <div class="headline4-side" data-action="rollLuck">Push your Luck</div>
     </div>
 
     <nav class="causenavtabs tabs" data-group="primary">
+        <a data-tab="favs" >Favs</a>
         <a data-tab="core" >Core</a>
         <a data-tab="skills">Skills</a>
         <a data-tab="inventory">Inventory</a>
         <a data-tab="bonds">Info</a>
     </nav>
     <section class="causecontent">
+        <div data-tab="favs" data-group="primary" class="tab">
+          {{> "systems/cause/templates/actor/parts/actor-favs-partial.hbs"}}
+        </div>
+
         <div data-tab="core" data-group="primary" class="tab">
           {{> "systems/cause/templates/actor/parts/actor-core-partial.hbs"}}
         </div>
