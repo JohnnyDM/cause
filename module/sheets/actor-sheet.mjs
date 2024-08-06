@@ -1,6 +1,6 @@
 export default class CauseActorSheet extends ActorSheet {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["cause", "sheet", "actor"],
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
