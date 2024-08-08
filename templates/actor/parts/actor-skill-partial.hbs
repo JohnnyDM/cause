@@ -2,34 +2,27 @@
 <form class="skills-form">
   <div class="skills-container">
     <div class="skills">
-      {{#each system.skills}}
-      {{#if (even @index)}}
-      <div class="skill-row">
-      {{/if}}
-        <div class="skill" data-index="{{@index}}">
-          <div class="skill-name-row">
-            <span class="skill-name" data-action="rollSkill">{{this.skillname}}</span>
-            <button type="button" class="edit-skill"><i class="fas fa-edit"></i></button>
+      <div class="skill-row"> <!-- Eine umfassende Reihe für alle Skills -->
+        {{#each system.skills}}
+          <div class="skill skillroll" data-index="{{@index}}">
+            <div class="skill-name-row">
+              <span class="skill-name" data-action="rollSkill">{{this.skillname}}</span>
+              <input type="checkbox" class="toggle-star" data-skill-id="{{@key}}" {{#if this.favs}}checked{{/if}} />
+            </div>
+            <div class="skill-level-row">
+              <select class="skill-level {{this.skilllevel}}" name="skill-level" data-index="{{@index}}">
+                <option value="untrained" {{#if (eq this.skilllevel "untrained")}}selected{{/if}}>Untrained</option>
+                <option value="trained" {{#if (eq this.skilllevel "trained")}}selected{{/if}}>Trained</option>
+                <option value="expert" {{#if (eq this.skilllevel "expert")}}selected{{/if}}>Expert</option>
+                <option value="master" {{#if (eq this.skilllevel "master")}}selected{{/if}}>Master</option>
+                <option value="legendary" {{#if (eq this.skilllevel "legendary")}}selected{{/if}}>Legendary</option>
+              </select>
+              <button type="button" class="edit-skill"><i class="fas fa-edit"></i></button>
+            </div>
           </div>
-          <div class="skill-level-row">
-            <select class="skill-level {{this.skilllevel}}" name="skill-level" data-index="{{@index}}">
-              <option value="untrained" {{#if (eq this.skilllevel "untrained")}}selected{{/if}}>Untrained</option>
-              <option value="trained" {{#if (eq this.skilllevel "trained")}}selected{{/if}}>Trained</option>
-              <option value="expert" {{#if (eq this.skilllevel "expert")}}selected{{/if}}>Expert</option>
-              <option value="master" {{#if (eq this.skilllevel "master")}}selected{{/if}}>Master</option>
-              <option value="legendary" {{#if (eq this.skilllevel "legendary")}}selected{{/if}}>Legendary</option>
-            </select>
-            <button type="button" class="delete-skill"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
-      {{#if (odd @index)}}
+        {{/each}}
       </div>
-      {{/if}}
-      {{/each}}
-      {{#if (odd system.skills.length)}}
-      </div>
-      {{/if}}
     </div>
   </div>
-  <button type="button" class="add-skill">Add Skill</button>
+  <div class="add-skill-center"><span class="add-skill">Add Skill</span></div>
 </form>

@@ -34,7 +34,7 @@
       "verified": "11.315"
     },
     "esmodules": ["module/cause.mjs"],
-    "styles": ["css/cause.css"],
+    "styles": ["css/new_cause.css"],
     "packs": [],
     "packFolders": [],
     "socket": false,

@@ -21,6 +21,9 @@
           },
           "armor": {
             "value": 0
+          },
+          "conceal": {
+            "value": 10
           }
         },
         "attributes": {
@@ -37,88 +40,55 @@
             "value": 0
           }
         },
-          "skills": [],
-          "weaponskills1": {
-            "type": "",
-            "level": 0,
-            "img": ""
+        "favslots": {
+          "weaponslots": {
+            "mainweapon": { "name": "Main-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  },
+            "sideweapon": { "name": "Side-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  },
+            "meleeweapon": { "name": "Melee-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  }
           },
-          "weaponskills2": {
-            "type": "",
-            "level": 0,
-            "img": ""
+          "armorslot": {
+            "name": "Armor-Slot",
+            "img": "systems/cause/assets/blank-black.png",
+            "conceal": 0
           },
-          "weaponskills3": {
-            "type": "",
-            "level": 0,
-            "img": ""
-          },
-          "coreskill1": {
-          "type": "",
-          "level": 0,
-          "stat": "",
-          "img": ""
-          },
-          "coreskill2": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill3": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill4": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill5": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill6": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill7": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "coreskill8": {
-              "type": "",
-              "level": 0,
-              "stat": "",
-              "img": ""
-          },
-          "bonds": {
-            "bond1": { "name": "", "relation": "", "points": 0 },
-            "bond2": { "name": "", "relation": "", "points": 0 },
-            "bond3": { "name": "", "relation": "", "points": 0 },
-            "bond4": { "name": "", "relation": "", "points": 0 }
-          },
-          "fears": {
-            "fear1": { "name": "" },
-            "fear2": { "name": "" },
-            "fear3": { "name": "" },
-            "fear4": { "name": "" }
-          },
-          "wishes": {
-            "wish1": { "name": "" },
-            "wish2": { "name": "" },
-            "wish3": { "name": "" },
-            "wish4": { "name": "" }
+          "toolslots": {
+            "tool1": {  },
+            "tool2": {  },
+            "tool3": {  },
+            "tool4": {  },
+            "tool5": {  }
           }
+        },
+        "skills": [],
+        "weaponskills1": {  "type": "", "level": 0, "img": "" },
+        "weaponskills2": {  "type": "", "level": 0, "img": "" },
+        "weaponskills3": {  "type": "", "level": 0, "img": "" },
+        "coreskill1": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill2": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill3": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill4": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill5": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill6": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill7": { "type": "", "level": 0, "stat": "", "img": "" },
+        "coreskill8": { "type": "", "level": 0, "stat": "", "img": "" },
+        "bonds": {
+          "bond1": { "name": "", "relation": "", "points": 0 },
+          "bond2": { "name": "", "relation": "", "points": 0 },
+          "bond3": { "name": "", "relation": "", "points": 0 },
+          "bond4": { "name": "", "relation": "", "points": 0 }
+        },
+        "fears": {
+          "fear1": { "name": "" },
+          "fear2": { "name": "" },
+          "fear3": { "name": "" },
+          "fear4": { "name": "" }
+        },
+        "wishes": {
+          "wish1": { "name": "" },
+          "wish2": { "name": "" },
+          "wish3": { "name": "" },
+          "wish4": { "name": "" }
+        }
       },
       "npc": {
         "templates": ["base"],
@@ -126,7 +96,7 @@
       }
     },
     "Item": {
-      "types": ["weapon", "armor", "consumable", "skill", "feature", "disorder"],
+      "types": ["weapon", "armor", "tool", "object", "feature"],
       "templates": {
         "base": {
           "description": ""
@@ -134,42 +104,23 @@
       },
       "weapon": {
         "templates": ["base"],
-        "weaponType": "pistole",
+        "weaponType": "pistol",
         "weaponLevel": "1",
-        "concealment": "0"
+        "concealment": 0
       },
       "armor": {
         "templates": ["base"],
-        "statMalus1": "agi",
-        "statMalus2": "str",
-        "armorLevel": "1",
-        "concealment": ""
+        "armorlevel": 0,
+        "concealment": 0
       },
-      "consumable": {
-        "templates": ["base"],
-        "type": "",
-        "tags": "",
-        "quantity": 1
+      "tools": {
+        "templates": ["base"]
       },
-      "skill": {
-        "templates": ["base"],
-        "firearmsSkill": false,
-        "forFirearm": {
-          "pistol": "Pistol",
-          "lmg": "Light Machine Gun",
-          "shotgun": "Shotgun",
-          "assault": "Aussault Rifle",
-          "sniper": "Sniper Rifle"          
-        },
-        "skillLevel": 1
+      "object": {
+        "templates": ["base"]
       },
       "feature": {
-        "templates": ["base"],
-        "featLevel": 1
-      },
-      "disorder": {
-        "templates": ["base"],
-        "disorderLevel": 1
+        "templates": ["base"]
       }
     }
   }

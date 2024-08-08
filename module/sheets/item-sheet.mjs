@@ -6,9 +6,9 @@ export default class CauseItemSheet extends ItemSheet {
       height: 370,
       tabs: [
         {
-          navSelector: '.sheet-tabs',
-          contentSelector: '.sheet-body',
-          initial: 'description',
+          navSelector: '.weapontabs',
+          contentSelector: '.weaponcontent',
+          initial: 'desc',
         },
       ],
     });
@@ -37,16 +37,6 @@ export default class CauseItemSheet extends ItemSheet {
 
   activateListeners(html) {
     super.activateListeners(html);
-    html.find('.tab-buttons li').click(this._onTabClick.bind(this));
-  }
-
-  _onTabClick(event) {
-    event.preventDefault();
-    const tab = $(event.currentTarget).data('tab');
-    this.element.find('.tab-buttons li').removeClass('active');
-    this.element.find('.tab-content').removeClass('active');
-    this.element.find(`.tab-buttons li[data-tab="${tab}"]`).addClass('active');
-    this.element.find(`#${tab}`).addClass('active');
   }
 }
 

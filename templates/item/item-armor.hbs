@@ -1,0 +1,26 @@
+<form class="item-sheet weapon-sheet" autocomplete="off">
+  <div class="weaponname"><input name="name" type="text" value="{{item.name}}" placeholder="Weapon Name"/>
+  <div class="image-container">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="256"/>
+  </div>
+  <nav class="weapontabs tabs" data-group="primary">
+    <a data-tab="desc" >Description</a>
+    <a data-tab="details">Details</a>
+  </nav>
+  <section class="weaponcontent">
+    <div data-tab="desc" data-group="primary" class="tab weapontab">
+      <textarea name="system.description" class="description">{{system.description}}</textarea>
+    </div>
+
+    <div data-tab="details" data-group="primary" class="tab weapontab">
+      <div class="form-group">
+        <label>Armor-Level</label>
+        <input type="number" name="system.armorlevel" value="{{system.armorlevel}}">
+      </div>
+      <div class="form-group">
+        <label>Concealment</label>
+        <input type="number" name="system.concealment" value="{{system.concealment}}">
+      </div>
+    </div>
+  </section>
+</form>
