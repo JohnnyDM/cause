@@ -23,7 +23,7 @@
             "value": 0
           },
           "conceal": {
-            "value": 0
+            "value": 10
           }
         },
         "attributes": {
@@ -42,12 +42,15 @@
         },
         "favslots": {
           "weaponslots": {
-            "mainweapon": { "name": "Main-Weapon", "weaponType": "", "concealment": "", "img": "systems/cause/assets/unarmed-combat.png"  },
-            "sideweapon": { "name": "Side-Weapon", "weaponType": "", "concealment": "", "img": ""  },
-            "meleeweapon": { "name": "Melee-Weapon", "weaponType": "", "concealment": "", "img": ""  }
+            "mainweapon": { "name": "Main-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  },
+            "sideweapon": { "name": "Side-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  },
+            "meleeweapon": { "name": "Melee-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/blank-black.png"  }
           },
-          "coreslots": [],
-          "skillslots": [],
+          "armorslot": {
+            "name": "Armor-Slot",
+            "img": "systems/cause/assets/blank-black.png",
+            "conceal": 0
+          },
           "toolslots": {
             "tool1": {  },
             "tool2": {  },
@@ -103,10 +106,12 @@
         "templates": ["base"],
         "weaponType": "pistol",
         "weaponLevel": "1",
-        "concealment": "0"
+        "concealment": 0
       },
       "armor": {
-        "templates": ["base"]
+        "templates": ["base"],
+        "armorlevel": 0,
+        "concealment": 0
       },
       "tools": {
         "templates": ["base"]

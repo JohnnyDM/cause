@@ -5,7 +5,7 @@ export default class CauseActorSheet extends ActorSheet {
       template: "systems/cause/templates/actor/actor-character-sheet.hbs",
       width: 650,
       height: 650,
-      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "core" }, { navSelector: ".sidenavtabs", contentSelector: ".inventorycontent", initial: "weapons" }]
+      tabs: [{ navSelector: ".causenavtabs", contentSelector: ".causecontent", initial: "favs" }, { navSelector: ".sidenavtabs", contentSelector: ".inventorycontent", initial: "weapons" }]
     });
   }
 
@@ -79,7 +79,7 @@ export default class CauseActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     html.find('input, select').change(event => this._onChangeInput(event));
-
+    html.find('.remove-fav').click(this._onRemoveFav.bind(this));
     html.find('[data-action="rollStrength"]').click(this._onRollStrength.bind(this));
     html.find('[data-action="rollAgility"]').click(this._onRollAgility.bind(this));
     html.find('[data-action="rollWits"]').click(this._onRollWits.bind(this));
@@ -89,27 +89,36 @@ export default class CauseActorSheet extends ActorSheet {
     html.find('[data-action="rollAgility"]').contextmenu(this._onShowBonusDialog.bind(this, 'agi'));
     html.find('[data-action="rollWits"]').contextmenu(this._onShowBonusDialog.bind(this, 'wit'));
     html.find('[data-action="rollBrains"]').contextmenu(this._onShowBonusDialog.bind(this, 'bra'));
-
+    html.find('.toggle-star').change(this._toggleSkill.bind(this));
     html.find('[data-action="rollFormpoints"]').click(this._onRollFormpoints.bind(this));
 
     Hooks.on('renderChatMessage', (app, html, data) => {
       html.find('.push-your-luck-button').click(event => this._onPushYourLuck(event));
   });
 
-  html.find('.item-name').contextmenu(event => {
-    const itemId = $(event.currentTarget).closest('.item').data('item-id');
+  html.find('.favs-name-weapon').contextmenu(event => {
+    const element = event.currentTarget.closest('.favs-item');
+    const slotType = element.dataset.slotType;
+    const weapon = this.actor.system.favslots.weaponslots[slotType];
+    const itemId = weapon.itemID;
     this._onShowWeaponBonusDialog(itemId, event);
   });
     html.on('click', '.item-create', this._onItemCreate.bind(this));
-    html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
+    //html.find('[data-action="rollSkill"]').click(this._onRollSkill.bind(this));
     html.find('.add-skill').click(this._onAddSkill.bind(this));
     html.find('.edit-skill').click(this._onEditSkill.bind(this));
-    html.find('.delete-skill').click(this._onDeleteSkill.bind(this));
+    //html.find('.delete-skill').click(this._onDeleteSkill.bind(this));
+    html.find('[data-action="rollSkill"]').click(event => {
+      if (event.shiftKey) {
+        this._onDeleteSkill(event);
+      } else {
+        this._onRollSkill(event);
+      }
+    });
     html.find('.skill-level').change(this._onSkillLevelChange.bind(this));
     html.find('.skill-stat').change(this._onSkillStatChange.bind(this));
     html.find('#save-skill').click(this._onSaveSkill.bind(this));
-    html.find('.weapon-roll').click(this._onWeaponRoll.bind(this));
-
+    html.find('.favs-name-weapon').click(this._onWeaponRoll.bind(this));
     html.find('.skill-level').each((index, element) => {
       this._updateSkillLevelColor(element);
     });
@@ -143,9 +152,19 @@ export default class CauseActorSheet extends ActorSheet {
       this._onShowSkillBonusDialog(skill, skill.stat, event);
   });
 
-  html.find('.skill-name').contextmenu(event => {
+  html.find('.favs-name-core').contextmenu(event => {
     event.preventDefault();
-    const skillSlot = $(event.currentTarget).closest('.skill').data('index');
+    const skillName = event.currentTarget.textContent.trim();
+    const coreSkills = Object.keys(this.actor.system)
+    .filter(key => key.startsWith('coreskill') && this.actor.system[key].type)
+    .map(key => this.actor.system[key]);
+    const skill = Object.values(coreSkills).find(s => s.type === skillName);
+    this._onShowSkillBonusDialog(skill, skill.stat, event);
+});
+
+  html.find('.skill-name, .favs-name-skill').contextmenu(event => {
+    event.preventDefault();
+    const skillSlot = $(event.currentTarget).closest('.skillroll').data('index');
     const skill = this.actor.system.skills[skillSlot];
     console.log("Skill slot:", skillSlot); 
     console.log("Skill:", skill); 
@@ -175,6 +194,7 @@ export default class CauseActorSheet extends ActorSheet {
         this._rollCoreSkill(event);
       }
     });
+    html.find('.favs-name-core').click(this._rollCoreSkillFavs.bind(this));
     html.find('.weaponskill-name').click(event => {
       if (event.shiftKey) {
         this._onDeleteWeaponSkill(event);
@@ -190,7 +210,7 @@ export default class CauseActorSheet extends ActorSheet {
       element.draggable = true;
       element.addEventListener('dragstart', this._onDragStartGear.bind(this));
     });
-    html.find('.weapondropbox').each((index, element) => {
+    html.find('.weapondropbox, .armordropbox').each((index, element) => {
       element.addEventListener('dragover', this._onDragOverGear.bind(this));
       element.addEventListener('drop', this._onDropGear.bind(this));
     });
@@ -201,6 +221,50 @@ export default class CauseActorSheet extends ActorSheet {
     event.dataTransfer.setData('text/plain', itemId);
     event.dataTransfer.effectAllowed = 'move';
   }
+
+  _toggleSkill(event) {
+    const skillId = event.currentTarget.dataset.skillId;
+    const isChecked = event.currentTarget.checked;
+
+    const skillKey = `system.skills.${skillId}.favs`;
+    this.actor.update({ [skillKey]: isChecked });
+}
+
+_onRemoveFav(event) {
+  event.preventDefault();
+  const actor = this.actor;
+  const slot = event.currentTarget.dataset.slot;
+  const updateData = {};
+  
+  switch(slot) {
+      case 'mainweapon':
+        actor.update({'system.core.conceal.value': actor.system.core.conceal.value + actor.system.favslots.weaponslots.mainweapon.conceal});
+        updateData[`system.favslots.weaponslots.${slot}`] = { name: "Main-Weapon", img: "systems/cause/assets/blank-black.png" };
+        break;
+      case 'sideweapon':
+        actor.update({'system.core.conceal.value': actor.system.core.conceal.value + actor.system.favslots.weaponslots.sideweapon.conceal});
+        updateData[`system.favslots.weaponslots.${slot}`] = { name: "Side-Weapon", img: "systems/cause/assets/blank-black.png" };
+        break;
+      case 'meleeweapon':
+        actor.update({'system.core.conceal.value': actor.system.core.conceal.value + actor.system.favslots.weaponslots.meleeweapon.conceal});
+        updateData[`system.favslots.weaponslots.${slot}`] = { name: "Melee-Weapon", img: "systems/cause/assets/blank-black.png" };
+        break;
+      case 'armorslot':
+        actor.update({'system.core.conceal.value': actor.system.core.conceal.value + actor.system.favslots.armorslot.conceal});
+        updateData['system.favslots.armorslot'] = { name: "Armor-Slot", img: "systems/cause/assets/blank-black.png" };
+        actor.update({'system.core.armor.value': 0});
+        break;
+      default:
+        console.error("Unknown slot:", slot);
+        return;
+  }
+
+  this.actor.update(updateData).then(() => {
+      console.log(`Cleared slot: ${slot}`);
+  }).catch(error => {
+      console.error("Error clearing slot:", error);
+  });
+}
 
   _onDragOverGear(event) {
     event.preventDefault();
@@ -240,7 +304,9 @@ export default class CauseActorSheet extends ActorSheet {
         if (validWeaponTypes1.includes(item.system.weaponType)) {
           actor.update({'system.favslots.weaponslots.mainweapon.name': item.name});
           actor.update({'system.favslots.weaponslots.mainweapon.img': item.img});
-          actor.update({'system.favslots.weaponslots.mainweapon.weaponType': item.system.weaponType});
+          actor.update({'system.favslots.weaponslots.mainweapon.itemID': itemId});
+          actor.update({'system.core.conceal.value': actor.system.core.conceal.value - item.system.concealment});
+          actor.update({'system.favslots.weaponslots.mainweapon.conceal': item.system.concealment});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Main-Weapon-Slot!`);
         }
@@ -254,7 +320,9 @@ export default class CauseActorSheet extends ActorSheet {
         if (validWeaponTypes2.includes(item.system.weaponType)) {
           actor.update({'system.favslots.weaponslots.sideweapon.name': item.name});
           actor.update({'system.favslots.weaponslots.sideweapon.img': item.img});
-          actor.update({'system.favslots.weaponslots.sideweapon.weaponType': item.system.weaponType});
+          actor.update({'system.favslots.weaponslots.sideweapon.itemID': itemId});
+          actor.update({'system.core.conceal.value': actor.system.core.conceal.value - item.system.concealment});
+          actor.update({'system.favslots.weaponslots.sideweapon.conceal': item.system.concealment});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Side-Weapon-Slot!`);
         }
@@ -266,12 +334,23 @@ export default class CauseActorSheet extends ActorSheet {
         if (validWeaponTypes3.includes(item.system.weaponType)) {
           actor.update({'system.favslots.weaponslots.meleeweapon.name': item.name});
           actor.update({'system.favslots.weaponslots.meleeweapon.img': item.img});
-          actor.update({'system.favslots.weaponslots.meleeweapon.weaponType': item.system.weaponType});
+          actor.update({'system.favslots.weaponslots.meleeweapon.itemID': itemId});
+          actor.update({'system.core.conceal.value': actor.system.core.conceal.value - item.system.concealment});
+          actor.update({'system.favslots.weaponslots.meleeweapon.conceal': item.system.concealment});
         } else {
           ui.notifications.warn(`You can't use weapons with Type "${item.system.weaponType}" in the Melee-Weapon-Slot!`);
         }
         break;
-      case 'invarmorweaponbox':
+      case 'invarmorbox':
+        if (!item.system.weaponType) {
+          actor.update({'system.favslots.armorslot.name': item.name});
+          actor.update({'system.favslots.armorslot.img': item.img});
+          actor.update({'system.core.armor.value': item.system.armorlevel});
+          actor.update({'system.core.conceal.value': actor.system.core.conceal.value - item.system.concealment});
+          actor.update({'system.favslots.armorslot.conceal': item.system.concealment});
+        } else {
+          ui.notifications.warn(`You can't use weapons inside the Armor-Slot!`);
+        }
         break;
     }
   }
@@ -340,7 +419,8 @@ export default class CauseActorSheet extends ActorSheet {
                     skillname: event.currentTarget.dataset.skill,
                     description: '',
                     skilllevel: 'untrained',
-                    stat: event.currentTarget.dataset.stat
+                    stat: event.currentTarget.dataset.stat,
+                    favs: false
                 };
                 console.log("Selected skill:", selectedSkill);
 
@@ -358,7 +438,8 @@ export default class CauseActorSheet extends ActorSheet {
                     skillname: selectedSkill.skillname,
                     description: selectedSkill.description,
                     skilllevel: selectedSkill.skilllevel,
-                    stat: selectedSkill.stat
+                    stat: selectedSkill.stat,
+                    favs: false
                 };
 
                 const newSkillsObj = {};
@@ -578,50 +659,77 @@ _onHoverOut(event) {
 
 async _onWeaponRoll(event) {
   event.preventDefault();
-  const itemId = event.currentTarget.dataset.itemId;
-  const item = this.actor.items.get(itemId);
-  const weaponType = item.system.weaponType;
-  const weaponLevel = parseInt(item.system.weaponLevel) || 0;
+  const element = event.currentTarget.closest('.favs-item');
+  const slotType = element.dataset.slotType;
+  console.log(`ItemID: ${this.actor.system.favslots.weaponslots.sideweapon.itemID}`);
+  console.log(`Slot type clicked: ${slotType}`);
+  
+  const weapon = this.actor.system.favslots.weaponslots[slotType];
 
-  const weaponSkills = [this.actor.system.weaponskills1, this.actor.system.weaponskills2];
-  const matchingSkill = weaponSkills.find(skill => skill.type.toLowerCase() === weaponType.toLowerCase());
-
-  if (!matchingSkill) {
-    ui.notifications.warn(`No matching Weaponskill found for weapon type: ${weaponType}`);
+  if (!weapon) {
+    console.error(`Weapon not found for slot type: ${slotType}`);
     return;
   }
 
+  const itemId = weapon.itemID;
+
+  if (!itemId) {
+    console.error(`Item ID not found for weapon in slot type: ${slotType}`);
+    return;
+  }
+
+  console.log(`Item ID for weapon in slot type ${slotType}: ${itemId}`);
+
+  const item = this.actor.items.get(itemId);
+
+  if (!item) {
+    console.error(`Item not found for item ID: ${itemId}`);
+    return;
+  }
+
+  console.log(`Item found: ${item.name}`);
+
+  const weaponType = item.system.weaponType;
+  const weaponLevel = parseInt(item.system.weaponLevel) || 0;
+
+  console.log(`Weapon Type: ${weaponType}, Weapon Level: ${weaponLevel}`);
+
+  const weaponSkills = [this.actor.system.weaponskills1, this.actor.system.weaponskills2, this.actor.system.weaponskills3];
+  const matchingSkill = weaponSkills.find(skill => skill.type.toLowerCase() === weaponType.toLowerCase());
+
   let skillLevel;
-  switch (matchingSkill.level) {
-    case 'trained': skillLevel = 4; break;
-    case 'expert': skillLevel = 6; break;
-    case 'master': skillLevel = 8; break;
-    case 'legendary': skillLevel = 10; break;
-    case 'untrained':
-    default:
-      skillLevel = 2; break;
-  }
-
   const characterLevel = this.actor.system.core.level.value || 0;
-
   let bonusDice = 0;
-  if (characterLevel >= 1 && characterLevel <= 3) {
-    bonusDice = 1;
-  } else if (characterLevel >= 4 && characterLevel <= 6) {
-    bonusDice = 2;
-  } else if (characterLevel >= 7 && characterLevel <= 9) {
-    bonusDice = 3;
-  } else if (characterLevel >= 10 && characterLevel <= 12) {
-    bonusDice = 4;
-  } else if (characterLevel >= 13 && characterLevel <= 15) {
-    bonusDice = 5;
-  }
+  if (!matchingSkill) {
+    skillLevel = 0;
+  } else {
+    switch (matchingSkill.level) {
+      case 'trained': skillLevel = 4; break;
+      case 'expert': skillLevel = 6; break;
+      case 'master': skillLevel = 8; break;
+      case 'legendary': skillLevel = 10; break;
+      case 'untrained':
+      default:
+        skillLevel = 2; break;
+    }
+    if (characterLevel >= 1 && characterLevel <= 3) {
+      bonusDice = 1;
+    } else if (characterLevel >= 4 && characterLevel <= 6) {
+      bonusDice = 2;
+    } else if (characterLevel >= 7 && characterLevel <= 9) {
+      bonusDice = 3;
+    } else if (characterLevel >= 10 && characterLevel <= 12) {
+      bonusDice = 4;
+    } else if (characterLevel >= 13 && characterLevel <= 15) {
+      bonusDice = 5;
+    }
+  }  
 
   const strength = this.actor.system.attributes.str.value || 0;
   const agility = this.actor.system.attributes.agi.value || 0;
-  const higherStat = Math.floor(Math.max(strength, agility) / 2);
+  const comboStat = Math.floor((Number(strength) + Number(agility)) / 2);
 
-  const totalDice = skillLevel + weaponLevel + bonusDice + higherStat;
+  const totalDice = skillLevel + weaponLevel + bonusDice + comboStat;
 
   const rollFormula = `${totalDice}d6cs>=4df=1x=6cs>=4df=1`;
   const roll = new Roll(rollFormula);
@@ -701,15 +809,20 @@ async _onWeaponRoll(event) {
 
 _prepareItems(data) {
   const weapon = [];
+  const armor = [];
 
   for (let i of data.items) {
     i.img = i.img || DEFAULT_TOKEN;
     if (i.type === 'weapon') {
       weapon.push(i);
     }
+    if (i.type === 'armor') {
+      armor.push(i);
+    }
   }
 
   data.weapon = weapon;
+  data.armor = armor;
 }
 
 _onChangeInput(event) {
@@ -845,15 +958,18 @@ async _onItemCreate(event) {
         console.error("Fehler beim Würfeln:", error);
     });
 }
+
 _onPushYourLuck(event) {
   event.preventDefault();
   const button = event.currentTarget;
 
+  // Disable the button to prevent multiple clicks
   button.disabled = true;
 
   const rollId = button.dataset.rollId;
   const originalResult = parseInt(button.dataset.originalResult, 10);
 
+  // Find the original chat message using the rollId
   const originalMessage = game.messages.find(msg => msg.flags.rollId === rollId);
 
   if (!originalMessage) {
@@ -862,8 +978,9 @@ _onPushYourLuck(event) {
       return;
   }
 
+  // Perform the roll
   const roll = new Roll('10d6cs>=4df<=3');
-  roll.roll({async: true}).then(result => {
+  roll.evaluate({ async: true }).then(result => {
       let successes = 0;
       let failures = 0;
 
@@ -912,6 +1029,7 @@ _onPushYourLuck(event) {
           <div class="result-total">Total Result: ${newTotalResult}</div>
       `;
 
+      // Show the roll with Dice So Nice and then update the original message
       game.dice3d?.showForRoll(roll, game.user, true).then(() => {
           const originalContent = originalMessage.content;
 
@@ -935,6 +1053,8 @@ _onPushYourLuck(event) {
       button.disabled = false;  
   });
 }
+
+
 
   _onShowBonusDialog(attr, event) {
     event.preventDefault();
@@ -1081,40 +1201,37 @@ _onPushYourLuck(event) {
     const weaponSkills = [this.actor.system.weaponskills1, this.actor.system.weaponskills2];
     const matchingSkill = weaponSkills.find(skill => skill.type.toLowerCase() === weaponType.toLowerCase());
   
-    if (!matchingSkill) {
-      ui.notifications.warn(`No matching Weaponskill found for weapon type: ${weaponType}`);
-      return;
-    }
-  
     let skillLevel;
-    switch (matchingSkill.level) {
-      case 'trained': skillLevel = 4; break;
-      case 'expert': skillLevel = 6; break;
-      case 'master': skillLevel = 8; break;
-      case 'legendary': skillLevel = 10; break;
-      case 'untrained':
-      default:
-        skillLevel = 2; break;
-    }
-  
     const characterLevel = this.actor.system.core.level.value || 0;
-  
     let levelBonusDice = 0;
-    if (characterLevel >= 1 && characterLevel <= 3) {
-      levelBonusDice = 1;
-    } else if (characterLevel >= 4 && characterLevel <= 6) {
-      levelBonusDice = 2;
-    } else if (characterLevel >= 7 && characterLevel <= 9) {
-      levelBonusDice = 3;
-    } else if (characterLevel >= 10 && characterLevel <= 12) {
-      levelBonusDice = 4;
-    } else if (characterLevel >= 13 && characterLevel <= 15) {
-      levelBonusDice = 5;
+    if (!matchingSkill) {
+      skillLevel = 0;
+    } else {
+      switch (matchingSkill.level) {
+        case 'trained': skillLevel = 4; break;
+        case 'expert': skillLevel = 6; break;
+        case 'master': skillLevel = 8; break;
+        case 'legendary': skillLevel = 10; break;
+        case 'untrained':
+        default:
+          skillLevel = 2; break;
+      }
+      if (characterLevel >= 1 && characterLevel <= 3) {
+        levelBonusDice = 1;
+      } else if (characterLevel >= 4 && characterLevel <= 6) {
+        levelBonusDice = 2;
+      } else if (characterLevel >= 7 && characterLevel <= 9) {
+        levelBonusDice = 3;
+      } else if (characterLevel >= 10 && characterLevel <= 12) {
+        levelBonusDice = 4;
+      } else if (characterLevel >= 13 && characterLevel <= 15) {
+        levelBonusDice = 5;
+      }
     }
   
     const strength = this.actor.system.attributes.str.value || 0;
     const agility = this.actor.system.attributes.agi.value || 0;
-    const statBonusDice = Math.floor(Math.max(strength, agility) / 2);
+    const statBonusDice = Math.floor(Number(strength) + Number(agility) / 2);
   
     const totalDice = Number(skillLevel) + Number(levelBonusDice) + Number(statBonusDice) + Number(weaponLevel) + Number(bonusDice) + Number(formPoints);
   
@@ -1222,7 +1339,7 @@ _onPushYourLuck(event) {
     const skillsObj = this.actor.system.skills || {};
     const skills = Object.values(skillsObj);
 
-    skills.push({ skillname: 'New Skill', skilllevel: 'untrained', stat: 'strength', description: '', isFirearm: false, forFirearm: 'pistol' });
+    skills.push({ skillname: 'New Skill', skilllevel: 'untrained', stat: 'strength', description: '', isFirearm: false, forFirearm: 'pistol', favs: false });
 
     const newSkillsObj = {};
     skills.forEach((skill, index) => {
@@ -1234,7 +1351,7 @@ _onPushYourLuck(event) {
 
 _onRollSkill(event) {
   event.preventDefault();
-  const skillIndex = event.currentTarget.closest('.skill').dataset.index;
+  const skillIndex = event.currentTarget.closest('.skillroll').dataset.index;
   const skill = this.actor.system.skills[skillIndex];
 
   let numDice;
@@ -1751,4 +1868,122 @@ _rollCoreSkill(event) {
       console.error("Fehler beim Würfeln:", error);
   });
 }
+
+_rollCoreSkillFavs(event) {
+  event.preventDefault();
+  const skillName = event.currentTarget.textContent.trim();
+
+  // Sicherstellen, dass coreskills existieren
+  const coreskills = this.actor.system.coreskills || {};
+
+  const coreSkills = Object.keys(this.actor.system)
+  .filter(key => key.startsWith('coreskill') && this.actor.system[key].type)
+  .map(key => this.actor.system[key]);
+
+  // Überprüfen, ob es Coreskills gibt, um den Fehler zu vermeiden
+  if (Object.keys(coreSkills).length === 0) {
+    console.error("No coreskills available.");
+    return;
+  }
+
+  // Finde den Skill, dessen 'type' mit dem im Event angeklickten Namen übereinstimmt
+  const skill = Object.values(coreSkills).find(s => s.type === skillName);
+
+  if (!skill) {
+    console.error(`Skill not found: ${skillName}`);
+    return;
+  }
+
+  console.log("Found skill:", skill);
+  let numDice;
+  switch (skill.level) {
+      case 'trained': numDice = 4; break;
+      case 'expert': numDice = 6; break;
+      case 'master': numDice = 8; break;
+      case 'legendary': numDice = 10; break;
+      case 'untrained':
+      default:
+          numDice = 2; break;
+  }
+
+  const attributeValue = this.actor.system.attributes[skill.stat]?.value || 0;
+  const totalDice = numDice + Number(attributeValue);
+
+  const rollFormula = `${totalDice}d6cs>=4df1x6cs>=4df1`;
+  const roll = new Roll(rollFormula);
+
+  roll.roll({async: true}).then(result => {
+      console.log("Roll formula:", roll.formula);
+      console.log("Roll results:", roll);
+
+      const rollId = randomID();
+
+      const critSuccessImg = 'systems/cause/assets/crit_success.png';
+      const successImg = 'systems/cause/assets/success.png';
+      const failureImg = 'systems/cause/assets/failure.png';
+
+      let critSuccesses = 0;
+      let successes = 0;
+      let failures = 0;
+
+      if (roll.dice && roll.dice[0] && roll.dice[0].results) {
+          roll.dice[0].results.forEach(result => {
+              if (result.result === 6) {
+                  critSuccesses++;
+              } else if (result.result >= 4) {
+                  successes++;
+              } else if (result.result === 1) {
+                  failures++;
+              }
+          });
+      } else {
+          console.error("Die Würfelrolle enthält keine Ergebnisse.", roll);
+      }
+
+      const critSuccessImages = critSuccesses > 0 ? 
+          Array(critSuccesses).fill(`<img src="${critSuccessImg}" alt="Critical Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const successImages = successes > 0 ? 
+          Array(successes).fill(`<img src="${successImg}" alt="Success" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const failureImages = failures > 0 ? 
+          Array(failures).fill(`<img src="${failureImg}" alt="Failure" class="result-img">`).join('') : 
+          `<div class="none-text">None</div>`;
+
+      const totalResult = roll.total || 0;
+
+      const messageContent = `
+          <div class="chat-message">
+              <div class="message-content">
+                  <div class="attribute-name">${skill.type}</div>
+                  <div class="footer-line"></div>
+                  <div class="results-line">${critSuccessImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${successImages}</div>
+                  <div class="separator-line"></div>
+                  <div class="results-line">${failureImages}</div>
+                  <div class="footer-line"></div>
+                  <div class="result-total">Total Result: ${totalResult}</div>
+                  <button class="push-your-luck-button" data-roll-id="${rollId}" data-original-result="${totalResult}">Push your Luck?</button>
+              </div>
+          </div>
+      `;
+      console.log("Chat message created with rollId:", rollId);
+
+      game.dice3d?.showForRoll(roll, game.user, true).then(() => {
+          ChatMessage.create({
+              user: game.user._id,
+              speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+              content: messageContent,
+              roll: roll,
+              flags: { rollId: rollId }
+          });
+      });
+  }).catch(error => {
+      console.error("Fehler beim Würfeln:", error);
+  });
+}
+
 }

@@ -3,9 +3,11 @@
     <h2>Weapons</h2>
     <div class="favs-list">
       {{#each system.favslots.weaponslots}}
-      <div class="favs-item">
-        <span class="favs-name">{{this.name}}</span>
+      {{#unlessNameIn this.name "Main-Weapon,Side-Weapon,Melee-Weapon"}}
+      <div class="favs-item" data-slot-type="{{@key}}">
+        <span class="favs-name-weapon">{{this.name}}</span>
       </div>
+      {{/unlessNameIn}}
       {{/each}}
     </div>
   </div>
@@ -13,9 +15,9 @@
   <div class="favs-section favs-section-top-right">
     <h2>Core Skills</h2>
     <div class="favs-list">
-      {{#each coreSkills}}
-      <div class="favs-item">
-        <span class="favs-name">{{this.type}}</span>
+      {{#each coreSkills as |skill key|}}
+      <div class="favs-item" data-skill="{{key}}">
+        <span class="favs-name-core" data-action="rollCoreSkill">{{skill.type}}</span>
       </div>
       {{/each}}
     </div>
@@ -24,10 +26,12 @@
   <div class="favs-section favs-section-bottom-left">
     <h2>Skills</h2>
     <div class="favs-list">
-      {{#each system.favslots.skillslots}}
-      <div class="favs-item">
-        <span class="favs-name">{{this.name}}</span>
+      {{#each system.skills}}
+      {{#if this.favs}}
+      <div class="favs-item skillroll" data-index="{{@index}}">
+        <span class="favs-name-skill" data-action="rollSkill">{{this.skillname}}</span>
       </div>
+      {{/if}}
       {{/each}}
     </div>
   </div>

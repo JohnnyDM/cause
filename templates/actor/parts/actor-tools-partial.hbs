@@ -1,0 +1,30 @@
+<div class="cause-tools-container">
+    <!-- Left Side: Tools and Backpacks Lists -->
+    <div class="cause-lists-container">
+        <div class="cause-tools-list">
+            <h2>Tools</h2>
+            <div class="cause-item-list cause-tools-list">
+                {{#each tools}}
+                <div class="cause-item cause-tool-item" draggable="true" data-item-id="{{this._id}}" data-width="{{this.width}}" data-height="{{this.height}}">
+                    <span class="cause-item-name">{{this.name}}</span>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="cause-backpacks-list">
+            <h2>Backpacks</h2>
+            <div class="cause-item-list cause-backpacks-list">
+                {{#each backpacks}}
+                <div class="cause-item cause-backpack-item" draggable="true" data-item-id="{{this._id}}" data-width="{{this.width}}" data-height="{{this.height}}">
+                    <span class="cause-item-name">{{this.name}}</span>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Canvas -->
+    <div class="cause-canvas-container">
+        <canvas class="cause-tools-canvas"></canvas>
+    </div>
+</div>

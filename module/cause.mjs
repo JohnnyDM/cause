@@ -24,6 +24,13 @@ Hooks.once("init", function () {
       return index % 2 !== 0;
     });
 
+    Handlebars.registerHelper('unlessNameIn', function(name, list, options) {
+      if (list.indexOf(name) === -1) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
+
     Handlebars.registerHelper('range', function(from, to) {
       let result = [];
       for (let i = from; i <= to; i++) {

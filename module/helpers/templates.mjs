@@ -7,6 +7,7 @@ export const preloadHandlebarsTemplates = async function () {
       'systems/cause/templates/actor/parts/actor-weapon-partial.hbs',
       'systems/cause/templates/actor/parts/actor-info-partial.hbs',
       'systems/cause/templates/actor/parts/actor-favs-partial.hbs',
+      'systems/cause/templates/actor/parts/actor-tools-partial.hbs',
       // Item partials
       
     ]);
