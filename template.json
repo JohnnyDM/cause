@@ -1,0 +1,89 @@
+{
+    "Actor": {
+      "types": ["character", "npc", "creature"],
+      "templates": {
+        "base": {
+          "biography": "",
+          "attributes": {
+            "str": 0,
+            "agi": 0,
+            "wit": 0,
+            "bra": 0
+          }
+        },
+        "coreskills": {
+          "weaponskills1": {  "type": "", "level": 0, "img": "systems/cause/assets/weaponskills/blank-black.png" },
+          "weaponskills2": {  "type": "", "level": 0, "img": "systems/cause/assets/weaponskills/blank-black.png" },
+          "weaponskills3": {  "type": "", "level": 0, "img": "systems/cause/assets/weaponskills/blank-black.png" },
+          "coreskill1": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill2": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill3": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill4": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill5": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill6": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill7": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" },
+          "coreskill8": { "type": "", "level": 0, "stat": "", "img": "systems/cause/assets/coreskills/blank-black.png" }
+        },
+        "favourites": {
+          "mainweapon": { "name": "Main-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/weaponskills/blank-black.png"  },
+          "sideweapon": { "name": "Side-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/weaponskills/blank-black.png"  },
+          "meleeweapon": { "name": "Melee-Weapon", "itemID": "", "conceal": 0, "img": "systems/cause/assets/weaponskills/blank-black.png"  },
+          "armorslot": { "name": "Armor-Slot", "img": "systems/cause/assets/weaponskills/blank-black.png", "conceal": 0 }
+        }
+      },
+      "character": {
+        "templates": ["base","coreskills","favourites"],
+        "core": {
+            "level": 0,
+            "mental": 10,
+            "formpoints": 0,
+            "fatigue": 0
+        },
+        "itemstat": {
+            "armor": 0,
+            "conceal": 10
+        },
+        "skills": []
+      },
+      "npc": {
+        "templates": ["base"]
+      },
+      "creature": {
+        "templates": ["base"]
+      }
+    },
+    "Item": {
+      "types": ["skill","weapon", "armor", "tool", "object", "backpack"],
+      "templates": {
+        "base": {
+          "description": ""
+        }
+      },
+      "skill": {
+        "skillLevel": 0,
+        "stat": "str"
+      },
+      "weapon": {
+        "templates": ["base"],
+        "weaponType": "pistol",
+        "weaponLevel": "1",
+        "concealment": 0
+      },
+      "armor": {
+        "templates": ["base"],
+        "armorlevel": 0,
+        "concealment": 0
+      },
+      "tool": {
+        "templates": ["base"],
+        "slots": 0
+      },
+      "backpack": {
+        "templates": ["base"],
+        "space": 0
+      },
+      "object": {
+        "templates": ["base"]
+      }
+    }
+  }

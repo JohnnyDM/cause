@@ -1,0 +1,44 @@
+{
+    "id": "cause",
+    "title": "Cause",
+    "description": "The Cause TTFS-System for FoundryVTT!",
+    "authors": [
+      {
+        "name": "Johnny",
+        "discord": "lastcringe"
+      }
+    ],
+    "url": "",
+    "license": "LICENSE.txt",
+    "readme": "README.md",
+    "bugs": "",
+    "changelog": "CHANGELOG.md",
+    "media": [
+      {
+        "type": "cover",
+        "loop": false,
+        "flags": {}
+      },
+      {
+        "type": "setup",
+        "url": "systems/cause/assets/frigidearth_scene.png",
+        "thumbnail": "systems/cause/assets/frigidearth_scene.png"
+      }
+    ],
+    "version": "0.0.1",
+    "compatibility": {
+      "minimum": 12,
+      "verified": "12.330"
+    },
+    "esmodules": ["module/cause.mjs"],
+    "styles": ["css/cause.css"],
+    "packs": [],
+    "packFolders": [],
+    "socket": false,
+    "manifest": "",
+    "download": "",
+    "background": "systems/cause/assets/cause-setup.png",
+    "gridDistance": 1,
+    "gridUnits": "m"
+  }
+  

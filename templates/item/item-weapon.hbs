@@ -1,0 +1,40 @@
+<form class="item-sheet weapon-sheet" autocomplete="off">
+  <div class="weaponname"><input name="name" type="text" value="{{item.name}}" placeholder="Weapon Name"/>
+  <div class="image-container">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="256"/>
+  </div>
+  <nav class="weapontabs tabs" data-group="primary">
+    <a data-tab="desc" >Description</a>
+    <a data-tab="details">Details</a>
+  </nav>
+  <section class="weaponcontent">
+    <div data-tab="desc" data-group="primary" class="tab weapontab">
+      <textarea name="system.description" class="description">{{system.description}}</textarea>
+    </div>
+
+    <div data-tab="details" data-group="primary" class="tab weapontab">
+      <div class="form-group">
+        <label>Weapon Type</label>
+        <select name="system.weaponType">
+          <option value="Melee Weapon" {{#if (eq system.weaponType "Melee Weapon")}}selected{{/if}}>Melee Weapon</option>
+          <option value="Pistol" {{#if (eq system.weaponType "Pistol")}}selected{{/if}}>Pistol</option>
+          <option value="Submachine Gun" {{#if (eq system.weaponType "Submachine Gun")}}selected{{/if}}>Submachine Gun</option>
+          <option value="Shotgun" {{#if (eq system.weaponType "Shotgun")}}selected{{/if}}>Shotgun</option>
+          <option value="Assault Rifle" {{#if (eq system.weaponType "Assault Rifle")}}selected{{/if}}>Assault Rifle</option>
+          <option value="Machine Gun" {{#if (eq system.weaponType "Machine Gun")}}selected{{/if}}>Machine Gun</option>
+          <option value="Hunting Rifle" {{#if (eq system.weaponType "Hunting Rifle")}}selected{{/if}}>Hunting Rifle</option>
+          <option value="Sniper Rifle" {{#if (eq system.weaponType "Sniper Rifle")}}selected{{/if}}>Sniper Rifle</option>
+          <option value="Heavy Weapon" {{#if (eq system.weaponType "Heavy Weapon")}}selected{{/if}}>Heavy Weapon</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Weapon Level</label>
+        <input type="number" name="system.weaponLevel" value="{{system.weaponLevel}}">
+      </div>
+      <div class="form-group">
+        <label>Concealment</label>
+        <input type="number" name="system.concealment" value="{{system.concealment}}">
+      </div>
+    </div>
+  </section>
+</form>

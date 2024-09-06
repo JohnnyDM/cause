@@ -1,0 +1,59 @@
+<div class="tool-backpack-container">
+  <!-- Tabelle für Tools -->
+  <div class="tools-table">
+    <h3>Tools</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Space Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each tool}}
+          <tr class="tool-item" data-item-id="{{_id}}">
+            <td>{{name}}</td>
+            <td>{{data.space}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tabelle für Backpacks -->
+  <div class="backpacks-table">
+    <h3>Backpacks</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Total Space</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each backpack}}
+          <tr class="backpack-item" data-item-id="{{_id}}">
+            <td>{{name}}</td>
+            <td>{{data.space}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Rechte Seite: Dynamische Tabelle für Backpacks und Tools -->
+<div class="dynamic-backpack-container">
+  <h3>Inventory</h3>
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Space</th>
+      </tr>
+    </thead>
+    <tbody id="dynamic-backpack-content">
+      <!-- Dynamische Inhalte, die durch Drag-and-Drop generiert werden -->
+    </tbody>
+  </table>
+</div>

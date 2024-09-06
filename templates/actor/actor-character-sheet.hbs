@@ -1,0 +1,99 @@
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+    
+    <div class="causesidebar">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="250" width="175"/>
+        <div class="causeheadline1">Attributes</div>
+        <div class="causeheadline2" data-action="editMental">Mental-Health</div>
+        <span class="formpoints">
+            {{#mentalTimes system.core.mental}}
+                <i class="fa-solid fa-circle symbolpadding" data-action="editMental"></i>
+            {{else}}
+                <i class="fa-regular fa-circle symbolpadding" data-action="editMental"></i>
+            {{/mentalTimes}}
+        </span>
+        <div class="row">
+          <div class="causecolumn causeheadline2" data-action="rollStrength">Strength</div>
+          <div class="causecolumn causeheadline2" data-action="rollAgility">Agility</div>
+        </div>
+        <div class="row">
+          <div class="causecolumnp"><input type="number" name="system.attributes.str" value="{{system.attributes.str}}" data-dtype="Number"/></div>
+          <div class="causecolumnp"><input type="number" name="system.attributes.agi" value="{{system.attributes.agi}}" data-dtype="Number"/></div>
+        </div>
+        <div class="row">
+          <div class="causecolumn causeheadline2" data-action="rollWits">Wits</div>
+          <div class="causecolumn causeheadline2" data-action="rollBrains">Brains</div>
+        </div>
+        <div class="row">
+          <div class="causecolumnp"><input type="number" name="system.attributes.wit" value="{{system.attributes.wit}}" data-dtype="Number"/></div>
+          <div class="causecolumnp"><input type="number" name="system.attributes.bra" value="{{system.attributes.bra}}" data-dtype="Number"/></div>
+        </div>
+        <div class="causeheadline2 formpointstext" data-action="rollForm">Formpoints</div>
+        <span class="formpoints">
+            {{#formTimes system.core.formpoints}}
+                <i class="fa-solid fa-circle symbolpadding" data-action="rollForm"></i>
+            {{else}}
+                <i class="fa-regular fa-circle symbolpadding" data-action="rollForm"></i>
+            {{/formTimes}}
+        </span>
+        <div class="row">
+          <div class="causecolumn causeheadline2">Armor</div>
+          <div class="causecolumn causeheadline2">Conceal</div>
+        </div>
+        <div class="row">
+          <div class="causecolumnpend"><input type="number" name="system.itemstat.armor" value="{{system.itemstat.armor}}" data-dtype="Number" readonly/></div>
+          <div class="causecolumnpend"><input type="number" name="system.itemstat.conceal" value="{{system.itemstat.conceal}}" data-dtype="Number" readonly/></div>
+        </div>
+        <div class="causecolumnfull causeheadline2" data-action="rollLuck">Push your Luck</div>
+    </div>
+    <div class="charname">
+        <span class="charname-name">Name: <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/></span>
+        <span class="charname-level">Level: <input type="number" name="system.core.level" value="{{system.core.level}}" data-dtype="Number"/></span>
+    </div>
+    <div>
+    <nav class="causenavtabs tabs" data-group="primary">
+        <a data-tab="favs" >Favs</a>
+        <a data-tab="core" >Core</a>
+        <a data-tab="skills">Skills</a>
+        <a data-tab="inventory">Inventory</a>
+        <a data-tab="info">Info</a>
+    </nav>
+    </div>
+    <section class="causecontent">
+        <div data-tab="favs" data-group="primary" class="tab">
+          {{> "systems/cause/templates/actor/parts/actor-favs-partial.hbs"}}
+        </div>
+
+        <div data-tab="core" data-group="primary" class="tab">
+          {{> "systems/cause/templates/actor/parts/actor-core-partial.hbs"}}
+        </div>
+        
+        <div data-tab="skills" data-group="primary" class="tab">
+          {{> "systems/cause/templates/actor/parts/actor-skill-partial.hbs"}}
+        </div>
+        
+        <div data-tab="info" data-group="primary" class="tab">
+          {{> "systems/cause/templates/actor/parts/actor-info-partial.hbs"}}
+        </div>
+
+        <div data-tab="inventory" data-group="primary" class="tab">
+          <nav class="sidenavtabs tabs" data-group="secondary">
+            <a data-tab="weapons" >Weapons and Armors</a>
+            <a data-tab="tools">Tools</a>
+            <a data-tab="objects">Objects</a>
+          </nav>
+          <section class="inventorycontent">
+            <div data-tab="weapons" data-group="secondary" class="tab invtab">
+              {{> "systems/cause/templates/actor/parts/actor-weapon-partial.hbs"}}
+            </div>
+        
+            <div data-tab="tools" data-group="secondary" class="tab invtab">
+              {{> "systems/cause/templates/actor/parts/actor-tools-partial.hbs"}}
+            </div>
+        
+            <div data-tab="objects" data-group="secondary" class="tab invtab">
+              
+            </div>
+          </section>
+        </div>
+    </section>
+</form>

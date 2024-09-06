@@ -1,0 +1,57 @@
+<div class="favs-container">
+  <div class="favs-section favs-section-top-left">
+    <div class="causeheadline1">Weapons</div>
+    <div class="favs-list">
+      {{#unlessNameIn system.mainweapon.name "Main-Weapon,Side-Weapon,Melee-Weapon"}}
+      <div class="favs-item" data-slot-type="mainweapon">
+        <span class="favs-name-weapon">{{system.mainweapon.name}}</span>
+      </div>
+      {{/unlessNameIn}}
+      {{#unlessNameIn system.sideweapon.name "Main-Weapon,Side-Weapon,Melee-Weapon"}}
+      <div class="favs-item" data-slot-type="sideweapon">
+        <span class="favs-name-weapon">{{system.sideweapon.name}}</span>
+      </div>
+      {{/unlessNameIn}}
+      {{#unlessNameIn system.meleeweapon.name "Main-Weapon,Side-Weapon,Melee-Weapon"}}
+      <div class="favs-item" data-slot-type="meleeweapon">
+        <span class="favs-name-weapon">{{system.meleeweapon.name}}</span>
+      </div>
+      {{/unlessNameIn}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-top-right">
+    <div class="causeheadline1">Core Skills</div>
+    <div class="favs-list">
+      {{#each coreSkills as |skill key|}}
+      <div class="favs-item" data-skill="{{key}}">
+        <span class="favs-name-core" data-action="rollCoreSkill">{{skill.type}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-bottom-left">
+    <div class="causeheadline1">Skills</div>
+    <div class="favs-list">
+      {{#each system.skills}}
+      {{#if this.favs}}
+      <div class="favs-item skillroll" data-index="{{@index}}">
+        <span class="favs-name-skill" data-action="rollSkill">{{this.skillname}}</span>
+      </div>
+      {{/if}}
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="favs-section favs-section-bottom-right">
+    <div class="causeheadline1">Tools</div>
+    <div class="favs-list">
+      {{#each system.favslots.toolslots}}
+      <div class="favs-item">
+        <span class="favs-name">{{this.name}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

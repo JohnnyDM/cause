@@ -1,0 +1,50 @@
+<div class="equipped-box">
+    <img src="systems/cause/assets/inventory/man.png" class="waimg"/>
+    <div class="invweaponbox1 weapondropbox" data-drop-target="invweaponbox1">
+      <span>{{system.mainweapon.name}}</span>
+      <span class="remove-fav" data-slot="mainweapon" title="Remove">X</span>
+      <div class="invweaponbox" style="background-image: url('{{system.mainweapon.img}}');"></div>
+    </div>
+    <div class="invweaponbox2 weapondropbox" data-drop-target="invweaponbox2">
+      <span>{{system.sideweapon.name}}</span>
+      <span class="remove-fav" data-slot="sideweapon" title="Remove">X</span>
+      <div class="invweaponbox" style="background-image: url('{{system.sideweapon.img}}');"></div>
+    </div>
+    <div class="invweaponbox3 weapondropbox" data-drop-target="invweaponbox3">
+      <span>{{system.meleeweapon.name}}</span>
+      <span class="remove-fav" data-slot="meleeweapon" title="Remove">X</span>
+      <div class="invweaponbox" style="background-image: url('{{system.meleeweapon.img}}');"></div>
+    </div>
+    <div class="invarmorbox1 armordropbox" data-drop-target="invarmorbox">
+      <span>{{system.armorslot.name}}</span>
+      <span class="remove-fav" data-slot="armorslot" title="Remove">X</span>
+      <div class="invarmorbox" style="background-image: url('{{system.armorslot.img}}');"></div>
+    </div>
+</div>
+
+<div class="weapons-armor-section">
+    <div class="weapons-list">
+    <span>Weapons</span>
+    <div class="item-list-box">
+        {{#each weapon}}
+        <div class="item-row" draggable="true" data-item-id="{{this._id}}">
+            <span class="item-name">{{this.name}}</span>
+            <span class="item-edit"><i class="fas fa-edit"></i></span>
+            <span class="item-delete"><i class="fas fa-trash"></i></span>
+        </div>
+        {{/each}}
+    </div>
+    </div>
+    <div class="armor-list">
+    <span>Armors</span>
+    <div class="item-list-box">
+        {{#each armor}}
+        <div class="item-row" draggable="true" data-item-id="{{this._id}}">
+            <span class="item-name">{{this.name}}</span>
+            <span class="item-edit"><i class="fas fa-edit"></i></span>
+            <span class="item-delete"><i class="fas fa-trash"></i></span>
+        </div>
+        {{/each}}
+    </div>
+    </div>
+</div>

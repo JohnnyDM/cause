@@ -1,0 +1,744 @@
+/* Fonts */
+@font-face {
+    font-family: "Typewriter";
+    src: url("../assets/fonts/JMH\ Typewriter.otf");
+}
+
+/* General */
+.window-app.actor {
+    max-height: 650px;
+    max-width: 650px;
+    min-height: 650px;
+    min-width: 650px;
+    font-family: 'Typewriter';
+}
+
+.window-app.actor input {
+    border: 1px solid dimgray;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1.5px dotted #333333;
+    font-family: 'Typewriter';
+    color:#ddd;
+}
+
+.window-content {
+    background-image: url(../assets/images/contentbackground.png) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    text-shadow: 2px #ddd;
+}
+
+.profile-img {
+    object-fit: cover;
+    image-rendering: optimizeQuality;
+    width: auto;
+    height: auto;
+    border: none;
+    mask-size: auto;
+    mask-image: none;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-image: url(../assets/images/profilemask.webp);
+}
+
+/* Charname Line */
+.charname {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    color: #ddd;
+}
+
+.charname-name {
+    flex-grow: 1;
+    padding-left: 23px;
+}
+
+.charname-name input {
+    width: 250px;
+    text-align: center;
+}
+
+.charname-level {
+    margin-left: auto;
+    padding-right: 20px;
+}
+
+.charname-level input {
+    width: 30px;
+    text-align: center;
+}
+
+/* Headlines */
+.causeheadline1 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.causeheadline2 {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.causeheadline3 {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+/* Sidebar*/
+.causesidebar {
+    width: 200px;
+    padding: 10px;
+    position: absolute;
+    margin-top: 30px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background-image: url(../assets/images/sidebackground.png);
+    background-color: #929292;
+    color: #ddd;
+}
+
+.causesidebar input {
+    color: #ddd;
+}
+
+.causecolumn {
+    float: left;
+    width: 50%;
+    padding: 5px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    text-align: center;
+}
+
+.causecolumnp {
+    float: left;
+    width: 50%;
+    padding: 5px;
+    padding-bottom: 5px;
+    padding-top: 0px;
+    text-align: center;
+}
+
+.causecolumnpend {
+    float: left;
+    width: 50%;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 0px;
+    text-align: center;
+}
+
+.causecolumnfull {
+    padding-bottom: 10px;
+}
+
+.formpoints {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.symbolpadding {
+    padding-top: 0px;
+    padding-right: 3px;
+}
+
+/* Main-Nav and Content */
+.causenavtabs {
+    width: 70%;
+    color: #ddd;
+}
+
+.causecontent {
+    width: 70%;
+}
+
+/* Form/Bonusdice Dialog */
+.form-points-input,
+.bonus-dice-input {
+  display: flex;
+  align-items: center;
+}
+
+.form-points-input button,
+.bonus-dice-input button {
+  width: 30px;
+  height: 30px;
+  background-color: #ccc;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.form-points-input button:hover,
+.bonus-dice-input button:hover {
+  background-color: #bbb;
+}
+
+.form-points-input input,
+.bonus-dice-input input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  height: 30px;
+  margin: 0 5px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+.form-group input {
+    color: #ffffff;
+  }
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Chat-Messages */
+.chat-message {
+    background-image: url(../assets/images/messagebackground.png);
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    mask-size: 110%;
+    padding-bottom: 12px;
+    mask-image: none;
+    border: none;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-image: url(../assets/images/messagemask.webp);
+}
+
+.chat-message .message-content {
+    font-family: 'Typewriter', sans-serif;
+    text-align: center;
+}
+.message-metadata {
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.message-sender {
+    padding-top: 10px;
+    padding-left: 15px;
+}
+.chat-message .attribute-name {
+    font-size: 16px;
+    font-family: 'Typewriter', sans-serif;
+}
+.chat-message .empty-line {
+    height: 20px; 
+}
+.chat-message .results-line img {
+    display: inline-block;
+    margin: 0 2px; 
+    width: 30px; 
+    height: 30px; 
+}
+.chat-message .separator-line {
+    margin: 2px 0;
+}
+.chat-message .result-total {
+    font-size: 16px;
+    font-weight: bold;
+}
+.chat-message .footer-line {
+    border-top: 1px solid #585858;
+    margin: 10px 0;
+}
+.chat-message .push-your-luck-button {
+    display: block;
+    margin: 10px auto;
+    padding: 5px 10px;
+    border: 2px #3b3b3b;
+    cursor: pointer;
+}
+.chat-message .push-your-luck-button:hover {
+    background-color: #e2e2e2;
+}
+.result-img {
+    width: 30px;
+    height: 30px;
+}
+.none-text {
+    font-size: 20px;
+    text-align: center;
+}
+.luck-message {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.push-your-luck-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Favs Tab */
+.favs-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 100%;
+    width: 98%;
+  }
+  
+  .favs-section {
+    width: 48%;
+    height: 260px;
+    margin-bottom: 2%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .favs-section-top-left,
+  .favs-section-bottom-left {
+    margin-right: 2%;
+  }
+  
+  .favs-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .favs-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .favs-img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+  
+  .favs-name-weapon {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .favs-name-core {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .favs-name-skill {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .favs-name {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .favs-weapon-type,
+  .favs-concealment {
+    margin-right: 10px;
+  }
+
+/* Coreskills and Weaponskills */
+.baseskills-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 98%;
+}
+.baseskills-column {
+    flex: 1 1 1 calc(33.33% - 10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.baseskills-box {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+.baseskills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+.coreskills-grid, .weaponskill-grid {
+    justify-content: center;
+}
+.baseskill-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}  
+.weaponskill-box, .coreskill-box {
+    border: 1px solid #797979;
+    padding: 10px;
+    flex: 1 1 calc(33.33% - 10px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    background-size: cover; 
+    background-position: center; 
+    color: #fff;
+}
+.centered-line {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.coreskill-level, .weaponskill-level {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+}
+.coreskill-level option, .weaponskill-level option {
+    background-color: #000;
+}
+.baseskill-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+.weaponskill-option, .coreskill-option {
+    border: 1px solid #000000;
+    padding: 3px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end; 
+    justify-content: flex-start; 
+    background-size: cover;
+    background-position: center;
+    height: 128px;
+    width: 256px;
+    cursor: pointer;
+    position: relative; 
+}
+.coreskill-options {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%; 
+}
+.column-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+}
+.coreskill-options > .column-wrapper > div {
+    flex: 1 1 22%; 
+    margin: 0 10px;
+}
+.coreskill-options h3 {
+    text-align: center;
+}
+.weaponskill-dialog .window-content {
+    width: 550px; 
+    max-width: 90vw; 
+    background-color: #2e2e2e;
+    color: #fff;
+}
+.weaponskill-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+.wider-dialog .window-content {
+    width: 1125px; 
+    max-width: 90vw; 
+    background-color: #2e2e2e;
+    color: #fff;
+}
+.weaponskill-option span {
+    font-size: 18px; 
+    color: white; 
+    margin: 0 0 10px 10px; 
+}
+.coreskill-option span {
+    font-size: 18px; 
+    color: white; 
+    margin: 0 0 10px 10px; 
+}
+  
+
+/* Skills */
+.skills-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.skills-container {
+    height: 500px; 
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+}
+.skills {
+    display: flex;
+    flex-direction: column;
+}
+.skill-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    color: #ffffff;
+}
+.skill {
+    width: 48%; 
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.skill-name-row,
+.skill-level-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+.skill-name {
+    width: 70%;
+}
+.skill-name.highlight {
+    text-shadow: 0 0 10px rgba(255, 18, 18, 0.8);
+}
+.skill button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 15%;
+}
+.skill button i {
+    font-size: 1.2em;
+    color: #ffffff;
+}
+.skill-level,
+.skill-stat,
+.firearm-type {
+  width: 80%;
+  padding: 5px;
+  color: #ffffff;
+}
+.skill-level option {
+    background-color: #000;
+}
+.add-skill {
+    width: 200px;
+    text-align: center;
+    font-size: 15px;
+}
+.add-skill-center {
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+}
+.description {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    resize: vertical;
+}
+.edit-skill {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+  color: #ffffff;
+}
+.edit-skill i {
+  font-size: 1.2em;
+  color: #ffffff;
+}
+.whitedropdown {
+    color: #ffffff;
+}
+.whitedropdown option {
+    background-color: #000000;
+}
+
+/* Skills Dialog P*/
+.skills-options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.skills-column {
+  flex: 1 1 200px; /* Diese Breite anpassen, um mehr Platz zu geben */
+  margin: 5px;
+}
+
+.skill-option {
+  margin: 5px 0;
+  padding: 5px;
+  background-size: cover;
+  color: #fff;
+  height: 56px;
+  width: 128;
+}
+
+.skill-wider-dialog {
+  width: 1200px; /* Oder eine andere gewünschte Breite */
+}
+
+/* Weapons and Armors */
+.sidenavtabs {
+    color: #ffffff;
+}
+.inventorycontent {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: #ffffff;
+}
+.equipped-box {
+  height: 300px;
+}
+.invweaponbox {
+  width: 128px;
+  height: 64px;
+  border: 1px solid #2e2e2e;
+  background-size: cover;
+}
+.invweaponbox1 {
+  position: absolute;
+}
+.invweaponbox2 {
+  position: absolute;
+  top: 208px;
+}
+.invweaponbox3 {
+  position: absolute;
+  top: 297px;
+}
+.invarmorbox {
+  width: 128px;
+  height: 256px;
+  border: 1px solid #2e2e2e;
+}
+.invarmorbox1 {
+  position: absolute;
+  left: 294px;
+}
+.weapons-armor-section {
+  display: flex;
+  justify-content: space-between;
+  height: 200px;
+}
+.weapon-list {
+  width: 50%;
+}
+.waimg {
+  position:absolute;
+  scale: 0.8;
+  top: 65px;
+  left: 35px;
+  border: none;
+}
+.item-list-box {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  height: 200px;
+  border: 1px solid #ccc;
+  padding: 2px;
+  overflow-y:scroll;
+}
+.item-list-box div:hover {
+  background-color: #333;
+  color: #ffffff;
+}
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+.item-name {
+  flex: 1;
+}
+.item-edit, .item-delete {
+  margin-left: 10px;
+  width: 10px;
+}
+.remove-fav {
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: bold;
+  text-align: right;
+}
+
+/* Tools and Backpacks */
+.tool-backpack-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tools-table, .backpacks-table {
+  width: 45%;
+}
+
+.dynamic-backpack-container {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #3b3b3b;
+  text-align: left;
+}
+
+.draggable-backpack {
+  cursor: pointer;
+}
+
+.backpack-item {
+  margin-left: 20px;
+}
+
+.dynamic-backpack-content {
+  height: 200px;
+}
