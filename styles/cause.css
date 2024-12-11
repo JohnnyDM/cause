@@ -1,0 +1,398 @@
+@font-face {
+  font-family: "Baygo";
+  src: url("./fonts/Baygo.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "docGlitch";
+  src: url("./fonts/Doctor Glitch.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.gm-button {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  #gm-buttons-container {
+    margin-bottom: 3px !important;
+    margin-top: 2px !important; 
+  }
+  
+  .gm-button:hover {
+    background-color: #34495e;
+  }
+
+  /* Actor Sheet */
+/* Allgemeine Stile für das Charakter-Sheet */
+.cause-actor-sheet {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Nimmt die volle Höhe des Fensters ein */
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  font-family: "docGlitch";
+}
+
+/* Header-Bereich */
+.cause-actor-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.cause-actor-attributes {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cause-actor-header-left {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cause-actor-header-left img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.cause-actor-header-right {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 5px;
+}
+
+.cause-actor-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.cause-actor-stat label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.cause-actor-stat input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.message-content {
+  font-family: 'Baygo';
+}
+
+/* Charaktername */
+.cause-actor-name {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px; /* Abstand zum ersten Attribut */
+  font-size: 14px;
+}
+
+.cause-actor-name input {
+  flex: 1;
+  padding: 5px;
+  border-left: 0px;
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px dotted #000000;
+  border-radius: 0px;
+  font-size: 30px !important;
+  height: 35px;
+  text-align:  center;
+  font-family: "Baygo", sans-serif;
+}
+
+.cause-actor-icon {
+  font-size: 32px; /* Größe des Icons */
+  padding-left: 5px;
+  color: #000; /* Farbe des Icons, anpassen nach Bedarf */
+}
+
+/* Attribute */
+.cause-actor-attribute {
+  display: flex; /* Labels und Inputs nebeneinander */
+  align-items: left;
+  gap: 10px; /* Abstand zwischen Label und Input */
+}
+
+.cause-actor-attribute label {
+  flex: 0 0 100px; /* Feste Breite für die Labels */
+  font-weight: bold;
+  text-align: left; /* Rechtsbündig für eine saubere Ausrichtung */
+}
+
+.cause-actor-attribute input {
+  flex: 1; /* Input-Feld nimmt restlichen Platz ein */
+  padding: 5px;
+  border-left: 0px;
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px dotted #000000;
+  border-radius: 0px;
+  height: 20px;
+  text-align: center;
+}
+
+.cause-actor-divider-block {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  padding: 3px 0;
+  margin: 3px 0;
+  border-radius: 5px; /* Optional: Abgerundete Ecken */
+}
+
+/* Body-Bereich */
+.cause-actor-body {
+  display: flex;
+  flex: 1; /* Nimmt den restlichen verfügbaren Platz ein */
+  gap: 10px;
+  overflow: hidden; /* Kein Scrollen außerhalb der Box */
+}
+
+.cause-actor-favorites {
+  flex: 2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Begrenzung der Inhalte */
+}
+
+.cause-actor-favorites h3 {
+  flex-shrink: 0; /* Überschrift bleibt sichtbar */
+  margin: 0;
+  padding: 5px;
+  background-color: #eee;
+  text-align: center;
+}
+
+.cause-actor-favorites table {
+  flex: 1; /* Tabelle nimmt den restlichen Platz ein */
+  overflow-y: auto; /* Scrollen, wenn der Inhalt zu groß ist */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cause-actor-favorites table td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Tabs-Bereich */
+.cause-actor-tabs {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.cause-actor-navigation {
+  display: flex;
+  width: 100%;
+}
+
+.cause-actor-navigation .tab {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #f5f5f5;
+  flex: 1;
+  text-decoration: none;
+  display: inline-block; /* Tabs werden angezeigt */
+  visibility: visible; /* Tabs sichtbar */
+}
+
+.cause-actor-navigation .tab.active {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+.cause-actor-content {
+  flex: 1; /* Nimmt den restlichen Platz ein */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #ffffff;
+  overflow-y: auto; /* Scrollen für lange Inhalte */
+  width: 100%;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+}
+
+/*pendulum*/
+.cause-actor-madness-icons {
+  display: flex;
+  justify-content: space-between; /* Verteilt alle Elemente gleichmäßig */
+  align-items: center; /* Zentriert die Icons vertikal */
+  width: 100%; /* Passt sich der verfügbaren Breite an */
+}
+
+.cause-actor-madness-icons i {
+  font-size: 20px; /* Größe der Icons anpassen */
+  color: #555; /* Standardfarbe der Icons */
+}
+
+.cause-actor-madness-icons .separator {
+  font-size: 20px; /* Größe des "I" */
+  font-weight: bold;
+  color: #888; /* Farbe des "I" */
+}
+
+/* Item Sheet */
+.weapon-sheet {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5em;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: #fff;
+  font-family: 'docGlitch';
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.weapon-sheet input {
+  flex: 1;
+  padding: 5px;
+  border-left: 0px;
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px dotted #000000;
+  border-radius: 0px;
+  text-align:  center;
+}
+
+.dropdown {
+  border-left: 0px;
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px dotted #000000;
+  border-radius: 0px;
+}
+
+.reload input {
+  width: 10px !important;
+}
+
+.weapon-header {
+  display: flex;
+  border-bottom: 2px solid #000;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  gap: 1em;
+}
+
+.weapon-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+
+.weapon-name {
+  font-size: 1.8em;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.weapon-description {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  padding: 0.5em;
+  resize: vertical;
+  background: #f9f9f9;
+}
+
+.weapon-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 1px solid #000;
+  align-self: center;
+}
+
+.weapon-section {
+  margin-bottom: 1.5em;
+}
+
+.section-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 1px solid #000;
+  margin-bottom: 0.5em;
+}
+
+.weapon-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+label {
+  font-size: 1em;
+  font-weight: bold;
+  flex: 1;
+}
+
+/* Item Zeug */
+.item-category {
+  margin-bottom: 20px;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-name {
+  cursor: pointer;
+  font-weight: bold;
+}
+.item-delete {
+  cursor: pointer;
+  color: red;
+}
+.item-delete:hover {
+  color: darkred;
+}
+.item-details {
+  margin-left: 10px;
+  font-style: italic;
+}

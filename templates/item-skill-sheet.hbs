@@ -1,0 +1,54 @@
+<form class='{{cssClass}}' autocomplete='off'>
+<div class="weapon-sheet">
+  <!-- Header -->
+  <div class="weapon-header">
+    <div class="weapon-info">
+      <input class="weapon-name cause-actor-name-input" type="text" name="name" value="{{item.name}}" placeholder="Name">
+      <textarea class="weapon-description" placeholder="Enter a detailed description of the weapon..."></textarea>
+    </div>
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" class="weapon-image">
+  </div>
+
+  <!-- Details Section -->
+  <section class="weapon-section">
+    <h2 class="section-title">Details</h2>
+    <div class="weapon-details">
+      <div class="detail-row">
+        <label for="attribute">Skilltype:</label>
+        <select name="system.skilltype" id="system.skilltype" class="dropdown">
+            <option value="attack" {{#if (eq system.skilltype "attack")}}selected{{/if}}>Attack</option>
+            <option value="defense" {{#if (eq system.skilltype "defense")}}selected{{/if}}>Defense</option>
+            <option value="interact" {{#if (eq system.skilltype "interact")}}selected{{/if}}>Interact</option>
+            <option value="utility" {{#if (eq system.skilltype "utility")}}selected{{/if}}>Utility</option>
+        </select>
+      </div>
+      <div class="detail-row">
+        <label for="damage">Cost:</label>
+        <select name="system.skillcost.type" id="system.skillcost.type" class="dropdown">
+            <option value="positive" {{#if (eq system.skillcost.type "positive")}}selected{{/if}}>Positive</option>
+            <option value="negative" {{#if (eq system.skillcost.type "negative")}}selected{{/if}}>Negative</option>
+        </select>
+        <input type="text" name="system.skillcost.cost" value="{{system.skillcost.cost}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row">
+        <label for="damage">Damage:</label>
+        <input type="text" name="system.damage" value="{{system.damage}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row">
+        <label for="dicebonus">Dice Bonus:</label>
+        <input type="text" name="system.bonus" value="{{system.bonus}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row">
+        <label for="reach">Reach:</label>
+        <select name="system.reach" id="system.reach" class="dropdown">
+            <option value="arm's reach" {{#if (eq system.reach "arm's reach")}}selected{{/if}}>Arm's Reach</option>
+            <option value="short" {{#if (eq system.reach "short")}}selected{{/if}}>Short</option>
+            <option value="mid" {{#if (eq system.reach "mid")}}selected{{/if}}>Mid</option>
+            <option value="far" {{#if (eq system.reach "far")}}selected{{/if}}>Far</option>
+            <option value="drop-off" {{#if (eq system.reach "drop-off")}}selected{{/if}}>Drop-Off</option>
+        </select>
+      </div>
+    </div>
+  </section>
+</div>
+</form>

@@ -1,0 +1,54 @@
+<form class='{{cssClass}}' autocomplete='off'>
+<div class="weapon-sheet">
+  <!-- Header -->
+  <div class="weapon-header">
+    <div class="weapon-info">
+      <input class="weapon-name cause-actor-name-input" type="text" name="name" value="{{item.name}}" placeholder="Name">
+      <div class="weapon-description">
+        {{editor system.biography target="system.biography" button=true owner=owner editable=editable}}
+      </div>
+    </div>
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" class="weapon-image">
+  </div>
+
+  <!-- Details Section -->
+  <section class="weapon-section">
+    <h2 class="section-title">Details</h2>
+    <div class="weapon-details">
+      <div class="detail-row">
+        <label for="attribute">Attribute:</label>
+        <select name="system.attribute" id="system.attribute" class="dropdown">
+            <option value="vigor" {{#if (eq system.attribute "vigor")}}selected{{/if}}>Vigor</option>
+            <option value="grace" {{#if (eq system.attribute "grace")}}selected{{/if}}>Grace</option>
+            <option value="instinct" {{#if (eq system.attribute "instinct")}}selected{{/if}}>Instinct</option>
+            <option value="thought" {{#if (eq system.attribute "thought")}}selected{{/if}}>Thought</option>
+        </select>
+      </div>
+      <div class="detail-row">
+        <label for="damage">Damage:</label>
+        <input type="text" name="system.damage" value="{{system.damage}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row">
+        <label for="dicebonus">Dice Bonus:</label>
+        <input type="text" name="system.bonus" value="{{system.bonus}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row reload">
+        <label for="reload">Reload:</label>
+        <input type="text" name="system.reload.value" value="{{system.reload.value}}" data-dtype="Number"/>
+        <span> I </span>
+        <input type="text" name="system.reload.max" value="{{system.reload.max}}" data-dtype="Number"/>
+      </div>
+      <div class="detail-row">
+        <label for="reach">Reach:</label>
+        <select name="system.reach" id="system.reach" class="dropdown">
+            <option value="arm's reach" {{#if (eq system.reach "arm's reach")}}selected{{/if}}>Arm's Reach</option>
+            <option value="short" {{#if (eq system.reach "short")}}selected{{/if}}>Short</option>
+            <option value="mid" {{#if (eq system.reach "mid")}}selected{{/if}}>Mid</option>
+            <option value="far" {{#if (eq system.reach "far")}}selected{{/if}}>Far</option>
+            <option value="drop-off" {{#if (eq system.reach "drop-off")}}selected{{/if}}>Drop-Off</option>
+        </select>
+      </div>
+    </div>
+  </section>
+</div>
+</form>

@@ -1,0 +1,9 @@
+{
+    "Actor": {
+      "types": ["character", "npc"]
+    },
+    "Item": {
+      "types": ["weapon", "skill", "spell"]
+    }
+  }
+  

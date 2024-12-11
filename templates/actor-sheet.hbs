@@ -1,0 +1,93 @@
+<form>
+<div class="cause-actor-sheet">
+  <header class="cause-actor-header">
+    <div class="cause-actor-header-left">
+      <img class="cause-actor-image profile-image" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    </div>
+    <div class="cause-actor-header-right">
+      <div class="cause-actor-name">
+        <input class="cause-actor-name-input" type="text" name="name" value="{{actor.name}}" placeholder="Name">
+        <i class="{{diceIcon}} cause-actor-icon"></i>
+      </div>
+    <div class="cause-actor-attribute">
+      <label for="system.vigor.value" class="cause-attribute" data-att="vigor">Vigor:</label>
+      <input type="text" name="system.vigor.value" value="{{system.vigor.value}}" data-dtype="Number"/>
+      <span> I </span>
+      <input type="text" name="system.vigor.ability" value="{{system.vigor.ability}}" data-dtype="Number"/>
+    </div>
+    <div class="cause-actor-attribute">
+      <label for="system.grace.value" class="cause-attribute" data-att="grace">Grace:</label>
+      <input type="text" name="system.grace.value" value="{{system.grace.value}}" data-dtype="Number"/>
+      <span> I </span>
+      <input type="text" name="system.grace.ability" value="{{system.grace.ability}}" data-dtype="Number"/>
+    </div>
+    <div class="cause-actor-attribute">
+      <label for="system.instinct.value" class="cause-attribute" data-att="instinct">Instinct:</label>
+      <input type="text" name="system.instinct.value" value="{{system.instinct.value}}" data-dtype="Number"/>
+      <span> I </span>
+      <input type="text" name="system.instinct.ability" value="{{system.instinct.ability}}" data-dtype="Number"/>
+    </div>
+    <div class="cause-actor-attribute">
+      <label for="system.thought.value" class="cause-attribute" data-att="thought">Thought:</label>
+      <input type="text" name="system.thought.value" value="{{system.thought.value}}" data-dtype="Number"/>
+      <span> I </span>
+      <input type="text" name="system.thought.ability" value="{{system.thought.ability}}" data-dtype="Number"/>
+    </div>
+    <div class="cause-actor-divider-block">PENDULUM</div>
+    <div class="cause-actor-attribute">
+    <div class="cause-actor-madness-icons">
+      {{pendulumIcons system.pendulum.value 10}}
+    </div>
+    </div>
+    </div>
+  </header>
+
+  <section class="cause-actor-body">
+    <div class="cause-actor-favorites">
+      <h3>Favorites</h3>
+      <table>
+        {{#each data.items as |item|}}
+          {{#if item.flags.favorite}}
+            <tr>
+              <td>{{item.name}}</td>
+            </tr>
+          {{/if}}
+        {{/each}}
+      </table>
+    </div>
+    <div class="cause-actor-tabs tabs">
+      <nav class="cause-actor-navigation" data-group="primary">
+        <a class="tab" data-tab="inventory"><i class="fa-regular fa-backpack"></i></a>
+        <a class="tab" data-tab="skills"><i class="fa-regular fa-sword"></i></a>
+        <a class="tab" data-tab="profession"><i class="fa-light fa-briefcase"></i></a>
+        <a class="tab" data-tab="biography"><i class="fa-regular fa-book"></i></a>
+        <a class="tab" data-tab="details"><i class="fa-regular fa-circle-info"></i></a>
+      </nav>
+      <div class="cause-actor-content">
+        <div class="tab tab-content" data-group="primary" data-tab="inventory"> 
+          {{#each inventory}}
+            <div class="item-category {{@key}}">
+              <h3>{{@key}}</h3>
+              {{#each this}}
+                <div class="item-entry">
+                  <div class="item-header">
+                    <div class="item-name">{{this.name}}</div>
+                    <div class="item-delete">
+                      <i class="fas fa-trash" data-item-id="{{this._id}}" title="Delete Item"></i>
+                    </div>
+                  </div>
+                  <div class="item-details" style="display: none;">{{this.system.biography}}</div>
+                </div>
+              {{/each}}
+            </div>
+          {{/each}}
+        </div>
+        <div class="tab tab-content" data-group="primary" data-tab="skills"> </div>
+        <div class="tab tab-content" data-group="primary" data-tab="profession"> </div>
+        <div class="tab tab-content" data-group="primary" data-tab="biography"> </div>
+        <div class="tab tab-content" data-group="primary" data-tab="details"> </div>
+      </div>
+    </div>
+  </section>
+</div>
+</form>
